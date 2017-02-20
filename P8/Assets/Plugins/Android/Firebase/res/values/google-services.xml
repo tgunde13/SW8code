@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="firebase_database_url" translatable="false">https://p8-server.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">102364388949</string>
+  <string name="google_storage_bucket" translatable="false">p8-server.appspot.com</string>
+  <string name="google_api_key" translatable="false">AIzaSyDe-MmhMCsH-rrn7Kojm92qbAgxOKYMJ1w</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDe-MmhMCsH-rrn7Kojm92qbAgxOKYMJ1w</string>
+  <string name="google_app_id" translatable="false">1:102364388949:android:94297758636410a8</string>
+  <string name="default_web_client_id" translatable="false">102364388949-30cunaik20av2brd4ciem5qudnvmh758.apps.googleusercontent.com</string>
+</resources>
