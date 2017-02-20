@@ -9,7 +9,7 @@ public class Login : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		FirebaseApp.DefaultInstance..SetEditorDatabaseUrl("https://p8-server.firebaseio.com/");
+		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://p8-server.firebaseio.com/");
 
 		DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
 		reference.Child ("players").Push().SetValueAsync ("test");
