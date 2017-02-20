@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Firebase.Auth;
 
 public class LoginEmailButton : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class LoginEmailButton : MonoBehaviour {
 
 	public void onClick() {
 		Debug.Log ("Email Button Click");
+
+		Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 	}
 	
 	// Update is called once per frame
