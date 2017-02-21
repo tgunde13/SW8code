@@ -5,6 +5,9 @@ using Firebase.Auth;
 
 public class LoginEmailButton : MonoBehaviour {
 
+	public GameObject emailLoginPanel;
+	public GameObject panel;
+
 	// Use this for initialization
 	void Start () {
 
@@ -13,7 +16,8 @@ public class LoginEmailButton : MonoBehaviour {
 	public void onClick() {
 		Debug.Log ("Email Button Click");
 
-		Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+		this.panel.SetActive (false);
+		emailLoginPanel.SetActive (true);
 	}
 	
 	// Update is called once per frame
