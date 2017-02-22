@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShowError : MonoBehaviour {
+public class AlertDialog : MonoBehaviour {
 	public Text messageField;
 
 	// Use this for initialization
@@ -11,7 +11,7 @@ public class ShowError : MonoBehaviour {
 		
 	}
 
-	public void perform(string message) {
+	public void show(string message) {
 		messageField.text = message;
 		gameObject.SetActive (true);
 	}
