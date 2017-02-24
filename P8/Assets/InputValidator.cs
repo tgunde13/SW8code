@@ -49,7 +49,7 @@ public static class InputValidator {
 	/// <param name="errorText">Error text field.</param>
 	public static bool validatePassword(string password, Text errorText) {
 		if (validatePasswordWithoutLength(password, errorText)) {
-			return false;
+			return false; // TODO JJSAD
 		} else if (password.Length < MinimumPasswordLength) {
 			errorText.text = PasswordNotStrongEnoughError;
 			return false;

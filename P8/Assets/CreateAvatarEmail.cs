@@ -30,6 +30,7 @@ public class CreateAvatarEmail : MonoBehaviour {
 
 		auth.CreateUserWithEmailAndPasswordAsync(email, passwordText.text).ContinueWith(task => {
 			if (task.IsCanceled) {
+				ShowErrorScript.show("Canceled...");
 				return;
 			}
 			if (task.IsFaulted) {
@@ -37,9 +38,6 @@ public class CreateAvatarEmail : MonoBehaviour {
 				return;
 			}
 
-			// Firebase user has been created.
-			Firebase.Auth.FirebaseUser newUser = task.Result;
-			Debug.LogFormat("Firebase user created successfully: {0} ({1})", newUser.DisplayName, newUser.UserId);
 			ShowErrorScript.show("User created");
 		});
 	}

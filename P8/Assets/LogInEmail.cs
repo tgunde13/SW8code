@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class LogInEmail : MonoBehaviour {
 	public Text emailText, emailErrorText, passwordText, passwordErrorText;
+	public AlertDialog alertDialog;
 
 	// Use this for initialization
 	void Start () {
@@ -17,11 +18,13 @@ public class LogInEmail : MonoBehaviour {
 
 		// Validate input before call to Firebase
 		bool validEmail = InputValidator.validateEmail(email, emailErrorText);
-		bool validPassword = InputValidator.validatePassword (password, passwordErrorText);
+		bool validPassword = InputValidator.validatePasswordWithoutLength (password, passwordErrorText);
 
 		if (!(validEmail && validPassword)) {
 			return;
 		}
+
+		LoginHandler.LogIn (Firebase.Auth.EmailAuthProvider.GetCredential (email, password), alertDialog);
 	}
 		
 	
