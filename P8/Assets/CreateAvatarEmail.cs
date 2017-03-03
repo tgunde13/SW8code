@@ -7,7 +7,8 @@ using Firebase;
 using Firebase.Unity.Editor;
 
 public class CreateAvatarEmail : MonoBehaviour {
-	public Text emailText, emailErrorText, passwordText, passwordErrorText;
+	public Text emailErrorText, passwordErrorText;
+	public InputField emailField, passwordField;
 	public AlertDialog ShowErrorScript;
 
 	// Use this for initialization
@@ -15,8 +16,8 @@ public class CreateAvatarEmail : MonoBehaviour {
 	}
 
 	public void perform() {
-		string email = emailText.text;
-		string password = passwordText.text;
+		string email = emailField.text;
+		string password = passwordField.text;
 
 		// Validate input before call to Firebase
 		bool validEmail = InputValidator.validateEmail(email, emailErrorText);
@@ -28,7 +29,7 @@ public class CreateAvatarEmail : MonoBehaviour {
 
 		FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 
-		auth.CreateUserWithEmailAndPasswordAsync(email, passwordText.text).ContinueWith(task => {
+		auth.CreateUserWithEmailAndPasswordAsync(email, passwordField.text).ContinueWith(task => {
 			if (task.IsCanceled) {
 				ShowErrorScript.show("Canceled...");
 				return;

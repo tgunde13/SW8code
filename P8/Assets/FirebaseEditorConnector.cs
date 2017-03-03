@@ -9,7 +9,7 @@ public class FirebaseEditorConnector : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://p8-server.firebaseio.com/");
+		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://league-of-locations-26618308.firebaseio.com");
 
 		DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
 		reference.Child ("players").Push().SetValueAsync ("test");

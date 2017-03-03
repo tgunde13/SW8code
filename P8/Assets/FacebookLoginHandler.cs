@@ -6,6 +6,7 @@ using UnityEngine;
 using Facebook.Unity;
 
 public class FacebookLoginHandler : MonoBehaviour {
+	public AlertDialog alertDialog;
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +33,7 @@ public class FacebookLoginHandler : MonoBehaviour {
 			// Continue with Facebook SDK
 			// ...
 		} else {
-			Debug.Log("Failed to Initialize the Facebook SDK");
+			Debug.Log("TOB: Failed to Initialize the Facebook SDK");
 		}
 	}
 
@@ -66,8 +67,13 @@ public class FacebookLoginHandler : MonoBehaviour {
 			foreach (string perm in aToken.Permissions) {
 				Debug.Log(perm);
 			}
+
+			Firebase.Auth.Credential credential = Firebase.Auth.FacebookAuthProvider.GetCredential (aToken.TokenString);
+
+			LoginHandler.LogIn (credential, alertDialog);
+
 		} else {
-			Debug.Log("User cancelled login");
+			Debug.Log("TOB: User cancelled login");
 		}
 	}
 	
