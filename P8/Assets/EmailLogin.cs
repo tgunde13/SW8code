@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LogInEmail : MonoBehaviour {
+public class EmailLogin : MonoBehaviour {
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField;
 	public AlertDialog alertDialog;
@@ -25,7 +25,7 @@ public class LogInEmail : MonoBehaviour {
 			return;
 		}
 
-		LoginHandler.LogIn (Firebase.Auth.EmailAuthProvider.GetCredential (email, password), alertDialog);
+		FirebaseLoginHandler.LogIn (Firebase.Auth.EmailAuthProvider.GetCredential (email, password), alertDialog);
 	}
 		
 	

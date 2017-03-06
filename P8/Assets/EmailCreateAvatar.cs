@@ -6,14 +6,13 @@ using Firebase.Auth;
 using Firebase;
 using Firebase.Unity.Editor;
 
-public class CreateAvatarEmail : MonoBehaviour {
+/// <summary>
+/// Used for creating an avatar with an e-mail address.
+/// </summary>
+public class EmailCreateAvatar : MonoBehaviour {
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField;
 	public AlertDialog ShowErrorScript;
-
-	// Use this for initialization
-	void Start () {
-	}
 
 	public void perform() {
 		string email = emailField.text;
@@ -36,6 +35,11 @@ public class CreateAvatarEmail : MonoBehaviour {
 			}
 			if (task.IsFaulted) {
 				ShowErrorScript.show("Unknow error.");
+				Debug.Log("TOB: Stack trace: " + task.Exception.StackTrace);
+				Debug.Log("TOB: task.Exception: " + task.Exception);
+				Debug.Log("TOB: task.Exception.InnerException: " + task.Exception);
+				Debug.Log("TOB: task.Exception.InnerException.StackTrace: " + task.Exception.InnerException.StackTrace);
+				Debug.Log("TOB: task.Exception.InnerException.InnerException: " + task.Exception.InnerException.InnerException);
 				return;
 			}
 

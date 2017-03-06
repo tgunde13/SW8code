@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-// Include Facebook namespace
 using Facebook.Unity;
 
 public class FacebookLoginHandler : MonoBehaviour {
@@ -70,7 +68,7 @@ public class FacebookLoginHandler : MonoBehaviour {
 
 			Firebase.Auth.Credential credential = Firebase.Auth.FacebookAuthProvider.GetCredential (aToken.TokenString);
 
-			LoginHandler.LogIn (credential, alertDialog);
+			FirebaseLoginHandler.LogIn (credential, alertDialog);
 
 		} else {
 			Debug.Log("TOB: User cancelled login");
