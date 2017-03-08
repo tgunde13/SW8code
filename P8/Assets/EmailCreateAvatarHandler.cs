@@ -9,7 +9,7 @@ using Firebase.Unity.Editor;
 /// <summary>
 /// Used for creating an avatar with an e-mail address.
 /// </summary>
-public class EmailCreateAvatar : MonoBehaviour {
+public class EmailCreateAvatarHandler : MonoBehaviour {
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField;
 	public AlertDialog ShowErrorScript;

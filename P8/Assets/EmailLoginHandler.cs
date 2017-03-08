@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EmailLogin : MonoBehaviour {
+public class EmailLoginHandler : MonoBehaviour {
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField;
 	public AlertDialog alertDialog;

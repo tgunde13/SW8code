@@ -3,22 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Logout : MonoBehaviour {
+/// <summary>
+/// Firebase logout handler.
+/// </summary>
+public class FirebaseLogoutHandler : MonoBehaviour {
 	private const string loginSceneName = "Login";
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-
+	/// <summary>
+	/// Logs out.
+	/// </summary>
 	public void LogOut() {
 		Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut ();
-		Debug.Log("TOB: Logout, logged out ");
+		Debug.Log("TOB: LogoutHandler, logged out ");
 		SceneManager.LoadScene(loginSceneName);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }

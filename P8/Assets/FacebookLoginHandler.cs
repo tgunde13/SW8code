@@ -48,7 +48,7 @@ public class FacebookLoginHandler : MonoBehaviour {
 
 	private List<string> perms = new List<string>(){"public_profile", "email", "user_friends"};
 
-	public void onFacebookLoginButtonClick() {
+	public void LogIn() {
 		FB.LogInWithReadPermissions(perms, AuthCallback);
 	}
 
