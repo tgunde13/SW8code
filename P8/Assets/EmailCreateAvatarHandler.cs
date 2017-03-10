@@ -5,11 +5,14 @@ using UnityEngine.UI;
 using Firebase.Auth;
 using Firebase;
 using Firebase.Unity.Editor;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Used for creating an avatar with an e-mail address.
 /// </summary>
 public class EmailCreateAvatarHandler : MonoBehaviour {
+	private const string mapSceneName = "Map";
+
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField;
 	public AlertDialog ShowErrorScript;
@@ -43,7 +46,8 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 				return;
 			}
 
-			ShowErrorScript.show("User created");
+			Debug.Log("TOB: EmailCreateAvatarHandler, user created, logged in, user id:: " + auth.CurrentUser.UserId);
+			SceneManager.LoadScene(mapSceneName);
 		});
 	}
 	
