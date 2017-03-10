@@ -14,16 +14,17 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 	private const string mapSceneName = "Map";
 
 	public Text emailErrorText, passwordErrorText;
-	public InputField emailField, passwordField;
+	public InputField emailField, passwordField1, passwordField2;
 	public AlertDialog ShowErrorScript;
 
 	public void perform() {
 		string email = emailField.text;
-		string password = passwordField.text;
+		string password1 = passwordField1.text;
+		string password2 = passwordField2.text;
 
 		// Validate input before call to Firebase
 		bool validEmail = InputValidator.validateEmail(email, emailErrorText);
-		bool validPassword = InputValidator.validatePassword (password, passwordErrorText);
+		bool validPassword = InputValidator.ValidatePasswordsCreate (password1, password2, passwordErrorText);
 
 		if (!(validEmail && validPassword)) {
 			return;
@@ -31,13 +32,13 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 
 		FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 
-		auth.CreateUserWithEmailAndPasswordAsync(email, passwordField.text).ContinueWith(task => {
+		auth.CreateUserWithEmailAndPasswordAsync(email, passwordField1.text).ContinueWith(task => {
 			if (task.IsCanceled) {
 				ShowErrorScript.show("Canceled...");
 				return;
 			}
 			if (task.IsFaulted) {
-				ShowErrorScript.show("Unknow error.");
+				ShowErrorScript.show("Unknown error.");
 				Debug.Log("TOB: Stack trace: " + task.Exception.StackTrace);
 				Debug.Log("TOB: task.Exception: " + task.Exception);
 				Debug.Log("TOB: task.Exception.InnerException: " + task.Exception);
