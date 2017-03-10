@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>102364388949-3ue376h0tdi5unnptj9uadoagoremu45.apps.googleusercontent.com</string>
+	<string>856534113838-dpuo8048oh07m2sr7t7rkjjtpj0bplsd.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.102364388949-3ue376h0tdi5unnptj9uadoagoremu45</string>
+	<string>com.googleusercontent.apps.856534113838-dpuo8048oh07m2sr7t7rkjjtpj0bplsd</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAlfp5PHVLulPh_Q-8PdOlnJ2N6FwLDXw8</string>
+	<string>AIzaSyDu_x68ybf5kP8lETkOGbVGaoz6LX39d2I</string>
 	<key>GCM_SENDER_ID</key>
-	<string>102364388949</string>
+	<string>856534113838</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>dk.tobiasgundersen.p8</string>
 	<key>PROJECT_ID</key>
-	<string>p8-server</string>
+	<string>league-of-locations-26618308</string>
 	<key>STORAGE_BUCKET</key>
-	<string>p8-server.appspot.com</string>
+	<string>league-of-locations-26618308.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:102364388949:ios:94297758636410a8</string>
+	<string>1:856534113838:ios:94297758636410a8</string>
 	<key>DATABASE_URL</key>
-	<string>https://p8-server.firebaseio.com</string>
+	<string>https://league-of-locations-26618308.firebaseio.com</string>
 </dict>
 </plist>

@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "102364388949",
-    "firebase_url": "https://p8-server.firebaseio.com",
-    "project_id": "p8-server",
-    "storage_bucket": "p8-server.appspot.com"
+    "project_number": "856534113838",
+    "firebase_url": "https://league-of-locations-26618308.firebaseio.com",
+    "project_id": "league-of-locations-26618308",
+    "storage_bucket": "league-of-locations-26618308.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:102364388949:android:94297758636410a8",
+        "mobilesdk_app_id": "1:856534113838:android:94297758636410a8",
         "android_client_info": {
           "package_name": "dk.tobiasgundersen.p8"
         }
       },
       "oauth_client": [
         {
-          "client_id": "102364388949-06392icdljg5shdkmmcok993vdnduv1f.apps.googleusercontent.com",
+          "client_id": "856534113838-q1mdvg9rk5bbjdpd1s42m7pmtqr1mpd2.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "856534113838-rghpu5ogtr7dalsd4pungu3gc5af80m2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "dk.tobiasgundersen.p8",
-            "certificate_hash": "E095B7CF22DA8C5ABDB2A7D08260E5C9B519A1F0"
+            "certificate_hash": "e095b7cf22da8c5abdb2a7d08260e5c9b519a1f0"
           }
-        },
-        {
-          "client_id": "102364388949-30cunaik20av2brd4ciem5qudnvmh758.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDe-MmhMCsH-rrn7Kojm92qbAgxOKYMJ1w"
+          "current_key": "AIzaSyBwRE-3gNYJQUGIngZmzMmPKUGkv8gdn8s"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "102364388949-30cunaik20av2brd4ciem5qudnvmh758.apps.googleusercontent.com",
+              "client_id": "856534113838-q1mdvg9rk5bbjdpd1s42m7pmtqr1mpd2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
