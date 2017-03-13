@@ -37,6 +37,9 @@ public class FirebaseAuthSetup : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Cleans up.
+	/// </summary>
 	void OnDestroy() {
 		auth.StateChanged -= AuthStateChanged;
 		auth = null;
