@@ -13,6 +13,8 @@ public class FirebaseEditorConnector : MonoBehaviour {
 
 		DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
 		reference.Child ("players").Push().SetValueAsync ("test2");
+
+		Debug.Log ("TOB: FirebaseEditorConnector, TouchScreenKeyboard.hideInput: " + TouchScreenKeyboard.hideInput);
 	}
 
 	// Update is called once per frame

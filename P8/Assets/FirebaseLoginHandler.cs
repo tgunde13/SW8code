@@ -16,16 +16,22 @@ public static class FirebaseLoginHandler {
 	/// <param name="credential">Firebase credential.</param>
 	/// <param name="dialog">Dialog to show a potential error with.</param>
 	public static void LogIn(Credential credential, AlertDialog dialog) {
+		// start OS indicator
+		ActivityIndicatorHandler.start();
+
 		Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 
 		auth.SignInWithCredentialAsync(credential).ContinueWith(task => {
 			if (task.IsCanceled) {
 				Debug.Log("TOB: FirebaseLoginHandler, login canceled");
+				ActivityIndicatorHandler.stop();
 				return;
 			}
+
 			if (task.IsFaulted) {
 				dialog.show("Login did not succeed.");
 				Debug.Log("TOB: FirebaseLoginHandler, login faulted");
+				ActivityIndicatorHandler.stop();
 				return;
 			}
 

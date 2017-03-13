@@ -6,11 +6,6 @@ using Facebook.Unity;
 public class FacebookLoginHandler : MonoBehaviour {
 	public AlertDialog alertDialog;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-
 	// Awake function from Unity's MonoBehavior
 	void Awake ()
 	{
