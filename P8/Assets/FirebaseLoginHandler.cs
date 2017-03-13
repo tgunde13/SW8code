@@ -11,6 +11,13 @@ using UnityEngine.UI;
 public static class FirebaseLoginHandler {
 	private const string mapSceneName = "Map";
 
+	/// <summary>
+	/// Logs in.
+	/// </summary>
+	/// <param name="credential">Credential to log in with.</param>
+	/// <param name="dialog">Dialog to show a potential error with.</param>
+	/// <param name="processIndicator">Process indicator to indicate this operation with.</param>
+	/// <param name="selectables">Selectables to enable once this operation is done.</param>
 	public static void LogIn(Credential credential, AlertDialog dialog, GameObject processIndicator, Selectable[] selectables) {
 		processIndicator.SetActive(true);
 
@@ -35,6 +42,11 @@ public static class FirebaseLoginHandler {
 		});
 	}
 
+	/// <summary>
+	/// Enables selectables and hides the process indicator
+	/// </summary>
+	/// <param name="processIndicator">Process indicator.</param>
+	/// <param name="selectables">Selectables.</param>
 	private static void cleanUp(GameObject processIndicator, Selectable[] selectables) {
 		// Enable selectables in the panel
 		foreach (Selectable selectable in selectables) {

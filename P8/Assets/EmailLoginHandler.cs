@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// E-mail address login handler.
+/// </summary>
 public class EmailLoginHandler : MonoBehaviour {
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField;
@@ -10,6 +13,9 @@ public class EmailLoginHandler : MonoBehaviour {
 	public GameObject processIndicator;
 	public Selectable[] selectables;
 
+	/// <summary>
+	/// Tries to log in with an e-mail address and a password.
+	/// </summary>
 	public void LogIn() {
 		string email = emailField.text;
 		string password = passwordField.text;

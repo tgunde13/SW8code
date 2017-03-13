@@ -19,6 +19,9 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 	public GameObject processIndicator;
 	public Selectable[] selectables;
 
+	/// <summary>
+	/// Create an avatar with an e-mail address.
+	/// </summary>
 	public void create() {
 		string email = emailField.text;
 		string password1 = passwordField1.text;
@@ -60,6 +63,9 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 		});
 	}
 
+	/// <summary>
+	/// Enstables selectables and hides the process indicator.
+	/// </summary>
 	private void cleanUp() {
 		// Enable selectables in the panel
 		foreach (Selectable selectable in selectables) {
