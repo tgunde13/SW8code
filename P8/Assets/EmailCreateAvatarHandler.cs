@@ -16,8 +16,10 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField1, passwordField2;
 	public AlertDialog ShowErrorScript;
+	public GameObject processIndicator;
+	public Selectable[] selectables;
 
-	public void perform() {
+	public void create() {
 		string email = emailField.text;
 		string password1 = passwordField1.text;
 		string password2 = passwordField2.text;
@@ -30,30 +32,40 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 			return;
 		}
 
+		// Disable selectables in the panel
+		foreach (Selectable selectable in selectables) {
+			selectable.interactable = false;
+		}
+
+		// Show process indicator
+		processIndicator.SetActive(true);
+
 		FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 
 		auth.CreateUserWithEmailAndPasswordAsync(email, passwordField1.text).ContinueWith(task => {
 			if (task.IsCanceled) {
+				cleanUp();
 				ShowErrorScript.show("Canceled...");
 				return;
 			}
+
 			if (task.IsFaulted) {
+				cleanUp();
 				ShowErrorScript.show("Unknown error.");
-				Debug.Log("TOB: Stack trace: " + task.Exception.StackTrace);
-				Debug.Log("TOB: task.Exception: " + task.Exception);
-				Debug.Log("TOB: task.Exception.InnerException: " + task.Exception);
-				Debug.Log("TOB: task.Exception.InnerException.StackTrace: " + task.Exception.InnerException.StackTrace);
-				Debug.Log("TOB: task.Exception.InnerException.InnerException: " + task.Exception.InnerException.InnerException);
 				return;
 			}
 
-			Debug.Log("TOB: EmailCreateAvatarHandler, user created, logged in, user id:: " + auth.CurrentUser.UserId);
+			Debug.Log("TOB: EmailCreateAvatarHandler, user created, logged in, user id: " + auth.CurrentUser.UserId);
 			SceneManager.LoadScene(mapSceneName);
 		});
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	private void cleanUp() {
+		// Enable selectables in the panel
+		foreach (Selectable selectable in selectables) {
+			selectable.interactable = true;
+		}
+
+		processIndicator.SetActive(false);
 	}
 }

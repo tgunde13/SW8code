@@ -7,11 +7,8 @@ public class EmailLoginHandler : MonoBehaviour {
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField;
 	public AlertDialog alertDialog;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
+	public GameObject processIndicator;
+	public Selectable[] selectables;
 
 	public void LogIn() {
 		string email = emailField.text;
@@ -24,13 +21,12 @@ public class EmailLoginHandler : MonoBehaviour {
 		if (!(validEmail && validPassword)) {
 			return;
 		}
+			
+		// Disable selectables in the panel
+		foreach (Selectable selectable in selectables) {
+			selectable.interactable = false;
+		}
 
-		FirebaseLoginHandler.LogIn (Firebase.Auth.EmailAuthProvider.GetCredential (email, password), alertDialog);
-	}
-		
-	
-	// Update is called once per frame
-	void Update () {
-		
+		FirebaseLoginHandler.LogIn (Firebase.Auth.EmailAuthProvider.GetCredential (email, password), alertDialog, processIndicator, selectables);
 	}
 }

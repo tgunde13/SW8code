@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Facebook.Unity;
+using UnityEngine.UI;
 
 public class FacebookLoginHandler : MonoBehaviour {
 	public AlertDialog alertDialog;
+	public GameObject processIndicator;
+	public Selectable[] selectables;
 
 	// Awake function from Unity's MonoBehavior
 	void Awake ()
@@ -44,6 +47,11 @@ public class FacebookLoginHandler : MonoBehaviour {
 	private List<string> perms = new List<string>(){"public_profile", "email", "user_friends"};
 
 	public void LogIn() {
+		// Disable selectables in the panel
+		foreach (Selectable selectable in selectables) {
+			selectable.interactable = false;
+		}
+
 		FB.LogInWithReadPermissions(perms, AuthCallback);
 	}
 
@@ -63,15 +71,15 @@ public class FacebookLoginHandler : MonoBehaviour {
 
 			Firebase.Auth.Credential credential = Firebase.Auth.FacebookAuthProvider.GetCredential (aToken.TokenString);
 
-			FirebaseLoginHandler.LogIn (credential, alertDialog);
+			FirebaseLoginHandler.LogIn (credential, alertDialog, processIndicator, selectables);
 
 		} else {
 			Debug.Log("TOB: User cancelled login");
+
+			// Enable selectables in the panel
+			foreach (Selectable selectable in selectables) {
+				selectable.interactable = true;
+			}
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }
