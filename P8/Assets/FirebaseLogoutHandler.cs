@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 /// Firebase logout handler.
 /// </summary>
 public class FirebaseLogoutHandler : MonoBehaviour {
-	private const string loginSceneName = "Login";
 
 	/// <summary>
 	/// Logs out.
@@ -15,6 +14,6 @@ public class FirebaseLogoutHandler : MonoBehaviour {
 	public void LogOut() {
 		Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut ();
 		Debug.Log("TOB: LogoutHandler, logged out ");
-		SceneManager.LoadScene(loginSceneName);
+		SceneManager.LoadScene(Constants.loginSceneName);
 	}
 }

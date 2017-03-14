@@ -8,9 +8,6 @@ using UnityEngine.SceneManagement;
 /// Some code is taken from https://firebase.google.com/docs/auth/unity/manage-users
 /// </summary>
 public class FirebaseAuthSetup : MonoBehaviour {
-	private const string loginSceneName = "Login";
-	private const string mapSceneName = "Map";
-
 	Firebase.Auth.FirebaseAuth auth;
 
 	// Use this for initialization
@@ -30,10 +27,10 @@ public class FirebaseAuthSetup : MonoBehaviour {
 	void AuthStateChanged(object sender, System.EventArgs eventArgs) {
 		if (auth.CurrentUser == null) {
 			Debug.Log ("TOB: FirebaseAuthSetup, not logged in");
-			SceneManager.LoadScene (loginSceneName);			
+			SceneManager.LoadScene (Constants.loginSceneName);			
 		} else {
 			Debug.Log("TOB: FirebaseAuthSetup, logged in, user id: " + auth.CurrentUser.UserId);
-			SceneManager.LoadScene(mapSceneName);
+			SceneManager.LoadScene(Constants.mapSceneName);
 		}
 	}
 

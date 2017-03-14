@@ -9,8 +9,6 @@ using UnityEngine.UI;
 /// Firebase login handler.
 /// </summary>
 public static class FirebaseLoginHandler {
-	private const string mapSceneName = "Map";
-
 	/// <summary>
 	/// Logs in.
 	/// </summary>
@@ -38,7 +36,7 @@ public static class FirebaseLoginHandler {
 			}
 
 			Debug.Log("TOB: FirebaseLoginHandler, login succeded");
-			SceneManager.LoadScene(mapSceneName);
+			SceneManager.LoadScene(Constants.mapSceneName);
 		});
 	}
 

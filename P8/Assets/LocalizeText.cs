@@ -9,13 +9,7 @@ public class LocalizeText : MonoBehaviour {
 	public string localizeKey;
 
 	void Start(){
-		GameObject gameObject = GameObject.Find ("I18nManager");
-		if (gameObject != null) {
-			GetComponent<Text> ().text = gameObject.GetComponent<I18nManager> ().GetLocalisedString (localizeKey);
-		} else {
-			GetComponent<Text> ().text = localizeKey;
-			Debug.Log("I18n: Couldn't find I18nManager");	
-		}
+		GetComponent<Text> ().text = I18nManager.GetInstance ().GetLocalisedString (localizeKey);
 	}
 
 

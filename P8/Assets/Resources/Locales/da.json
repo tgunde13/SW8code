@@ -1,3 +1,18 @@
 {
-	"E-mail address": "E-mail adresse"
+	"EmailAddress": "E-mail adresse",
+	"LoginEmail": "Login med e-mail",
+	"LoginFacebook": "Login med facebook",
+	"PasswordText": "Kodeord",
+	"CreateAvatar": "Opret Avatar",
+	"LogIn": "Log ind",
+	"ForgotPassword": "Glemt kodeord?",
+	"AvatarName": "Avatar navn",
+	"RepeatPassword": "Gentag kodeord",
+	"CreateText": "Opret",
+	"NoEmailError": "Indsæt din e-mail adresse",
+	"InvalidEmailError": "Ikke en gyldig e-mail adresse.",
+	"NoPasswordError": "Indsæt et kodeord.",
+	"PasswordNotStrongEnoughError": "Kodeordet skal mindst være 6 karakterer langt.",
+	"PasswordsNotSameError": "De to kodeord er ikke ens.",
+	"ErrorUnknown": "Der skete en fejl."
 }
