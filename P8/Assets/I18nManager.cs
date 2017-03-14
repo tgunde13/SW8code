@@ -27,9 +27,7 @@ public class I18nManager : MonoBehaviour {
 	}
 
 	private void SetLanguage(){
-		if (Application.systemLanguage == SystemLanguage.English) {
-			I18n.SetLocale ("en");
-		} else if (Application.systemLanguage == SystemLanguage.Danish) {
+		if (Application.systemLanguage == SystemLanguage.Danish) {
 			I18n.SetLocale ("da");
 		} else {
 			I18n.SetLocale ("en");
