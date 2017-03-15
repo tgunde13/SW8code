@@ -6,6 +6,7 @@ using Firebase.Auth;
 using Firebase;
 using Firebase.Unity.Editor;
 using UnityEngine.SceneManagement;
+using Mgl;
 
 /// <summary>
 /// Used for creating an avatar with an e-mail address.
@@ -46,12 +47,12 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 		auth.CreateUserWithEmailAndPasswordAsync(email, passwordField1.text).ContinueWith(task => {
 			if (task.IsCanceled || task.IsFaulted) {
 				cleanUp();
-				ShowErrorScript.show(I18nManager.GetInstance().GetLocalisedString("ErrorUnknown"));
+				ShowErrorScript.show(I18n.Instance.__("ErrorUnknown"));
 				return;
 			}
 
 			Debug.Log("TOB: EmailCreateAvatarHandler, user created, logged in, user id: " + auth.CurrentUser.UserId);
-			SceneManager.LoadScene(Constants.mapSceneName);
+			SceneManager.LoadScene(Constants.MapSceneName);
 		});
 	}
 

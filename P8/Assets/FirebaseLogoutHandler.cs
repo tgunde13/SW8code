@@ -14,6 +14,6 @@ public class FirebaseLogoutHandler : MonoBehaviour {
 	public void LogOut() {
 		Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut ();
 		Debug.Log("TOB: LogoutHandler, logged out ");
-		SceneManager.LoadScene(Constants.loginSceneName);
+		SceneManager.LoadScene(Constants.LoginSceneName);
 	}
 }

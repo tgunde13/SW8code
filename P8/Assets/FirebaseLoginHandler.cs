@@ -36,7 +36,7 @@ public static class FirebaseLoginHandler {
 			}
 
 			Debug.Log("TOB: FirebaseLoginHandler, login succeded");
-			SceneManager.LoadScene(Constants.mapSceneName);
+			SceneManager.LoadScene(Constants.MapSceneName);
 		});
 	}
 

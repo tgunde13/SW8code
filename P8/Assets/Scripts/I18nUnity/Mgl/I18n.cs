@@ -11,9 +11,9 @@ namespace Mgl
 
         private static readonly I18n instance = new I18n();
 
-        private static string[] locales = new string[] { "en", "da"};
+		private static string[] locales = new string[] { Constants.LocaleEnGb, Constants.LocaleDaDk};
 
-        private static string _currentLocale = "en";
+		private static string _currentLocale = I18nTools.SetLanguage();
 
         private static string _localePath = "Locales/";
 

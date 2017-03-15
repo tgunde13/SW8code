@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
+using Mgl;
 
 /// <summary>
 /// Input validator.
@@ -17,13 +18,13 @@ public static class InputValidator {
 	/// <param name="errorText">Error text field.</param>
 	public static bool validateEmail(string email, Text errorText) {
 		if (email == "") {
-			errorText.text = I18nManager.GetInstance ().GetLocalisedString ("NoEmailError");
+			errorText.text = I18n.Instance.__ ("NoEmailError");
 			return false;
 		} else if (Regex.IsMatch(email, Constants.MatchEmailPattern)) {
 			errorText.text = "";
 			return true;
 		} else {
-			errorText.text = I18nManager.GetInstance ().GetLocalisedString ("InvalidEmailError");
+			errorText.text = I18n.Instance.__ ("InvalidEmailError");
 			return false;
 		}
 	}
@@ -37,17 +38,17 @@ public static class InputValidator {
 	/// <param name="errorText">Error text.</param>
 	public static bool ValidatePasswordsCreate(string password1, string password2, Text errorText) {
 		if (password1 == "") {
-			errorText.text = I18nManager.GetInstance ().GetLocalisedString ("NoPasswordError");
+			errorText.text = I18n.Instance.__("NoPasswordError");
 			return false; 
 		}
 
 		if (password1.Length < Constants.MinimumPasswordLength) {
-			errorText.text = I18nManager.GetInstance ().GetLocalisedString ("PasswordNotStrongEnoughError");
+			errorText.text = I18n.Instance.__ ("PasswordNotStrongEnoughError");
 			return false;
 		}
 
 		if (password1 != password2) {
-			errorText.text = I18nManager.GetInstance ().GetLocalisedString ("PasswordsNotSameError");
+			errorText.text = I18n.Instance.__ ("PasswordsNotSameError");
 			return false;
 		}
 
@@ -63,7 +64,7 @@ public static class InputValidator {
 	/// <param name="errorText">Error text.</param>
 	public static bool validatePasswordWithoutLength(string password, Text errorText) {
 		if (password == "") {
-			errorText.text = I18nManager.GetInstance().GetLocalisedString ("NoPasswordError");
+			errorText.text = I18n.Instance.__ ("NoPasswordError");
 			return false;
 		} else {
 			errorText.text = "";

@@ -49,7 +49,7 @@ public class FacebookLoginHandler : MonoBehaviour {
 		}
 	}
 
-	private List<string> perms = new List<string>(){Constants.profile, Constants.email, Constants.friends};
+	private List<string> perms = new List<string>(){Constants.Profile, Constants.Email, Constants.Friends};
 
 	/// <summary>
 	/// Starts Facebook login dialog.

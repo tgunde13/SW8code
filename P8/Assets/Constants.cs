@@ -14,15 +14,18 @@ public static class Constants {
 	public const int MinimumPasswordLength = 6;
 
 	//Scenes
-	public const string loginSceneName = "Login";
-	public const string mapSceneName = "Map";
+	public const string LoginSceneName = "Login";
+	public const string MapSceneName = "Map";
 
 	//Firebase path
-	public const string firebaseUrl = "https://league-of-locations-26618308.firebaseio.com";
+	public const string FirebaseUrl = "https://league-of-locations-26618308.firebaseio.com";
 
 	//Facebook permission strings
-	public const string profile ="public_profile"; 
-	public const string email ="email";
-	public const string friends = "user_friends";
+	public const string Profile ="public_profile"; 
+	public const string Email ="email";
+	public const string Friends = "user_friends";
 
+	//JSON file strings
+	public const string LocaleDaDk = "da-DK";
+	public const string LocaleEnGb = "en-GB";
 }

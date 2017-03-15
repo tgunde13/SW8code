@@ -27,10 +27,10 @@ public class FirebaseAuthSetup : MonoBehaviour {
 	void AuthStateChanged(object sender, System.EventArgs eventArgs) {
 		if (auth.CurrentUser == null) {
 			Debug.Log ("TOB: FirebaseAuthSetup, not logged in");
-			SceneManager.LoadScene (Constants.loginSceneName);			
+			SceneManager.LoadScene (Constants.LoginSceneName);			
 		} else {
 			Debug.Log("TOB: FirebaseAuthSetup, logged in, user id: " + auth.CurrentUser.UserId);
-			SceneManager.LoadScene(Constants.mapSceneName);
+			SceneManager.LoadScene(Constants.MapSceneName);
 		}
 	}
 
