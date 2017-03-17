@@ -14,7 +14,7 @@ public class FirebaseEditorConnector : MonoBehaviour {
 	/// Connects the Unity editor to the Firebase database.
 	/// </summary>
 	void Start () {
-		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://league-of-locations-26618308.firebaseio.com");
+		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(Constants.FirebaseUrl);
 
 		// TODO delete
 		DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;

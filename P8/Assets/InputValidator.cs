@@ -3,25 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
+using Mgl;
 
 /// <summary>
 /// Input validator.
 /// </summary>
 public static class InputValidator {
-	// Pattern from https://www.codeproject.com/kb/recipes/emailregexvalidator.aspx
-    public const string MatchEmailPattern = 
-			@"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
-     + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?
-				[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
-     + @"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?
-				[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
-     + @"([a-zA-Z0-9]+[\w-]+\.)+[a-zA-Z]{1}[a-zA-Z0-9-]{1,23})$";
-	private const int MinimumPasswordLength = 6;
-	private const string NoEmailError = "Enter your e-mail address";
-	private const string InvalidEmailError = "Not a valid e-mail address.";
-	private const string NoPasswordError = "Enter a password."; 
-	private const string PasswordNotStrongEnoughError = "The password must be at least 6 characters long.";
-	private const string PasswordsNotSameError = "The two passwords are not the same.";
 
 	/// <summary>
 	/// Validates the e-mail address.
@@ -31,13 +18,13 @@ public static class InputValidator {
 	/// <param name="errorText">Error text field.</param>
 	public static bool validateEmail(string email, Text errorText) {
 		if (email == "") {
-			errorText.text = NoEmailError;
+			errorText.text = I18n.Instance.__ ("NoEmailError");
 			return false;
-		} else if (Regex.IsMatch(email, MatchEmailPattern)) {
+		} else if (Regex.IsMatch(email, Constants.MatchEmailPattern)) {
 			errorText.text = "";
 			return true;
 		} else {
-			errorText.text = InvalidEmailError;
+			errorText.text = I18n.Instance.__ ("InvalidEmailError");
 			return false;
 		}
 	}
@@ -51,17 +38,17 @@ public static class InputValidator {
 	/// <param name="errorText">Error text.</param>
 	public static bool ValidatePasswordsCreate(string password1, string password2, Text errorText) {
 		if (password1 == "") {
-			errorText.text = NoPasswordError;
+			errorText.text = I18n.Instance.__("NoPasswordError");
 			return false; 
 		}
 
-		if (password1.Length < MinimumPasswordLength) {
-			errorText.text = PasswordNotStrongEnoughError;
+		if (password1.Length < Constants.MinimumPasswordLength) {
+			errorText.text = I18n.Instance.__ ("PasswordNotStrongEnoughError");
 			return false;
 		}
 
 		if (password1 != password2) {
-			errorText.text = PasswordsNotSameError;
+			errorText.text = I18n.Instance.__ ("PasswordsNotSameError");
 			return false;
 		}
 
@@ -77,7 +64,7 @@ public static class InputValidator {
 	/// <param name="errorText">Error text.</param>
 	public static bool validatePasswordWithoutLength(string password, Text errorText) {
 		if (password == "") {
-			errorText.text = NoPasswordError;
+			errorText.text = I18n.Instance.__ ("NoPasswordError");
 			return false;
 		} else {
 			errorText.text = "";

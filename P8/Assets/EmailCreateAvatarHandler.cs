@@ -6,13 +6,12 @@ using Firebase.Auth;
 using Firebase;
 using Firebase.Unity.Editor;
 using UnityEngine.SceneManagement;
+using Mgl;
 
 /// <summary>
 /// Used for creating an avatar with an e-mail address.
 /// </summary>
 public class EmailCreateAvatarHandler : MonoBehaviour {
-	private const string mapSceneName = "Map";
-
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField1, passwordField2;
 	public AlertDialog ShowErrorScript;
@@ -46,20 +45,14 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 		FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 
 		auth.CreateUserWithEmailAndPasswordAsync(email, passwordField1.text).ContinueWith(task => {
-			if (task.IsCanceled) {
+			if (task.IsCanceled || task.IsFaulted) {
 				cleanUp();
-				ShowErrorScript.show("Canceled...");
-				return;
-			}
-
-			if (task.IsFaulted) {
-				cleanUp();
-				ShowErrorScript.show("Unknown error.");
+				ShowErrorScript.show(I18n.Instance.__("ErrorUnknown"));
 				return;
 			}
 
 			Debug.Log("TOB: EmailCreateAvatarHandler, user created, logged in, user id: " + auth.CurrentUser.UserId);
-			SceneManager.LoadScene(mapSceneName);
+			SceneManager.LoadScene(Constants.MapSceneName);
 		});
 	}
 
