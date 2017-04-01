@@ -14,5 +14,8 @@
 	"NoPasswordError": "Enter a password.",
 	"PasswordNotStrongEnoughError": "The password must be at least 6 characters long.",
 	"PasswordsNotSameError": "The two passwords are not the same.",
-	"ErrorUnknown": "An error occured."
+	"ErrorUnknown": "An error occured.",
+	"ActionLogout": "Log out",
+	"ErrorLogin": "Login did not succeed.",
+	"ErrorFirebase": "Comminucation with the server failed."
 }

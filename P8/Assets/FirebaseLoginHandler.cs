@@ -4,6 +4,7 @@ using UnityEngine;
 using Firebase.Auth;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Mgl;
 
 /// <summary>
 /// Firebase login handler.
@@ -29,14 +30,15 @@ public static class FirebaseLoginHandler {
 			}
 
 			if (task.IsFaulted) {
-				dialog.show("Login did not succeed.");
+				dialog.show(I18n.Instance.__ ("ErrorLogin"));
 				Debug.Log("TOB: FirebaseLoginHandler, login faulted");
 				cleanUp(processIndicator, selectables);
 				return;
 			}
 
 			Debug.Log("TOB: FirebaseLoginHandler, login succeded");
-			SceneManager.LoadScene(Constants.MapSceneName);
+			// Firebase Auth Setup should handle scene switching
+			//SceneManager.LoadScene(Constants.MapSceneName);
 		});
 	}
 

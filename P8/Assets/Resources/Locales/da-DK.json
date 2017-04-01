@@ -6,7 +6,7 @@
 	"CreateAvatar": "Opret Avatar",
 	"LogIn": "Log ind",
 	"ForgotPassword": "Glemt adgangskode?",
-	"AvatarName": "Avatar navn",
+	"AvatarName": "Avatar-navn",
 	"RepeatPassword": "Gentag adgangskode",
 	"CreateText": "Opret",
 	"NoEmailError": "Indsæt din e-mail adresse",
@@ -14,5 +14,8 @@
 	"NoPasswordError": "Indsæt en adgangskode.",
 	"PasswordNotStrongEnoughError": "Adgangskoden skal mindst være 6 karakterer langt.",
 	"PasswordsNotSameError": "De to adgangskoder er ikke ens.",
-	"ErrorUnknown": "Der skete en fejl."
+	"ErrorUnknown": "Der skete en fejl.",
+	"ActionLogout": "Log ud",
+	"ErrorLogin": "Login mislykkedes.",
+	"ErrorFirebase": "Kommunikation med serveren mislykkedes."
 }

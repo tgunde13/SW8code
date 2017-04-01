@@ -52,7 +52,8 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 			}
 
 			Debug.Log("TOB: EmailCreateAvatarHandler, user created, logged in, user id: " + auth.CurrentUser.UserId);
-			SceneManager.LoadScene(Constants.MapSceneName);
+			// Firebase Auth Setup should handle scene switching
+			//SceneManager.LoadScene(Constants.MapSceneName);
 		});
 	}
 
