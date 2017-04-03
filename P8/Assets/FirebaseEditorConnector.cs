@@ -15,9 +15,5 @@ public class FirebaseEditorConnector : MonoBehaviour {
 	/// </summary>
 	void Start () {
 		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(Constants.FirebaseUrl);
-
-		// TODO delete
-		DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-		reference.Child ("players").Push().SetValueAsync ("test3");
 	}
 }

@@ -14,7 +14,7 @@ using Mgl;
 public class EmailCreateAvatarHandler : MonoBehaviour {
 	public Text emailErrorText, passwordErrorText;
 	public InputField emailField, passwordField1, passwordField2;
-	public AlertDialog ShowErrorScript;
+	public DialogPanel dialog;
 	public GameObject processIndicator;
 	public Selectable[] selectables;
 
@@ -34,37 +34,28 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 			return;
 		}
 
-		// Disable selectables in the panel
-		foreach (Selectable selectable in selectables) {
-			selectable.interactable = false;
-		}
+		TaskIndicator indicator = new TaskIndicator (processIndicator, selectables);
+		indicator.OnStart ();
 
-		// Show process indicator
-		processIndicator.SetActive(true);
-
-		FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-
-		auth.CreateUserWithEmailAndPasswordAsync(email, passwordField1.text).ContinueWith(task => {
-			if (task.IsCanceled || task.IsFaulted) {
-				cleanUp();
-				ShowErrorScript.show(I18n.Instance.__("ErrorUnknown"));
+		// Check internet connection
+		StartCoroutine(InternetConnectionHelper.CheckInternetConnection((isConnected) => {
+			if (!isConnected) {
+				dialog.show(I18n.Instance.__ ("ErrorInternet"), () => indicator.OnEnd());
+				indicator.OnPause();
 				return;
 			}
 
-			Debug.Log("TOB: EmailCreateAvatarHandler, user created, logged in, user id: " + auth.CurrentUser.UserId);
-			SceneManager.LoadScene(Constants.MapSceneName);
-		});
-	}
+			FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+			auth.CreateUserWithEmailAndPasswordAsync(email, passwordField1.text).ContinueWith(task => {
+				if (task.IsCanceled || task.IsFaulted) {
+					dialog.show(I18n.Instance.__ ("ErrorUnknown"), () => indicator.OnEnd());
+					indicator.OnPause();
+					return;
+				}
 
-	/// <summary>
-	/// Enstables selectables and hides the process indicator.
-	/// </summary>
-	private void cleanUp() {
-		// Enable selectables in the panel
-		foreach (Selectable selectable in selectables) {
-			selectable.interactable = true;
-		}
-
-		processIndicator.SetActive(false);
+				Debug.Log("TOB: EmailCreateAvatarHandler, user created, logged in, user id: " + auth.CurrentUser.UserId);
+				// Firebase Auth Setup should handle scene switching
+			});
+		}));
 	}
 }
