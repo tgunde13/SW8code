@@ -19,5 +19,5 @@
 	"ErrorLogin": "Login did not succeed.",
 	"ErrorFirebase": "Comminucation with the server failed.",
 	"ErrorInternet": "The device does not have internet connection.",
-	"ErrorInternetContinue": "The device does not have internet connection.\nThe app continues automatically when internet connection has been established."
+	"ErrorInternetTryAgain": "The device does not have internet connection.\nTouch OK to try again."
 }

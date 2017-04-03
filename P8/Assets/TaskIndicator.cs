@@ -31,7 +31,7 @@ public class TaskIndicator {
 	/// <summary>
 	/// Hides the process indicator, but does not change selectables.
 	/// </summary>
-	public void onPause() {
+	public void OnPause() {
 		processIndicator.SetActive(false);
 	}
 

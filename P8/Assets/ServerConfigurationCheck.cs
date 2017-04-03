@@ -16,8 +16,12 @@ public class ServerConfigurationCheck : MonoBehaviour {
 			Debug.Log("TOB: ServerConfigurationCheck, Start, isConnected: " + isConnected);
 			if (!isConnected) {
 				// Show error message, hide process indicator while message is shown
-				dialog.show(I18n.Instance.__ ("ErrorInternetContinue"), () => processIndicator.SetActive(true));
+				dialog.show(I18n.Instance.__ ("ErrorInternetTryAgain"), () => {
+					processIndicator.SetActive(true);
+					Start();
+				});
 				processIndicator.SetActive(false);
+				return;
 			}
 
 			CheckConfiguration();
@@ -44,7 +48,7 @@ public class ServerConfigurationCheck : MonoBehaviour {
 					if (snapshot.Exists) {
 						// There is player data, so switch scenes
 						Debug.Log("TOB: ServerConfigurationCheck, player data exists");
-						SceneManager.LoadScene(Constants.MapSceneName);
+						SceneManager.LoadSceneAsync(Constants.MapSceneName);
 					} else {
 						// No player data, so server has not configured the player
 						Debug.Log("TOB: ServerConfigurationCheck, no player data");

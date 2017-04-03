@@ -4,18 +4,46 @@ using UnityEngine;
 using Firebase.Database;
 using Mgl;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ServerConfigure : MonoBehaviour {
 	public DialogPanel dialog;
 	public GameObject processIndicator;
+	public Selectable[] selectables;
 
+	private TaskIndicator taskIndicator;
+	private DatabaseReference responseRef;
+
+	/// <summary>
+	/// Requests the server to configure the avatar.
+	/// If the device does not have internet access, an error dialog is shown.
+	/// </summary>
 	public void configure () {
-		processIndicator.SetActive (true);
+		taskIndicator = new TaskIndicator (processIndicator, selectables);
+		taskIndicator.OnStart ();
 
+
+		// Check internet connection
+		StartCoroutine (InternetConnectionHelper.CheckInternetConnection ((isConnected) => {
+			Debug.Log ("TOB: ServerConfigure, configure, isConnected: " + isConnected);
+			if (!isConnected) {
+				// Show error message, hide process indicator while message is shown
+				dialog.show (I18n.Instance.__ ("ErrorInternet"), taskIndicator);
+				return;
+			}
+
+			MakeRequest ();
+		}));
+	}
+
+	/// <summary>
+	/// Makes the request to configure.
+	/// </summary>
+	private void MakeRequest () {
 		DatabaseReference taskRef = FirebaseDatabase.DefaultInstance
 			.GetReference (Constants.FirebaseTasksNode);
 		string userId = FirebaseAuthHandler.getUserId ();
-		DatabaseReference responseRef = taskRef.Child (Constants.FirebaseResponsesNode)
+		responseRef = taskRef.Child (Constants.FirebaseResponsesNode)
 			.Child (userId);
 
 		// Remove old reponse
@@ -23,7 +51,7 @@ public class ServerConfigure : MonoBehaviour {
 			.ContinueWith (task1 => {
 			if (task1.IsFaulted) {
 				Debug.Log ("TOB: ServerConfigure, Remove old reponse IsFaulted");
-				dialog.show (I18n.Instance.__ ("ErrorFirebase"));
+				dialog.show (I18n.Instance.__ ("ErrorFirebase"), taskIndicator);
 			} else if (task1.IsCompleted) {
 				Debug.Log ("TOB: ServerConfigure, Remove old reponse IsCompleted");
 				// Listen to response
@@ -37,13 +65,19 @@ public class ServerConfigure : MonoBehaviour {
 						.ContinueWith (task2 => {
 					if (task2.IsFaulted) {
 						Debug.Log ("TOB: ServerConfigure, Request IsFaulted");
-						dialog.show (I18n.Instance.__ ("ErrorFirebase"));
+						dialog.show (I18n.Instance.__ ("ErrorFirebase"), taskIndicator);
 					}
 				});
 			}
 		});
 	}
 
+	/// <summary>
+	/// Handles a change in response from the server.
+	/// If response is OK, the map scene is loaded.
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="args">Arguments.</param>
 	void OnResponseChanged (object sender, ValueChangedEventArgs args) {
 		Debug.Log ("TOB: ServerConfigure, OnResponseChanged");
 
@@ -57,13 +91,15 @@ public class ServerConfigure : MonoBehaviour {
 		switch (responseCode) {
 		case Constants.HttpOk:
 			Debug.Log ("TOB: ServerConfigure, OnResponseChanged, HttpOk");
-			SceneManager.LoadScene (Constants.MapSceneName);
+			SceneManager.LoadSceneAsync (Constants.MapSceneName);
 			break;
 		default:
 			Debug.Log ("TOB: ServerConfigure, OnResponseChanged, default");
-			processIndicator.SetActive (false);
-			dialog.show (I18n.Instance.__ ("ErrorFirebase"));
+			dialog.show (I18n.Instance.__ ("ErrorFirebase"), taskIndicator);
 			break;
 		}
+
+		// Remove response
+		responseRef.RemoveValueAsync ();
 	}
 }

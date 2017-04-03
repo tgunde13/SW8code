@@ -30,7 +30,7 @@ public static class FirebaseLoginHandler {
 			if (task.IsFaulted) {
 				Debug.Log("TOB: FirebaseLoginHandler, login faulted");
 				dialog.show(I18n.Instance.__ ("ErrorLogin"), () => indicator.OnEnd());
-				indicator.onPause();
+				indicator.OnPause();
 				return;
 			}
 

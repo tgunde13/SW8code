@@ -12,7 +12,9 @@ public class FirebaseAuthSetup : MonoBehaviour {
 
 	private Firebase.Auth.FirebaseAuth auth;
 
-	// Use this for initialization
+	/// <summary>
+	/// Start this instance.
+	/// </summary>
 	void Start () {
 		InitializeFirebase ();
 	}
@@ -25,7 +27,14 @@ public class FirebaseAuthSetup : MonoBehaviour {
 		AuthStateChanged(this, null);
 	}
 
-	// Track state changes of the auth object.
+	// 
+	/// <summary>
+	/// If logged in, loads the server configuration scene.
+	/// Otherwise, shows the first panel for logging in.
+	/// Triggered when authentication state has changed.
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="eventArgs">Event arguments.</param>
 	void AuthStateChanged(object sender, System.EventArgs eventArgs) {
 		if (auth.CurrentUser == null) {
 			Debug.Log ("TOB: FirebaseAuthSetup, not logged in");

@@ -19,5 +19,5 @@
 	"ErrorLogin": "Login mislykkedes.",
 	"ErrorFirebase": "Kommunikation med serveren mislykkedes.",
 	"ErrorInternet": "Enheden har ingen internetforbindelse.",
-	"ErrorInternetContinue": "Enheden har ingen internetforbindelse.\nApp'en fortsætter automatisk, når enheden får internetforbindelse."
+	"ErrorInternetTryAgain": "Enheden har ingen internetforbindelse.\nTryk OK for at forsøge igen."
 }

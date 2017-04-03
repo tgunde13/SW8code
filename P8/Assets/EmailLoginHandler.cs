@@ -35,8 +35,8 @@ public class EmailLoginHandler : MonoBehaviour {
 		// Check internet connection
 		StartCoroutine(InternetConnectionHelper.CheckInternetConnection((isConnected) => {
 			if (!isConnected) {
-				dialog.show(I18n.Instance.__ ("ErrorInternet"));
-				indicator.OnEnd();
+				dialog.show(I18n.Instance.__ ("ErrorInternet"), () => indicator.OnEnd());
+				indicator.OnPause();
 				return;
 			}
 

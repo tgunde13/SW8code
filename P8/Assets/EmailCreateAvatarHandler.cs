@@ -41,7 +41,7 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 		StartCoroutine(InternetConnectionHelper.CheckInternetConnection((isConnected) => {
 			if (!isConnected) {
 				dialog.show(I18n.Instance.__ ("ErrorInternet"), () => indicator.OnEnd());
-				indicator.onPause();
+				indicator.OnPause();
 				return;
 			}
 
@@ -49,7 +49,7 @@ public class EmailCreateAvatarHandler : MonoBehaviour {
 			auth.CreateUserWithEmailAndPasswordAsync(email, passwordField1.text).ContinueWith(task => {
 				if (task.IsCanceled || task.IsFaulted) {
 					dialog.show(I18n.Instance.__ ("ErrorUnknown"), () => indicator.OnEnd());
-					indicator.onPause();
+					indicator.OnPause();
 					return;
 				}
 

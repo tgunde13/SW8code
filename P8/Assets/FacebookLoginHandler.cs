@@ -68,7 +68,7 @@ public class FacebookLoginHandler : MonoBehaviour {
 			Debug.Log("TOB: FacebookLoginHandler, LogIn, isConnected: " + isConnected);
 			if (!isConnected) {
 				dialog.show(I18n.Instance.__ ("ErrorInternet"), () => indicator.OnEnd());
-				indicator.onPause();
+				indicator.OnPause();
 				return;
 			}
 

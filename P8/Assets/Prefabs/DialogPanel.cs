@@ -23,8 +23,19 @@ public class DialogPanel : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Show the specified message and indicates a pause with the indicator.
+	/// When the OK button is touched, indicates an end with the indicator.
+	/// </summary>
+	/// <param name="message">Message.</param>
+	/// <param name="indicator">Indicator.</param>
+	public void show(string message, TaskIndicator indicator) {
+		show (message, indicator.OnEnd);
+		indicator.OnPause();
+	}
+
+	/// <summary>
 	/// Show the specified message.
-	/// Perform an action when the OK button is clicked.
+	/// Perform an action when the OK button is touched.
 	/// </summary>
 	/// <param name="message">Message.</param>
 	/// <param name="action">Action.</param>
