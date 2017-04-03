@@ -19,7 +19,7 @@ public class FirebaseAuthSetup : MonoBehaviour {
 
 	// Handle initialization of the necessary firebase modules:
 	private void InitializeFirebase() {
-		Debug.Log("TOB: FirebaseAuthSetup, setting up Firebase Auth");
+		Debug.Log("TOB: ---------------- FirebaseAuthSetup, setting up Firebase Auth ----------------");
 		auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 		auth.StateChanged += AuthStateChanged;
 		AuthStateChanged(this, null);

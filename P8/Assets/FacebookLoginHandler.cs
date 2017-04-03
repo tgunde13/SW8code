@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Facebook.Unity;
 using UnityEngine.UI;
+using Mgl;
 
 /// <summary>
 /// Facebook login handler.
 /// Some code is taken from https://developers.facebook.com/docs/unity/examples.
 /// </summary>
 public class FacebookLoginHandler : MonoBehaviour {
-	public AlertDialog alertDialog;
+	public DialogPanel dialog;
 	public GameObject processIndicator;
 	public Selectable[] selectables;
+
+	private TaskIndicator indicator;
 
 	// Initialise Facebook SDK
 	void Awake () {
@@ -55,12 +58,22 @@ public class FacebookLoginHandler : MonoBehaviour {
 	/// Starts Facebook login dialog.
 	/// </summary>
 	public void LogIn() {
-		// Disable selectables in the panel
-		foreach (Selectable selectable in selectables) {
-			selectable.interactable = false;
-		}
+		Debug.Log("TOB: FacebookLoginHandler, LogIn");
 
-		FB.LogInWithReadPermissions(perms, AuthCallback);
+		indicator = new TaskIndicator (processIndicator, selectables);
+		indicator.OnStart ();
+
+		// Check internet connection
+		StartCoroutine(InternetConnectionHelper.CheckInternetConnection((isConnected) => {
+			Debug.Log("TOB: FacebookLoginHandler, LogIn, isConnected: " + isConnected);
+			if (!isConnected) {
+				dialog.show(I18n.Instance.__ ("ErrorInternet"), () => indicator.OnEnd());
+				indicator.onPause();
+				return;
+			}
+
+			FB.LogInWithReadPermissions(perms, AuthCallback);
+		}));
 	}
 
 	/// <summary>
@@ -84,15 +97,11 @@ public class FacebookLoginHandler : MonoBehaviour {
 
 			Firebase.Auth.Credential credential = Firebase.Auth.FacebookAuthProvider.GetCredential (aToken.TokenString);
 
-			FirebaseLoginHandler.LogIn (credential, alertDialog, processIndicator, selectables);
+			FirebaseLoginHandler.LogIn (credential, dialog, indicator);
 
 		} else {
 			Debug.Log("TOB: User cancelled login");
-
-			// Enable selectables in the panel
-			foreach (Selectable selectable in selectables) {
-				selectable.interactable = true;
-			}
+			indicator.OnEnd();
 		}
 	}
 }

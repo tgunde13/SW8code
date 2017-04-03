@@ -42,4 +42,7 @@ public static class Constants {
 	// HTTP status codes
 	public const int HttpOk = 200;
 	public const int HttpConflict = 409;
+
+	// Internet connection check website
+	public const string InternetConnectionCheckWebsite = "http://google.com";
 }

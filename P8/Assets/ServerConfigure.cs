@@ -6,7 +6,7 @@ using Mgl;
 using UnityEngine.SceneManagement;
 
 public class ServerConfigure : MonoBehaviour {
-	public AlertDialog dialog;
+	public DialogPanel dialog;
 	public GameObject processIndicator;
 
 	public void configure () {

@@ -6,11 +6,29 @@ using Mgl;
 using UnityEngine.SceneManagement;
 
 public class ServerConfigurationCheck : MonoBehaviour {
-	public AlertDialog dialog;
+	public DialogPanel dialog;
 	public GameObject processIndicator, startPanel;
 
 	// Use this for initialization
 	void Start () {
+		// Check internet connection
+		StartCoroutine(InternetConnectionHelper.CheckInternetConnection((isConnected) => {
+			Debug.Log("TOB: ServerConfigurationCheck, Start, isConnected: " + isConnected);
+			if (!isConnected) {
+				// Show error message, hide process indicator while message is shown
+				dialog.show(I18n.Instance.__ ("ErrorInternetContinue"), () => processIndicator.SetActive(true));
+				processIndicator.SetActive(false);
+			}
+
+			CheckConfiguration();
+		}));
+	}
+
+	/// <summary>
+	/// Check if avatar is configured on the server.
+	/// </summary>
+	private void CheckConfiguration() {
+		// Fetch avatar data
 		FirebaseDatabase.DefaultInstance
 			.GetReference (Constants.FirebasePlayersNode)
 			.Child (FirebaseAuthHandler.getUserId ())
