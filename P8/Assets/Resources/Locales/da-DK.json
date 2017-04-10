@@ -19,5 +19,6 @@
 	"ErrorLogin": "Login mislykkedes.",
 	"ErrorFirebase": "Kommunikation med serveren mislykkedes.",
 	"ErrorInternet": "Enheden har ingen internetforbindelse.",
-	"ErrorInternetTryAgain": "Enheden har ingen internetforbindelse.\nTryk OK for at forsøge igen."
+	"ErrorInternetTryAgain": "Enheden har ingen internetforbindelse.\nTryk OK for at forsøge igen.",
+	"ErrorAvatarNameConflict": "Navnet tilhører en anden spiller."
 }

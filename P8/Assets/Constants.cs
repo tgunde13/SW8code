@@ -21,7 +21,7 @@ public static class Constants {
 	//Firebase path
 	public const string FirebaseUrl = "https://league-of-locations-26618308.firebaseio.com";
 	public const string FirebasePlayersNode = "players";
-	public const string FirebaseTasksNode = "tasks";
+	public const string FirebaseTasksNode = "tasks2";
 	public const string FirebaseRequestsNode = "requests";
 	public const string FirebaseResponsesNode = "responses";
 	public const string FirebaseStatusCodeNode = "code";
