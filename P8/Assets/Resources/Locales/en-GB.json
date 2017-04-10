@@ -19,5 +19,6 @@
 	"ErrorLogin": "Login did not succeed.",
 	"ErrorFirebase": "Comminucation with the server failed.",
 	"ErrorInternet": "The device does not have internet connection.",
-	"ErrorInternetTryAgain": "The device does not have internet connection.\nTouch OK to try again."
+	"ErrorInternetTryAgain": "The device does not have internet connection.\nTouch OK to try again.",
+	"ErrorAvatarNameConflict": "The name is used by another player."
 }
