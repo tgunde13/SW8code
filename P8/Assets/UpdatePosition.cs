@@ -9,14 +9,18 @@ public class UpdatePosition : MonoBehaviour {
 	public DialogPanel error;
 	public int frames_before_update = 300;
 	public Mapbox.MeshGeneration.MapController mapController;
+	public int zoom = 18;
+	public int range = 1;
+	public Camera unity_camera;
 
 	int frames_past = 0;
-	float current_latitude;
-	float current_longitude;
+	double current_latitude;
+	double current_longitude;
+	Vector3 current_unity_pos;
 
 	// Use this for initialization
 	void Start () {
-		getLocation ();
+		StartCoroutine (getLocation ());
 		getNewMap ();
 	}
 
@@ -25,7 +29,7 @@ public class UpdatePosition : MonoBehaviour {
 		//What to do after a given number of frames
 		if (frames_past == frames_before_update){
 			//New maps are added here if needed
-			getLocation();
+			StartCoroutine (getLocation ());
 			getNewMap ();
 			frames_past = 0;
 		}
@@ -33,16 +37,15 @@ public class UpdatePosition : MonoBehaviour {
 
 	//Sends a request to the mapcontroller with a new location
 	void getNewMap(){
-		Vector2 pos = new Vector2(current_latitude, current_longitude);
-		mapController.Request (pos, 18);
+		mapController.Execute (current_latitude, current_longitude, zoom, range);
 	}
 
 	//Gets the current location from the device
 	IEnumerator getLocation(){
-		Debug.Log ("GetLocation ½: location block reached");
 		//Making sure location is enabled
 		if (!Input.location.isEnabledByUser) {
 			Debug.Log ("GetLocation 1: Location not enabled");
+			error.show("Error: Please enable location.");
 			yield break;
 		}
 
@@ -71,11 +74,11 @@ public class UpdatePosition : MonoBehaviour {
 			yield break;
 		} else {
 			// Access granted and location value could be retrieved
-			current_latitude = Input.location.lastData.latitude;
-			current_longitude = Input.location.lastData.longitude;
-
-			yield return new WaitForSeconds (3);
-			Debug.Log ("Refreshing location");
+			current_latitude = (double)Input.location.lastData.latitude;
+			current_longitude = (double)Input.location.lastData.longitude;
+			Vector2 test = new Vector2 (Input.location.lastData.latitude, Input.location.lastData.longitude);
+			unity_camera.transform.position = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (test);
+		
 			Input.location.Stop ();
 		}
 	}
