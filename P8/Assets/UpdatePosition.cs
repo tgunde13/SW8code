@@ -21,33 +21,36 @@ public class UpdatePosition : MonoBehaviour {
 	// Use this for initialization
 	IEnumerator Start () {
 		StartCoroutine (getLocation ());
-		//getNewMap ();
 		yield return new WaitForSeconds(10);
 		mapController.Execute(((double) current_latitude), ((double) current_longitude), zoom, range);
 	}
 
 	void Update () {
 		frames_past++;
-		//What to do after a given number of frames
+		//Calls the functions for updating location and camera pos
 		if (frames_past == frames_before_update){
-			//New maps are added here if needed
 			StartCoroutine (getLocation ());
 			getNewMap ();
 			frames_past = 0;
 		}
 	}
 
-	//Sends a request to the mapcontroller with a new location
+	/// <summary>
+	/// Requests a new tile from the MapController, and moves camera to new location
+	/// </summary>
 	void getNewMap(){
 		Vector2 pos = new Vector2 (current_latitude, current_longitude);
 		mapController.Request (pos, zoom);
+
+		//update camera pos
 		Vector3 new_camera_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (pos);
 		new_camera_pos.y = 500;
-		Debug.Log ("GetLocation: camera pos " + new_camera_pos);
 		unity_camera.transform.position = new_camera_pos;
 	}
 
-	//Gets the current location from the device
+	/// <summary>
+	/// Updates the location from GPS (Works only on devices)
+	/// </summary>
 	IEnumerator getLocation(){
 		//Making sure location is enabled
 		if (!Input.location.isEnabledByUser) {
