@@ -14,14 +14,15 @@ public class UpdatePosition : MonoBehaviour {
 	public Camera unity_camera;
 
 	int frames_past = 0;
-	double current_latitude;
-	double current_longitude;
+	float current_latitude;
+	float current_longitude;
 	Vector3 current_unity_pos;
 
 	// Use this for initialization
 	void Start () {
 		StartCoroutine (getLocation ());
-		getNewMap ();
+		//getNewMap ();
+		mapController.Execute((double) current_latitude, (double) current_longitude, zoom, range);
 	}
 
 	void Update () {
@@ -37,7 +38,12 @@ public class UpdatePosition : MonoBehaviour {
 
 	//Sends a request to the mapcontroller with a new location
 	void getNewMap(){
-		mapController.Execute (current_latitude, current_longitude, zoom, range);
+		Vector2 pos = new Vector2 (current_latitude, current_longitude);
+		mapController.Request (pos, zoom);
+		Vector3 new_camera_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (pos);
+		new_camera_pos.y = 500;
+		Debug.Log ("GetLocation: camera pos " + new_camera_pos);
+		//unity_camera.transform.position = new_camera_pos;
 	}
 
 	//Gets the current location from the device
@@ -74,10 +80,8 @@ public class UpdatePosition : MonoBehaviour {
 			yield break;
 		} else {
 			// Access granted and location value could be retrieved
-			current_latitude = (double)Input.location.lastData.latitude;
-			current_longitude = (double)Input.location.lastData.longitude;
-			Vector2 test = new Vector2 (Input.location.lastData.latitude, Input.location.lastData.longitude);
-			unity_camera.transform.position = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (test);
+			current_latitude = Input.location.lastData.latitude;
+			current_longitude = Input.location.lastData.longitude;
 		
 			Input.location.Stop ();
 		}
