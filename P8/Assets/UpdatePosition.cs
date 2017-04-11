@@ -19,10 +19,11 @@ public class UpdatePosition : MonoBehaviour {
 	Vector3 current_unity_pos;
 
 	// Use this for initialization
-	void Start () {
+	IEnumerator Start () {
 		StartCoroutine (getLocation ());
 		//getNewMap ();
-		mapController.Execute((double) current_latitude, (double) current_longitude, zoom, range);
+		yield return new WaitForSeconds(10);
+		mapController.Execute(((double) current_latitude), ((double) current_longitude), zoom, range);
 	}
 
 	void Update () {
@@ -43,7 +44,7 @@ public class UpdatePosition : MonoBehaviour {
 		Vector3 new_camera_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (pos);
 		new_camera_pos.y = 500;
 		Debug.Log ("GetLocation: camera pos " + new_camera_pos);
-		//unity_camera.transform.position = new_camera_pos;
+		unity_camera.transform.position = new_camera_pos;
 	}
 
 	//Gets the current location from the device
