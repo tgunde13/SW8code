@@ -15,7 +15,8 @@ namespace Mapbox.MeshGeneration.Factories
     [CreateAssetMenu(menuName = "Mapbox/Factories/Mesh Factory")]
     public class MeshFactory : Factory
     {
-        [SerializeField] private string _mapId = "mapbox.mapbox-streets-v7";
+        [SerializeField] 
+		private string _mapId;
         public List<LayerVisualizerBase> Visualizers;
 
         private Dictionary<Vector2, UnityTile> _tiles;
