@@ -10,7 +10,7 @@ public class SpriteController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		addSprite (0, 0, "placeholder");
+		
 	}
 	
 	// Update is called once per frame
