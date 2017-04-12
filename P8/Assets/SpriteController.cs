@@ -1,21 +1,103 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+using Firebase.Database;
 
 public class SpriteController : MonoBehaviour {
 	public GameObject spawn_sprite;
 	public float y_pos_of_sprites = 490f;
 
 	private List<GameObject> sprites;
+	private List<Zone> zones;
+	private int latitude_index;
+	private int longitude_index;
+	private Zone center_zone;
 
 	// Use this for initialization
 	void Start () {
-		
+		zones = new List<Zone> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void iniPosition(float latitude, float longitude){
+		latitude_index = Math.Floor(latitude * 100f);
+		longitude_index = Math.Floor(longitude * 100f);
+		center_zone = new Zone (latitude_index, longitude_index);
+
+		for (int lat = latitude_index - 1; lat <= latitude_index + 1; lat++) {
+			for(int lon = longitude_index - 1; lon <= longitude_index + 1; lon++){
+				Zone z = new Zone (lat, lon);
+				zones.Add(z);
+				FirebaseDatabase.DefaultInstance.GetReference ("eSquads").Child (z.getLatitudeIndex ().ToString ()).Child (z.getLongitudeIndex ().ToString ()).ChildAdded += handleChildAdded;
+			}
+		}
+	}
+
+	public void updatePosition(float latitude, float longitude){
+		latitude_index = Math.Floor(latitude * 100f);
+		longitude_index = Math.Floor(longitude * 100f);
+
+		switch(center_zone.getLatitudeIndex() - latitude_index){
+		case -1:
+			
+			switch(center_zone.getLongitudeIndex() - longitude_index){
+			case -1:
+				break;
+			case 1:
+				break;
+			case 0:
+				break;
+			default:
+				;
+			}
+
+			break;
+		case 1:
+			switch(center_zone.getLongitudeIndex() - longitude_index){
+			case -1:
+				break;
+			case 1:
+				break;
+			case 0:
+				break;
+			default:
+				;
+			}
+			break;
+		case 0:
+			switch(center_zone.getLongitudeIndex() - longitude_index){
+			case -1:
+				break;
+			case 1:
+				break;
+			case 0: //Same center do nothing
+				break;
+			default:
+				;
+			}
+			break;
+		default:
+			;
+		}
+	}
+
+	void updateZone(int latitude_index, int longitude_index){
+		List<Zone> new_zones = new List<Zone> ();
+
+		for (int lat = latitude_index - 1; lat <= latitude_index + 1; lat++) {
+			for(int lon = longitude_index - 1; lon <= longitude_index + 1; lon++){
+				new_zones.Add(new Zone (lat, lon));
+			}
+		}
+
+		foreach (Zone z in zones) {
+
+		}
 	}
 
 	/// <summary>
@@ -52,6 +134,10 @@ public class SpriteController : MonoBehaviour {
 		addSprite ((new Vector2 ((float)latitude, (float)longitude)), name);
 	}
 
+	void handleChildAdded(object sender, ChildChangedEventArgs args){
+		args.Snapshot.Child("currentHealth").GetValue;//Make it a squad
+		//draw squad on card
+	}
 
 	void addSprite(Vector2 pos, string minion){
 		Vector3 unity_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (pos);

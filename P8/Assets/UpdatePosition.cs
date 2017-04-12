@@ -12,6 +12,7 @@ public class UpdatePosition : MonoBehaviour {
 	public int zoom = 18;
 	public int range = 1;
 	public Camera unity_camera;
+	public SpriteController sprites;
 
 	int frames_past = 0;
 	float current_latitude;
@@ -23,6 +24,7 @@ public class UpdatePosition : MonoBehaviour {
 		StartCoroutine (getLocation ());
 		yield return new WaitForSeconds(10);
 		mapController.Execute(((double) current_latitude), ((double) current_longitude), zoom, range);
+
 	}
 
 	void Update () {
