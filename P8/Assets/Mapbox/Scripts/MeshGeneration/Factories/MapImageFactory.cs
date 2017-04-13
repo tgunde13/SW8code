@@ -42,7 +42,7 @@ namespace Mapbox.MeshGeneration.Factories
                 var parameters = new Tile.Parameters();
                 parameters.Fs = this.FileSource;
                 parameters.Id = new CanonicalTileId(tile.Zoom, (int)tile.TileCoordinate.x, (int)tile.TileCoordinate.y);
-                parameters.MapId = _mapId;
+				parameters.MapId = _mapId;
 
                 tile.ImageDataState = TilePropertyState.Loading;
                 var rasterTile = parameters.MapId.StartsWith("mapbox://") ? new RasterTile() : new ClassicRasterTile();
