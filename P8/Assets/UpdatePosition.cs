@@ -24,7 +24,8 @@ public class UpdatePosition : MonoBehaviour {
 		StartCoroutine (getLocation ());
 		yield return new WaitForSeconds(10);
 		mapController.Execute(((double) current_latitude), ((double) current_longitude), zoom, range);
-
+		yield return new WaitForSeconds (10);
+		sprites.iniPosition (current_latitude, current_longitude);
 	}
 
 	void Update () {
@@ -34,6 +35,7 @@ public class UpdatePosition : MonoBehaviour {
 			StartCoroutine (getLocation ());
 			getNewMap ();
 			frames_past = 0;
+			sprites.updatePosition (current_latitude, current_longitude);
 		}
 	}
 
@@ -47,6 +49,7 @@ public class UpdatePosition : MonoBehaviour {
 		//update camera pos
 		Vector3 new_camera_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (pos);
 		new_camera_pos.y = 500;
+		Debug.Log (new_camera_pos.x + " | " + new_camera_pos.z);
 		unity_camera.transform.position = new_camera_pos;
 	}
 
