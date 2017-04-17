@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/// <summary>
+/// Internet connection helper.
+/// Code is taken from http://answers.unity3d.com/questions/567497/how-to-100-check-internet-availability.html
+/// </summary>
 public class InternetConnectionHelper {
 	/// <summary>
 	/// Checks the internet connection.
