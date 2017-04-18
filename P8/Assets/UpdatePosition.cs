@@ -49,7 +49,8 @@ public class UpdatePosition : MonoBehaviour {
 		//update camera pos
 		Vector3 new_camera_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (pos);
 		new_camera_pos.y = 500;
-		Debug.Log (new_camera_pos.x + " | " + new_camera_pos.z);
+		//Debug.Log (pos.x + " | " + pos.y);
+		//Debug.Log (new_camera_pos.x + " | " + new_camera_pos.z);
 		unity_camera.transform.position = new_camera_pos;
 	}
 

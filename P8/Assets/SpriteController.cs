@@ -169,8 +169,8 @@ public class SpriteController : MonoBehaviour {
 		GameObject sprite = minionTypeInstantiate(squad.getName());
 		sprite.transform.name = ("Sprite - " + unity_pos.x + " | " + unity_pos.z);
 		sprite.transform.position = unity_pos;
-		//Debug.Log ("lat: " + squad.getPos().x + " lon: " + squad.getPos().y);
-		Debug.Log ("Sprite: " + unity_pos.x + " | " + unity_pos.z);
+		//Debug.Log ("Sprite Coordinates: " + squad.getPos().x + " | " + squad.getPos().y);
+		//Debug.Log ("Sprite: " + unity_pos.x + " | " + unity_pos.z);
 		//add ref to the squad
 		sprites.Add (sprite);
 	}

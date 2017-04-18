@@ -75,7 +75,6 @@ namespace Mapbox.Map
                 }
 
                 this.tiles.Clear();
-                this.Update();
             }
         }
 
