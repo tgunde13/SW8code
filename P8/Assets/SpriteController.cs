@@ -170,7 +170,6 @@ public class SpriteController : MonoBehaviour {
 		sprite.transform.position = unity_pos;
 		//Debug.Log ("Sprite Coordinates: " + squad.getPos().x + " | " + squad.getPos().y);
 		//Debug.Log ("Sprite: " + unity_pos.x + " | " + unity_pos.z);
-		//add ref to the squad
 		sprites.Add (sprite);
 	}
 

@@ -27,6 +27,11 @@ public class Zone {
 		this.minion_ref.ChildRemoved += handleChildRemoved;
 	}
 
+	/// <summary>
+	/// Event handler for child added.
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="args">Arguments.</param>
 	void handleChildAdded(object sender, ChildChangedEventArgs args){
 		long maxHealth = (long)args.Snapshot.Child ("maxHealth").GetValue (false);
 		double latitude = (double)args.Snapshot.Child ("lat").GetValue (false);
@@ -37,6 +42,12 @@ public class Zone {
 		sprite_controller.addSprite(s);
 	}
 
+
+	/// <summary>
+	/// Event handler for child removed.
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="args">Arguments.</param>
 	void handleChildRemoved(object sender, ChildChangedEventArgs args){
 		string key = (string) args.Snapshot.Key;
 
@@ -83,10 +94,11 @@ public class Zone {
 		return minion_ref;
 	}
 
-	public void addSquad(Squad squad){
-		squads.Add (squad);
-	}
-
+	/// <summary>
+	/// Determines whether the specified <see cref="Zone"/> is equal to the current <see cref="Zone"/>, based on the latitude and longitude index.
+	/// </summary>
+	/// <param name="z">The <see cref="Zone"/> to compare with the current <see cref="Zone"/>.</param>
+	/// <returns><c>true</c> if the specified <see cref="Zone"/> is equal to the current <see cref="Zone"/>; otherwise, <c>false</c>.</returns>
 	public override bool Equals(object z){
 		Zone zone = z as Zone;
 		return (zone.getLatitudeIndex() == this.getLatitudeIndex()) && (zone.getLongitudeIndex() == this.getLongitudeIndex());
@@ -97,6 +109,11 @@ public class Zone {
 		return (base.GetHashCode ());
 	}
 
+	/// <summary>
+	/// Returns a string that represents the current object, by latitude and longitude index.
+	/// </summary>
+	/// <returns>A string that represents the current object.</returns>
+	/// <filterpriority>2</filterpriority>
 	public override String ToString(){
 		return String.Format ("Latitude index: {0}, Longitude index: {1}", getLatitudeIndex(), getLongitudeIndex());
 	}
