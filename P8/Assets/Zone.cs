@@ -10,7 +10,6 @@ public class Zone {
 	private DatabaseReference minion_ref;
 	private List<Squad> squads = new List<Squad>();
 	private SpriteController sprite_controller;
-	private int i = 0;
 
 	public Zone(int latitude_index, int longitude_index, SpriteController sprite_controller){
 		this.latitude_index = latitude_index;
@@ -25,15 +24,30 @@ public class Zone {
 		this.sprite_controller = sprite_controller;
 		this.minion_ref = minion_ref;
 		this.minion_ref.ChildAdded += handleChildAdded;
+		this.minion_ref.ChildRemoved += handleChildRemoved;
 	}
 
 	void handleChildAdded(object sender, ChildChangedEventArgs args){
 		long maxHealth = (long)args.Snapshot.Child ("maxHealth").GetValue (false);
 		double latitude = (double)args.Snapshot.Child ("lat").GetValue (false);
 		double longitude = (double)args.Snapshot.Child ("lon").GetValue (false);
-		Squad s = new Squad (1, "Change me", (int) maxHealth, latitude, longitude);
+		string key = (string) args.Snapshot.Key;
+		Squad s = new Squad (1, "Change me", (int) maxHealth, latitude, longitude, key);
 		squads.Add(s);
 		sprite_controller.addSprite(s);
+	}
+
+	void handleChildRemoved(object sender, ChildChangedEventArgs args){
+		string key = (string) args.Snapshot.Key;
+
+		sprite_controller.removeSprite (key);
+
+		foreach (Squad s in squads) {
+			if (s.getKey() == key) {
+				squads.Remove (s);
+				break;
+			}
+		}
 	}
 
 	/// <summary>

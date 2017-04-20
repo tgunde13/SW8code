@@ -7,17 +7,19 @@ public class Squad {
 	private string name;
 	private GameObject sprite;
 	private int max_health;
-	private double latitude;
-	private double longitude;
 	private Vector2 pos;
+	private string key;
 
-	public Squad(int size, string name, int max_health, double latitude, double longitude){
+	public Squad(int size, string name, int max_health, double latitude, double longitude, string key){
 		this.size = size;
 		this.name = name;
 		this.max_health = max_health;
-		this.latitude = latitude;
-		this.longitude = longitude;
 		this.pos = new Vector2 ((float)latitude, (float)longitude);
+		this.key = key;
+	}
+
+	public string getKey(){
+		return key;
 	}
 
 	public void setSprite(GameObject sprite){

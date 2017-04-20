@@ -152,14 +152,9 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	/// <param name="latitude">Latitude of sprite.</param>
 	/// <param name="longitude">Longitude of sprite.</param>
-	public void removeSprite(double latitude, double longitude){
-		Vector3 pos = new Vector3 ((float)latitude, y_pos_of_sprites, (float)longitude);
-		foreach (GameObject g in sprites) {
-			if (g.transform.position == pos) {
-				Destroy (g);
-				break;
-			}
-		}
+	public void removeSprite(string key){
+		GameObject g = GameObject.Find (key);
+		GameObject.Destroy (g);
 	}
 
 	/// <summary>
@@ -171,7 +166,7 @@ public class SpriteController : MonoBehaviour {
 		Vector3 unity_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (squad.getPos());
 		unity_pos.y = y_pos_of_sprites;
 		GameObject sprite = minionTypeInstantiate(squad.getName());
-		sprite.transform.name = ("Sprite - " + unity_pos.x + " | " + unity_pos.z);
+		sprite.transform.name = (squad.getKey());
 		sprite.transform.position = unity_pos;
 		//Debug.Log ("Sprite Coordinates: " + squad.getPos().x + " | " + squad.getPos().y);
 		//Debug.Log ("Sprite: " + unity_pos.x + " | " + unity_pos.z);
