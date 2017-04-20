@@ -5,7 +5,7 @@ using UnityEngine;
 using Firebase.Database;
 
 public class SpriteController : MonoBehaviour {
-	public GameObject spawn_sprite;
+	public GameObject placeholder_sprite;
 	public GameObject cleric;
 	public GameObject spearmaiden;
 	public GameObject swordman;
@@ -193,7 +193,7 @@ public class SpriteController : MonoBehaviour {
 			return Instantiate (spearmaiden);
 		default:
 			Debug.Log ("SpriteController: " + minion + " sprite not found");
-			return Instantiate (spawn_sprite);
+			return Instantiate (placeholder_sprite);
 		}
 	}
 }
