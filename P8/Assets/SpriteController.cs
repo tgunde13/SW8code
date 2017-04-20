@@ -6,6 +6,7 @@ using Firebase.Database;
 
 public class SpriteController : MonoBehaviour {
 	public GameObject placeholder_sprite;
+	public GameObject player_sprite;
 	public GameObject cleric;
 	public GameObject spearmaiden;
 	public GameObject swordman;
