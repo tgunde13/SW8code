@@ -3,38 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Mapbox.MeshGeneration;
+using Mapbox.Scripts.Utilities;
+using Mapbox;
+using Mapbox.Map;
 
 public class UpdatePosition : MonoBehaviour {
 	
 	public DialogPanel error;
-	public int frames_before_update = 300;
-	public Mapbox.MeshGeneration.MapController mapController;
+	public MapController mapController;
 	public int zoom = 18;
-	public int range = 1;
+	public int range = 2;
 	public Camera unity_camera;
 	public SpriteController sprites;
 
-	int frames_past = 0;
 	float current_latitude;
 	float current_longitude;
 	Vector3 current_unity_pos;
+	private bool updating_location = false;
+	private Vector2 current_tile;
+	private Vector2 cached_tile;
 
 	// Use this for initialization
 	IEnumerator Start () {
+		Input.location.Start();
 		StartCoroutine (getLocation ());
-		yield return new WaitForSeconds(10);
+		yield return new WaitForSeconds(1);
 		mapController.Execute(((double) current_latitude), ((double) current_longitude), zoom, range);
-		yield return new WaitForSeconds (10);
+		yield return new WaitForSeconds (1);
 		sprites.iniPosition (current_latitude, current_longitude);
+		updating_location = false;
 	}
 
 	void Update () {
-		frames_past++;
-		//Calls the functions for updating location and camera pos
-		if (frames_past == frames_before_update){
+		if (!updating_location) {
+			//Calls the functions for updating location and camera pos
 			StartCoroutine (getLocation ());
 			getNewMap ();
-			frames_past = 0;
 			sprites.updatePosition (current_latitude, current_longitude);
 		}
 	}
@@ -44,14 +49,25 @@ public class UpdatePosition : MonoBehaviour {
 	/// </summary>
 	void getNewMap(){
 		Vector2 pos = new Vector2 (current_latitude, current_longitude);
-		mapController.Request (pos, zoom);
+		getNewCameraPos (pos);
+		//The rest of the method is based on Mapbox Slippy helper function
+		current_tile = Conversions.MetersToTile (sprites.player_sprite.transform.position.ToVector2xz () + MapController.ReferenceTileRect.center, mapController.Zoom);
+		if (current_tile != cached_tile) {
+			for (int i = -range; i <= range; i++) {
+				for (int j = -range; j <= range; j++) {
+					mapController.Request (new Vector2 (current_tile.x + i, current_tile.y + j), mapController.Zoom);
+				}
+			}
+			cached_tile = current_tile;
+		}
+		updating_location = false;
+	}
 
+	void getNewCameraPos(Vector2 pos){
 		//update camera pos
 		Vector3 new_camera_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (pos);
 		new_camera_pos.y = sprites.y_pos_of_sprites;
 		sprites.player_sprite.transform.position = new_camera_pos;
-		//Debug.Log (pos.x + " | " + pos.y);
-		//Debug.Log (new_camera_pos.x + " | " + new_camera_pos.z);
 		unity_camera.transform.position = new Vector3(sprites.player_sprite.transform.position.x, 500f, sprites.player_sprite.transform.position.z);
 	}
 
@@ -59,6 +75,7 @@ public class UpdatePosition : MonoBehaviour {
 	/// Updates the location from GPS (Works only on devices)
 	/// </summary>
 	IEnumerator getLocation(){
+		updating_location = true;
 		//Making sure location is enabled
 		if (!Input.location.isEnabledByUser) {
 			Debug.Log ("GetLocation 1: Location not enabled");
@@ -67,7 +84,9 @@ public class UpdatePosition : MonoBehaviour {
 		}
 
 		//Starting the location service
-		Input.location.Start();
+		if (Input.location.status != LocationServiceStatus.Running) {
+			Input.location.Start ();
+		}
 
 		//Wait until service initializes
 		int maxWait = 20;
@@ -93,8 +112,7 @@ public class UpdatePosition : MonoBehaviour {
 			// Access granted and location value could be retrieved
 			current_latitude = Input.location.lastData.latitude;
 			current_longitude = Input.location.lastData.longitude;
-		
-			Input.location.Stop ();
+			Debug.Log ("Location: " + current_latitude + " | " + current_longitude);
 		}
 	}
 }
