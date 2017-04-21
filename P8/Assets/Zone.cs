@@ -27,6 +27,14 @@ public class Zone {
 		this.minion_ref.ChildRemoved += handleChildRemoved;
 	}
 
+	~Zone(){
+		this.minion_ref.ChildAdded -= handleChildAdded;
+		this.minion_ref.ChildRemoved -= handleChildRemoved;
+		foreach (Squad s in squads) {
+			sprite_controller.removeSprite (s.getKey());
+		}
+	}
+
 	/// <summary>
 	/// Event handler for child added.
 	/// </summary>

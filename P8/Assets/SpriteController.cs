@@ -10,9 +10,8 @@ public class SpriteController : MonoBehaviour {
 	public GameObject cleric;
 	public GameObject spearmaiden;
 	public GameObject swordman;
-	public float y_pos_of_sprites = 490f;
+	public float y_pos_of_sprites = 5f;
 
-	private List<GameObject> sprites;
 	private List<Zone> zones;
 	private int latitude_index;
 	private int longitude_index;
@@ -21,7 +20,6 @@ public class SpriteController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		zones = new List<Zone> ();
-		sprites = new List<GameObject> ();
 	}
 	
 	// Update is called once per frame
@@ -134,17 +132,7 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	void newZone(){
 		zones.Clear();
-		removeAllSprites ();
 		addZonesToList();
-	}
-
-	/// <summary>
-	/// Removes all sprites on the map.
-	/// </summary>
-	public void removeAllSprites(){
-		foreach (GameObject g in sprites) {
-			Destroy (g);
-		}
 	}
 
 	/// <summary>
@@ -170,7 +158,6 @@ public class SpriteController : MonoBehaviour {
 		sprite.transform.position = unity_pos;
 		//Debug.Log ("Sprite Coordinates: " + squad.getPos().x + " | " + squad.getPos().y);
 		//Debug.Log ("Sprite: " + unity_pos.x + " | " + unity_pos.z);
-		sprites.Add (sprite);
 	}
 
 	/// <summary>
