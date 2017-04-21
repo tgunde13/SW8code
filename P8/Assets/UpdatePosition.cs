@@ -13,7 +13,7 @@ public class UpdatePosition : MonoBehaviour {
 	public DialogPanel error;
 	public MapController mapController;
 	public int zoom = 18;
-	public int range = 2;
+	public int range = 3;
 	public Camera unity_camera;
 	public SpriteController sprites;
 
