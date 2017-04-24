@@ -16,6 +16,7 @@ public class UpdatePosition : MonoBehaviour {
 	public int range = 3;
 	public Camera unity_camera;
 	public SpriteController sprites;
+	public GameObject progress_indicatior;
 
 	float current_latitude;
 	float current_longitude;
@@ -33,6 +34,7 @@ public class UpdatePosition : MonoBehaviour {
 		yield return new WaitForSeconds (1);
 		sprites.iniPosition (current_latitude, current_longitude);
 		updating_location = false;
+		progress_indicatior.SetActive(false);
 	}
 
 	void Update () {

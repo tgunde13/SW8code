@@ -17,6 +17,7 @@ public static class Constants {
 	public const string LoginSceneName = "Login";
 	public const string ServerConfigurationSceneName = "ServerConfiguration";
 	public const string MapSceneName = "Map";
+	public const string BattleSceneName = "Battle";
 
 	//Firebase path
 	public const string FirebaseUrl = "https://league-of-locations-26618308.firebaseio.com";

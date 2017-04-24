@@ -5,25 +5,26 @@ using UnityEngine;
 public class Squad {
 	private int size;
 	private string name;
-	private GameObject sprite;
 	private int max_health;
 	private Vector2 pos;
 	private string key;
+	private int power;
+	private int speed;
+	private int level;
 
-	public Squad(int size, string name, int max_health, double latitude, double longitude, string key){
+	public Squad(int level, int size, string name, int max_health, int power, int speed, double latitude, double longitude, string key){
+		this.level = level;
 		this.size = size;
 		this.name = name;
 		this.max_health = max_health;
 		this.pos = new Vector2 ((float)latitude, (float)longitude);
 		this.key = key;
+		this.power = power;
+		this.speed = speed;
 	}
 
 	public string getKey(){
 		return key;
-	}
-
-	public void setSprite(GameObject sprite){
-		this.sprite = sprite;
 	}
 
 	public string getName(){
@@ -38,5 +39,16 @@ public class Squad {
 		return max_health;
 	}
 
+	public int getPower(){
+		return power;
+	}
+
+	public int getSpeed(){
+		return speed;
+	}
+
+	public int getLevel(){
+		return level;
+	}
 
 }

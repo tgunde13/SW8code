@@ -44,8 +44,13 @@ public class Zone {
 		long maxHealth = (long)args.Snapshot.Child ("maxHealth").GetValue (false);
 		double latitude = (double)args.Snapshot.Child ("lat").GetValue (false);
 		double longitude = (double)args.Snapshot.Child ("lon").GetValue (false);
-		string key = (string) args.Snapshot.Key;
-		Squad s = new Squad (1, "Change me", (int) maxHealth, latitude, longitude, key);
+		string key = (string)args.Snapshot.Key;
+		string name = (string)args.Snapshot.Child ("name").GetValue (false);
+		long level = (long)args.Snapshot.Child ("level").GetValue (false);
+		long power = (long)args.Snapshot.Child ("power").GetValue (false);
+		long speed = (long)args.Snapshot.Child ("speed").GetValue (false);
+
+		Squad s = new Squad ((int) level, 1, name, (int) maxHealth, (int) power, (int) speed, latitude, longitude, key);
 		squads.Add(s);
 		sprite_controller.addSprite(s);
 	}
