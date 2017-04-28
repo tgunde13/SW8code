@@ -41,7 +41,7 @@ public class Zone {
 	/// <param name="sender">Sender.</param>
 	/// <param name="args">Arguments.</param>
 	void handleChildAdded(object sender, ChildChangedEventArgs args){
-		long maxHealth = (long)args.Snapshot.Child ("maxHealth").GetValue (false);
+		long maxHealth = (long)args.Snapshot.Child ("health").GetValue (false);
 		double latitude = (double)args.Snapshot.Child ("lat").GetValue (false);
 		double longitude = (double)args.Snapshot.Child ("lon").GetValue (false);
 		string key = (string)args.Snapshot.Key;
