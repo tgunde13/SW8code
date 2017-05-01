@@ -1,20 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FindNPCMinion : MonoBehaviour {
 	public bool IsEnviormentBattle = false;
-	public Squad ComputerSquad;
-	public string UserKey = FirebaseAuthHandler.getUserId ();
+	public string UserKey;
 
 	private GameObject ComputerGameobject;
-	//FirebaseAuthHandler.getUserId ();
 	// Use this for initialization
 	void Start () {
 		ComputerGameobject = GameObject.FindGameObjectWithTag ("Minion");
 		if(ComputerGameobject != null){
-			ComputerSquad = ComputerGameobject.GetComponent<SpriteOnClick>().squad;
 			IsEnviormentBattle = true;
+			ComputerGameobject.SetActive (false);
+			Debug.Log (ComputerGameobject.name);
 		}
 	}
 

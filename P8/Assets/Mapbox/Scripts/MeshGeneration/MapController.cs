@@ -35,7 +35,7 @@ namespace Mapbox.MeshGeneration
 
 		public void Start()
 		{
-			Execute();
+			//Execute();
 		}
 
         public void Update()

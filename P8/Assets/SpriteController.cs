@@ -172,7 +172,7 @@ public class SpriteController : MonoBehaviour {
 			return Instantiate (cleric);
 		case "Swordman":
 			return Instantiate (swordman);
-		case "Spearmaiden":
+		case "Spearman":
 			return Instantiate (spearmaiden);
 		default:
 			Debug.Log ("SpriteController: " + minion + " sprite not found");

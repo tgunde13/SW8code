@@ -29,6 +29,8 @@ public class UpdatePosition : MonoBehaviour {
 	IEnumerator Start () {
 		Input.location.Start();
 		StartCoroutine (getLocation ());
+		yield return new WaitForSeconds(5);
+		StartCoroutine (getLocation ());
 		yield return new WaitForSeconds(1);
 		mapController.Execute(((double) current_latitude), ((double) current_longitude), zoom, range);
 		yield return new WaitForSeconds (1);
@@ -114,7 +116,6 @@ public class UpdatePosition : MonoBehaviour {
 			// Access granted and location value could be retrieved
 			current_latitude = Input.location.lastData.latitude;
 			current_longitude = Input.location.lastData.longitude;
-			Debug.Log ("Location: " + current_latitude + " | " + current_longitude);
 		}
 	}
 }
