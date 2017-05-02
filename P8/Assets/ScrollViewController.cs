@@ -32,7 +32,15 @@ public class ScrollViewController : MonoBehaviour {
 	void PopulateScrollView(){
 		float scrollViewSize = Mathf.Floor(userMinions.Count / 6f) + 1f;
 		Debug.Log (scrollViewSize);
-		GetComponent<RectTransform> ().sizeDelta.y = 255f * scrollViewSize;
+		Vector2 scrollViewBounds = new Vector2 (GetComponent<RectTransform> ().sizeDelta.x, (255f * scrollViewSize));
+		GetComponent<RectTransform> ().sizeDelta = scrollViewBounds;
+		AddUserMinions ();
+	}
+
+	void AddUserMinions(){
+		for (int i = 0; i < userMinions.Count; i++) {
+			 
+		}
 	}
 
 }
