@@ -35,7 +35,9 @@ namespace Mapbox.MeshGeneration
 
 		public void Start()
 		{
-			//Execute();
+			#if UNITY_EDITOR
+			Execute();
+			#endif
 		}
 
         public void Update()
