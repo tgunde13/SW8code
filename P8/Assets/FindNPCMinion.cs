@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class FindNPCMinion : MonoBehaviour {
 	public bool IsEnviormentBattle = false;
-	public string UserKey;
 
 	private GameObject ComputerGameobject;
 	// Use this for initialization

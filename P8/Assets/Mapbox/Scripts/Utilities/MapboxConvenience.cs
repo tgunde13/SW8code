@@ -131,5 +131,9 @@ namespace Mapbox.Scripts.Utilities
 			{
 			}
 		}
+
+		void OnDestroy(){
+			Debug.Log ("Map error 1: MapboxConvenience destroyed");
+		}
 	}
 }
