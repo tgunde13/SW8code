@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class ScrollViewController : MonoBehaviour {
 	private DatabaseReference userMinionsRef;
 	public List<Minion> userMinions;
-	private int numMinions = 0;
 	string userKey;
 	private int pages = 1;
 	public Button next;
@@ -58,7 +57,6 @@ public class ScrollViewController : MonoBehaviour {
 		//Debug.Log ("Found minion: " + name);
 		Minion m = new Minion (minionKey, health, level, name, power, speed, type, xp);
 		userMinions.Add (m);
-		numMinions++;
 		Debug.Log ("Added minion: " + m.ToString ());
 	}
 
@@ -73,21 +71,26 @@ public class ScrollViewController : MonoBehaviour {
 				Debug.Log("Failed to get Minions from User ID: " + userKey);
 			}
 			else if (task.IsCompleted) {
-				//Objects from the list is Dictionaries, but must be cast from objects
 				Debug.Log("Done getting data");
 				DataSnapshot snapshot = task.Result;
 				Dictionary<string, object> minions = new Dictionary<string, object>();
 				minions = (Dictionary<string, object>)snapshot.GetValue(false);
+
 				foreach(KeyValuePair<string, object> entry in minions){
-					Debug.Log("Found minion with key: " + entry.Key);
+					//Debug.Log("Found minion with key: " + entry.Key);
 					Dictionary<string, object> value = (Dictionary<string, object>)entry.Value;
 					PopulateMinionList(entry.Key, value);
 				}
+				AddUserMinions();
 			}
 		});
 	}
 
+	/// <summary>
+	/// Adds the user minions to the Minion Panel.
+	/// </summary>
 	void AddUserMinions(){
+		int numMinions = userMinions.Count;
 		for (int i = 0; i < numMinions; i++) {
 			 
 		}
