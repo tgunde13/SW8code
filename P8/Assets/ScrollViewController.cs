@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Database;
@@ -24,25 +25,46 @@ public class ScrollViewController : MonoBehaviour {
 		userMinionsRef = FirebaseDatabase.DefaultInstance.GetReference ("players").Child (userKey).Child ("minions");
 		userMinions = new List<Minion> ();
 		GetMinions ();
-		//PopulatePanel ();
 	}
 
-	void PopulateMinionList(object sender, ChildChangedEventArgs args){
-		string key = (string)args.Snapshot.Key;
-		long health = (long)args.Snapshot.Child ("health").GetValue (false);
-		long level = (long)args.Snapshot.Child ("level").GetValue (false);
-		string name = (string)args.Snapshot.Child ("name").GetValue (false);
-		long power = (long)args.Snapshot.Child ("power").GetValue (false);
-		long speed = (long)args.Snapshot.Child ("speed").GetValue (false);
-		string type = (string)args.Snapshot.Child ("type").GetValue (false);
-		long xp = (long)args.Snapshot.Child ("xp").GetValue (false);
+	/// <summary>
+	/// Populates the minion list.
+	/// </summary>
+	/// <param name="minionKey">Minion key.</param>
+	/// <param name="minion">Minion as a Dictionary containing all fields.</param>
+	void PopulateMinionList(string minionKey, Dictionary<string, object> minion){
+		object obj = 0;
+		minion.TryGetValue("health", out obj);
+		int health = Int32.Parse(obj.ToString());
 
-		Debug.Log ("Found minion: " + name);
-		Minion m = new Minion (key, (int)health, (int)level, name, (int)power, (int)speed, type, (int)xp);
+		minion.TryGetValue ("level", out obj);
+		int level = Int32.Parse (obj.ToString ());
+
+		minion.TryGetValue ("name", out obj);
+		string name = obj.ToString ();
+
+		minion.TryGetValue ("power", out obj);
+		int power = Int32.Parse (obj.ToString ());
+
+		minion.TryGetValue ("speed", out obj);
+		int speed = Int32.Parse (obj.ToString ());
+
+		minion.TryGetValue ("type", out obj);
+		string type = obj.ToString ();
+
+		minion.TryGetValue ("xp", out obj);
+		int xp = Int32.Parse (obj.ToString ());
+
+		//Debug.Log ("Found minion: " + name);
+		Minion m = new Minion (minionKey, health, level, name, power, speed, type, xp);
 		userMinions.Add (m);
 		numMinions++;
+		Debug.Log ("Added minion: " + m.ToString ());
 	}
 
+	/// <summary>
+	/// Retrives the minions of the current user, then calls PopulateMinionList on each minion
+	/// </summary>
 	public void GetMinions(){
 		Debug.Log ("get minions reached");
 		userMinionsRef.GetValueAsync ().ContinueWith(task => {
@@ -51,25 +73,18 @@ public class ScrollViewController : MonoBehaviour {
 				Debug.Log("Failed to get Minions from User ID: " + userKey);
 			}
 			else if (task.IsCompleted) {
+				//Objects from the list is Dictionaries, but must be cast from objects
+				Debug.Log("Done getting data");
 				DataSnapshot snapshot = task.Result;
-				Debug.Log("Snapshot has: " + snapshot.ChildrenCount + " Children");
+				Dictionary<string, object> minions = new Dictionary<string, object>();
+				minions = (Dictionary<string, object>)snapshot.GetValue(false);
+				foreach(KeyValuePair<string, object> entry in minions){
+					Debug.Log("Found minion with key: " + entry.Key);
+					Dictionary<string, object> value = (Dictionary<string, object>)entry.Value;
+					PopulateMinionList(entry.Key, value);
+				}
 			}
 		});
-	}
-
-	void PopulatePanel(){ //Firebase is too slow
-		Debug.Log ("Number minons: " + numMinions);
-		if (numMinions > 9) {
-			pages = numMinions / 9;
-			next.gameObject.SetActive (true);
-			pageNum.text = "Page 1/" + pages;
-		} else {
-			for (int i = 1; i <= numMinions; i++) {
-				Debug.Log (gameObject.transform.GetChild (2 + i).gameObject.name);
-				gameObject.transform.GetChild (2 + i).gameObject.SetActive(true);
-			}
-		}
-		AddUserMinions ();
 	}
 
 	void AddUserMinions(){

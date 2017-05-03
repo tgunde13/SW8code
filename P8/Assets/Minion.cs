@@ -52,4 +52,10 @@ public class Minion{
 	int getXp(){
 		return xp;
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("Key: {0} \n Health: {1} \n Level: {2} \n Name: {3} \n Power: {4} \n Speed: {5} \n Type: {6} \n XP: {7}",
+			key, health, level, name, power, speed, type, xp);
+	}
 }
