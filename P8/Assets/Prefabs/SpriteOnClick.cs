@@ -7,7 +7,7 @@ public class SpriteOnClick : MonoBehaviour {
 	public Squad squad;
 
 
-	void OnMouseDown(){
+	void OnMouseUpAsButton(){
 		DontDestroyOnLoad (transform.gameObject);
 		SceneManager.LoadScene(Constants.BattleSceneName);
 	}
