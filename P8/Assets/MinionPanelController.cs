@@ -6,15 +6,22 @@ using Firebase.Database;
 using UnityEngine.UI;
 
 public class MinionPanelController : MonoBehaviour {
+	public int minionsPerPage = 9;
+	public Sprite swordman;
+	public Sprite spearmaiden;
+	public Sprite cleric;
+	public Sprite placeholder;
+
 	private DatabaseReference userMinionsRef;
 	private List<Minion> userMinions;
 	private List<Minion> pickedMinions;
-	public int minionsPerPage = 9;
 	private int currentPage = 1;
 	string userKey;
 	private int pages = 1;
 	private GameObject next;
 	private GameObject prev;
+	private GameObject done;
+	private GameObject numPickedMinions;
 	private GameObject pageNum;
 
 	// Use this for initialization
@@ -31,6 +38,8 @@ public class MinionPanelController : MonoBehaviour {
 		next = gameObject.transform.Find ("Next").gameObject;
 		prev = gameObject.transform.Find ("Prev").gameObject;
 		pageNum = gameObject.transform.Find ("Page").gameObject;
+		done = gameObject.transform.Find ("Done").gameObject;
+		numPickedMinions = gameObject.transform.Find ("Picked minions").gameObject;
 		GetMinions ();
 	}
 
@@ -106,6 +115,7 @@ public class MinionPanelController : MonoBehaviour {
 			minion = gameObject.transform.Find (minionGameObjectName).gameObject;
 			minion.SetActive (true);
 			minion.GetComponent<OnClickMinionPicker> ().minion = userMinions [i];
+			minion.GetComponent<Image> ().sprite = SelectSprite(userMinions[i].getName());
 			if (i == minionsPerPage) {
 				break;
 			}
@@ -122,6 +132,24 @@ public class MinionPanelController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Selects the sprite, from the name of the minion.
+	/// </summary>
+	/// <returns>The sprite related to the Name.</returns>
+	/// <param name="name">Name of the minion.</param>
+	Sprite SelectSprite(string name){
+		switch (name) {
+		case "Swordman":
+			return swordman;
+		case "Spearman":
+			return spearmaiden;
+		case "Cleric":
+			return cleric;
+		default:
+			return placeholder;
+		}
+	}
+
 	public void NextPressed(){
 		Debug.Log ("Not yet implemented");
 	}
@@ -130,19 +158,30 @@ public class MinionPanelController : MonoBehaviour {
 		Debug.Log ("Not yet implemented");
 	}
 
-	private void AddMinionSelection(Minion m){
+	private bool AddMinionSelection(Minion m){
 		if (pickedMinions.Count < 3) {
 			pickedMinions.Add (m);
 			Debug.Log ("Added minion: " + m.ToString ());
+			if (!done.activeSelf) {
+				done.SetActive (true);
+			}
+			numPickedMinions.GetComponent<Text> ().text = "Picked " + pickedMinions.Count + "/" + 3 + " Minions";
+			return true;
 		}
+		return false;
 	}
 
-	public void RemoveMinionSelection(Minion m){
+	public bool RemoveMinionSelection(Minion m){
 		if (pickedMinions.Contains (m)) {
 			pickedMinions.Remove (m);
 			Debug.Log ("Removed minion: " + m.ToString ());
+			if (pickedMinions.Count == 0) {
+				done.SetActive (false);
+			}
+			numPickedMinions.GetComponent<Text> ().text = "Picked " + pickedMinions.Count + "/" + 3 + " Minions";
+			return true;
 		} else {
-			AddMinionSelection (m);
+			return AddMinionSelection (m);
 		}
 	}
 }
