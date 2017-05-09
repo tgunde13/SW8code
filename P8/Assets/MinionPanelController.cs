@@ -56,6 +56,7 @@ public class MinionPanelController : MonoBehaviour {
 			RemoveMinionsFromPanel ();
 			AddMinionsToPanel ();
 			SetButtonStatus ();
+			SetPageNum ();
 		}
 	}
 
@@ -230,6 +231,10 @@ public class MinionPanelController : MonoBehaviour {
 		} else {
 			next.SetActive (false);
 		}
+	}
+
+	void SetPageNum(){
+		pageNum.GetComponent<Text> ().text = "Page " + currentPage + "/" + pages;
 	}
 
 	private bool AddMinionSelection(Minion m){
