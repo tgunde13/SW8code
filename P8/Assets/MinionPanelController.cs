@@ -23,6 +23,7 @@ public class MinionPanelController : MonoBehaviour {
 	private GameObject done;
 	private GameObject numPickedMinions;
 	private GameObject pageNum;
+	private bool updateMinionPanel = false;
 
 	// Use this for initialization
 	void Start () {
@@ -35,12 +36,27 @@ public class MinionPanelController : MonoBehaviour {
 		userMinionsRef = FirebaseDatabase.DefaultInstance.GetReference ("players").Child (userKey).Child ("minions");
 		userMinions = new List<Minion> ();
 		pickedMinions = new List<Minion> ();
-		next = gameObject.transform.Find ("Next").gameObject;
-		prev = gameObject.transform.Find ("Prev").gameObject;
+		next = gameObject.transform.parent.gameObject
+			.transform.Find ("Buttons").gameObject
+			.transform.Find ("Next").gameObject;
+		prev = gameObject.transform.parent.gameObject
+			.transform.Find ("Buttons").gameObject
+			.transform.Find("Prev").gameObject;
 		pageNum = gameObject.transform.Find ("Page").gameObject;
-		done = gameObject.transform.Find ("Done").gameObject;
+		done = gameObject.transform.parent.gameObject
+			.transform.Find ("Buttons").gameObject
+			.transform.Find("Done").gameObject;
 		numPickedMinions = gameObject.transform.Find ("Picked minions").gameObject;
 		GetMinions ();
+	}
+
+	void Update () {
+		if (updateMinionPanel) {
+			updateMinionPanel = false;
+			RemoveMinionsFromPanel ();
+			AddMinionsToPanel ();
+			SetButtonStatus ();
+		}
 	}
 
 	/// <summary>
@@ -71,16 +87,14 @@ public class MinionPanelController : MonoBehaviour {
 		minion.TryGetValue ("xp", out obj);
 		int xp = Int32.Parse (obj.ToString ());
 
-		//Debug.Log ("Found minion: " + name);
 		Minion m = new Minion (minionKey, health, level, name, power, speed, type, xp);
 		userMinions.Add (m);
-		//Debug.Log ("Added minion: " + m.ToString ());
 	}
 
 	/// <summary>
 	/// Retrives the minions of the current user, then calls PopulateMinionList on each minion
 	/// </summary>
-	public void GetMinions(){
+	void GetMinions(){
 		Debug.Log ("get minions reached");
 		userMinionsRef.GetValueAsync ().ContinueWith(task => {
 			Debug.Log("Started to get data");
@@ -94,7 +108,6 @@ public class MinionPanelController : MonoBehaviour {
 				minions = (Dictionary<string, object>)snapshot.GetValue(false);
 
 				foreach(KeyValuePair<string, object> entry in minions){
-					//Debug.Log("Found minion with key: " + entry.Key);
 					Dictionary<string, object> value = (Dictionary<string, object>)entry.Value;
 					PopulateMinionList(entry.Key, value);
 				}
@@ -110,18 +123,10 @@ public class MinionPanelController : MonoBehaviour {
 		string minionGameObjectName = "";
 		GameObject minion;
 		int numMinions = userMinions.Count;
-		for (int i = 1; i <= numMinions; i++) {
-			minionGameObjectName = "Minion " + i;
-			minion = gameObject.transform.Find (minionGameObjectName).gameObject;
-			minion.SetActive (true);
-			minion.GetComponent<OnClickMinionPicker> ().minion = userMinions [i];
-			minion.GetComponent<Image> ().sprite = SelectSprite(userMinions[i].getName());
-			if (i == minionsPerPage) {
-				break;
-			}
-		}
+		int firstPageMinions;
 
 		if (numMinions > minionsPerPage) {
+			firstPageMinions = minionsPerPage;
 			if (numMinions % minionsPerPage != 0) {
 				pages = (numMinions / minionsPerPage) + 1;
 			} else {
@@ -129,6 +134,16 @@ public class MinionPanelController : MonoBehaviour {
 			}
 			next.SetActive (true);
 			pageNum.GetComponent<Text> ().text = "Page 1/" + pages;
+		} else {
+			firstPageMinions = numMinions;
+		}
+
+		for (int i = 0; i < firstPageMinions; i++) {
+			minionGameObjectName = "Minion " + (i + 1);
+			minion = gameObject.transform.Find (minionGameObjectName).gameObject;
+			minion.SetActive (true);
+			minion.GetComponent<OnClickMinionPicker> ().minion = userMinions [i];
+			minion.GetComponent<Image> ().sprite = SelectSprite(userMinions[i].getName());
 		}
 	}
 
@@ -151,11 +166,70 @@ public class MinionPanelController : MonoBehaviour {
 	}
 
 	public void NextPressed(){
-		Debug.Log ("Not yet implemented");
+		currentPage++;
+		Debug.Log ("Next recived");
+		updateMinionPanel = true;
 	}
 
 	public void PrevPressed(){
-		Debug.Log ("Not yet implemented");
+		currentPage--;
+		updateMinionPanel = true;
+	}
+
+	void RemoveMinionsFromPanel(){
+		string minionGameObjectName = "";
+		GameObject minion;
+		GameObject border;
+		for (int i = 1; i <= 9; i++) {
+			Debug.Log ("RemoveMinionsFromPanel: " + i);
+			minionGameObjectName = "Minion " + i;
+			minion = gameObject.transform.Find (minionGameObjectName).gameObject;
+			border = minion.transform.Find ("Border").gameObject;
+			if (border.activeSelf) {
+				border.SetActive (false);
+			}
+			minion.SetActive (false);
+		}
+	}
+
+	void AddMinionsToPanel(){
+		string minionGameObjectName = "";
+		GameObject minion;
+		GameObject border;
+		int minionGameObjects = 1;
+		int minionOffset = (currentPage - 1) * minionsPerPage;
+		for (int i = minionOffset; i < minionsPerPage + minionOffset; i++) {
+			if (userMinions.Count <= i) {
+				break;
+			}
+			Debug.Log ("Minion num " + i + " being added");
+			minionGameObjectName = "Minion " + minionGameObjects;
+			minion = gameObject.transform.Find (minionGameObjectName).gameObject;
+			border = minion.transform.Find ("Border").gameObject;
+			minion.SetActive (true);
+			minion.GetComponent<OnClickMinionPicker> ().minion = userMinions [i];
+			minion.GetComponent<Image> ().sprite = SelectSprite(userMinions[i].getName());
+			if (pickedMinions.Count != 0) {
+				if (pickedMinions.Contains (userMinions [i])) {
+					border.SetActive (true);
+				}
+			}
+			minionGameObjects++;
+		}
+	}
+
+	void SetButtonStatus(){
+		if (currentPage == 1) {
+			prev.SetActive (false);
+		} else {
+			prev.SetActive (true);
+		}
+			
+		if (userMinions.Count > currentPage * minionsPerPage) {
+			next.SetActive (true);
+		} else {
+			next.SetActive (false);
+		}
 	}
 
 	private bool AddMinionSelection(Minion m){
