@@ -4,19 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class OnClickDone : MonoBehaviour {
-	public GameObject minionPanelController;
+	public GameObject minionPanelControllerGO;
+	MinionPanelController minionPanelController;
 	public Button TheButton;
 
 	// Use this for initialization
 	void Start () {
 		TheButton = gameObject.GetComponent<Button>();
-		minionPanelController = gameObject.transform.parent.gameObject
+		minionPanelControllerGO = gameObject.transform.parent.gameObject
 			.transform.parent.gameObject
 			.transform.Find("Minion Panel").gameObject;
+		minionPanelController = minionPanelControllerGO.GetComponent<MinionPanelController> ();
 		TheButton.onClick.AddListener(DoneClicked);
 	}
 
 	void DoneClicked(){
-		Debug.Log ("Not implemented");
+		Debug.Log ("Done clicked");
+		minionPanelController.DonePressed ();
 	}
 }
