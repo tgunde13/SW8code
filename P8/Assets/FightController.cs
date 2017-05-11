@@ -12,8 +12,11 @@ public class FightController : MonoBehaviour {
 	public Sprite spearmaiden;
 	public Sprite cleric;
 	public Sprite placeholder;
+	public DialogPanel dialogPanel;
 
 	private bool updatingBattleState = false;
+	private bool IsEnviormentBattle = false;
+	private GameObject computerGameobject;
 	private int playerMinionNum;
 	private GameObject battlePanel;
 	private GameObject playerMinionOne;
@@ -23,6 +26,17 @@ public class FightController : MonoBehaviour {
 	private GameObject opponentMinionTwo;
 	private GameObject opponentMinionThree;
 	private GameObject spriteCanvas;
+	private GameObject progressIndicator;
+	private GameObject pickMinions;
+	private Request startBattle;
+	private TaskIndicator taskIndicator;
+	private Dictionary<string, object> requestData;
+	private Dictionary<string, object> zoneData;
+	private string computerMinionKey = "";
+	private Squad computerSquad;
+	private int latIndex;
+	private int lonIndex;
+	private string battleKey;
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +47,39 @@ public class FightController : MonoBehaviour {
 		playerMinionTwo = battlePanel.transform.Find ("Minion 2").gameObject;
 		playerMinionThree = battlePanel.transform.Find ("Minion 3").gameObject;
 		spriteCanvas = gameObject.transform.Find ("Minion Sprites").gameObject;
+		pickMinions = gameObject.transform.parent.gameObject
+			.transform.Find ("Pick Minions").gameObject;
+		pickMinions.SetActive (false);
+		computerGameobject = GameObject.FindGameObjectWithTag ("Minion");
+		requestData = new Dictionary<string, object> ();
+		zoneData = new Dictionary<string, object> ();
+		if(computerGameobject != null){
+			IsEnviormentBattle = true;
+			computerMinionKey = computerGameobject.name;
+			computerSquad = computerGameobject.GetComponent<SpriteOnClick> ().squad;
+			computerGameobject.SetActive (false);
+			latIndex = (int)Math.Floor((computerSquad.getPos().x) * 100f);
+			lonIndex = (int)Math.Floor((computerSquad.getPos().y) * 100f);
+			zoneData.Add ("latIndex", latIndex);
+			zoneData.Add ("lonIndex", lonIndex);
+			requestData.Add ("code", Constants.RequestCodeSoloBattle);
+			requestData.Add ("zone", zoneData);
+			requestData.Add ("key", computerMinionKey);
+		}
+		progressIndicator = GameObject.Find ("ProgressCircle");
+		taskIndicator = new TaskIndicator (progressIndicator);
+		startBattle = new Request(this, taskIndicator, dialogPanel, StartServerFight, requestData);
+	}
+
+	bool StartServerFight(DataSnapshot snapshot){
+		int returnKey = (int)snapshot.Child ("code").GetValue(false);
+		if (returnKey == 200) {
+			battleKey = (string)snapshot.Child ("data").GetValue(false);
+			Debug.Log ("Started battle with key: " + battleKey);
+			pickMinions.SetActive (true);
+			return true;
+		}
+		return false;
 	}
 
 	public void StartFight(){

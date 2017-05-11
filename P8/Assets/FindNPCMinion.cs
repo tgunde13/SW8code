@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class FindNPCMinion : MonoBehaviour {
 	public bool IsEnviormentBattle = false;
+	public GameObject ComputerGameobject;
 
-	private GameObject ComputerGameobject;
 	// Use this for initialization
 	void Start () {
 		ComputerGameobject = GameObject.FindGameObjectWithTag ("Minion");

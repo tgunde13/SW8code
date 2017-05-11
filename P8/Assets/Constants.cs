@@ -39,6 +39,7 @@ public static class Constants {
 
 	// Firebase request codes
 	public const int RequestCodeConfigure = 1;
+	public const int RequestCodeSoloBattle = 4;
 
 	// HTTP status codes
 	public const int HttpOk = 200;

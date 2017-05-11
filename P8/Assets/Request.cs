@@ -22,6 +22,7 @@ public class Request {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Request"/> class.
 	/// </summary>
+	/// <param name="behaviour">Behaviour to start a coroutine with.</param>
 	/// <param name="taskIndicator">Task indicator.</param>
 	/// <param name="dialog">Dialog to show errors with.</param>
 	/// <param name="responseHandler">Response handler.</param>
