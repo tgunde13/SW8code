@@ -32,27 +32,55 @@ public class FightController : MonoBehaviour {
 	private TaskIndicator taskIndicator;
 	private Dictionary<string, object> requestData;
 	private Dictionary<string, object> zoneData;
+	private Dictionary<string, object> minionKeys;
+	private Dictionary<string, object> minion1Moves;
+	private Dictionary<string, object> minion2Moves;
+	private Dictionary<string, object> minion3Moves;
 	private string computerMinionKey = "";
 	private Squad computerSquad;
 	private int latIndex;
 	private int lonIndex;
 	private string battleKey;
+	private DatabaseReference userRef; //Used first turn to add minions to player
+	private DatabaseReference minion1Ref; //Used after first turn to ref minion 1
+	private DatabaseReference minion2Ref; //Used after first turn to ref minion 2
+	private DatabaseReference minion3Ref; //Used after first turn to ref minion 3
+	private DatabaseReference stateRef; //Listen to state
 
 	// Use this for initialization
 	void Start () {
+		//--------------initialization of Dictionaries for setting values--------------//
+		minionKeys = new Dictionary<string, object>();
+		minion1Moves = new Dictionary<string, object> ();
+		minion2Moves = new Dictionary<string, object> ();
+		minion3Moves = new Dictionary<string, object> ();
+
+
+		//--------------initialization of minion lists--------------//
 		playerMinions = new List<Minion> ();
 		opponentMinions = new List<Minion> ();
+
+
+		//--------------initialization of gameobjects--------------//
 		battlePanel = gameObject.transform.Find ("Battle Panel").gameObject;
 		playerMinionOne = battlePanel.transform.Find ("Minion 1").gameObject;
 		playerMinionTwo = battlePanel.transform.Find ("Minion 2").gameObject;
 		playerMinionThree = battlePanel.transform.Find ("Minion 3").gameObject;
 		spriteCanvas = gameObject.transform.Find ("Minion Sprites").gameObject;
+
+
+		//--------------related to request--------------//
+		//initialization
 		pickMinions = gameObject.transform.parent.gameObject
 			.transform.Find ("Pick Minions").gameObject;
 		pickMinions.SetActive (false);
 		computerGameobject = GameObject.FindGameObjectWithTag ("Minion");
 		requestData = new Dictionary<string, object> ();
 		zoneData = new Dictionary<string, object> ();
+		progressIndicator = GameObject.Find ("ProgressCircle");
+		taskIndicator = new TaskIndicator (progressIndicator);
+
+		//seting values for request
 		if (computerGameobject != null) {
 			IsEnviormentBattle = true;
 			computerMinionKey = computerGameobject.name;
@@ -74,8 +102,8 @@ public class FightController : MonoBehaviour {
 			requestData.Add ("zone", zoneData);
 			requestData.Add ("key", "debug");
 		}
-		progressIndicator = GameObject.Find ("ProgressCircle");
-		taskIndicator = new TaskIndicator (progressIndicator);
+
+		//starts the request
 		startBattle = new Request(this, taskIndicator, dialogPanel, StartServerFight, requestData);
 		startBattle.Start ();
 	}
@@ -86,8 +114,9 @@ public class FightController : MonoBehaviour {
 
 		switch (returnKey) {
 		case Constants.HttpOk:
-			battleKey = (string)snapshot.Child ("data").GetValue(false);
+			battleKey = (string)snapshot.Child ("data").GetValue (false);
 			Debug.Log ("Started battle with key: " + battleKey);
+			SetDatabaseRef ();
 			pickMinions.SetActive (true);
 			taskIndicator.OnEnd ();
 			return true;
@@ -101,6 +130,17 @@ public class FightController : MonoBehaviour {
 		}
 	}
 
+	void SetDatabaseRef (){
+		userRef = FirebaseDatabase.DefaultInstance.GetReference ("battles")
+			.Child (battleKey)
+			.Child("chosenMoves")
+			.Child("moves")
+			.Child(FirebaseAuthHandler.getUserId());
+		stateRef = FirebaseDatabase.DefaultInstance.GetReference ("battles")
+			.Child (battleKey)
+			.Child ("state");
+	}
+
 	public void StartFight(){
 		playerMinionNum = playerMinions.Count;
 		string minionName = "";
@@ -109,16 +149,21 @@ public class FightController : MonoBehaviour {
 			playerMinionOne.SetActive (true);
 			playerMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
 				playerMinions [0].getHealth () + " / " + playerMinions [0].getHealth ();
+			minion1Moves.Add ("minionKey", playerMinions [0].getName ());
+			minionKeys.Add("minion-0", minion1Moves);
+			minion1Moves.Clear ();
 			InsertSprite (playerMinions [0], 1, true);
 			if (playerMinionNum > 1) {
 				playerMinionTwo.SetActive (true);
 				playerMinionTwo.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
 					playerMinions [1].getHealth () + " / " + playerMinions [1].getHealth ();
+				minionKeys.Add("minion-1", playerMinions[1].getName());
 				InsertSprite (playerMinions [1], 2, true);
 				if (playerMinionNum > 2) {
 					playerMinionThree.SetActive (true);
 					playerMinionThree.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
 						playerMinions [2].getHealth () + " / " + playerMinions [2].getHealth ();
+					minionKeys.Add("minion-2", playerMinions[2].getName());
 					InsertSprite (playerMinions [2], 3, true);
 				}
 			}
