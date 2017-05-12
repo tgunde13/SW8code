@@ -53,33 +53,47 @@ public class FightController : MonoBehaviour {
 		computerGameobject = GameObject.FindGameObjectWithTag ("Minion");
 		requestData = new Dictionary<string, object> ();
 		zoneData = new Dictionary<string, object> ();
-		if(computerGameobject != null){
+		if (computerGameobject != null) {
 			IsEnviormentBattle = true;
 			computerMinionKey = computerGameobject.name;
 			computerSquad = computerGameobject.GetComponent<SpriteOnClick> ().squad;
 			computerGameobject.SetActive (false);
-			latIndex = (int)Math.Floor((computerSquad.getPos().x) * 100f);
-			lonIndex = (int)Math.Floor((computerSquad.getPos().y) * 100f);
+			latIndex = (int)Math.Floor ((computerSquad.getPos ().x) * 100f);
+			lonIndex = (int)Math.Floor ((computerSquad.getPos ().y) * 100f);
 			zoneData.Add ("latIndex", latIndex);
 			zoneData.Add ("lonIndex", lonIndex);
 			requestData.Add ("code", Constants.RequestCodeSoloBattle);
 			requestData.Add ("zone", zoneData);
 			requestData.Add ("key", computerMinionKey);
+		} else {
+			Debug.Log ("WARNING DEBUG CODE BEING USED");
+			IsEnviormentBattle = true;
+			zoneData.Add ("latIndex", 5700);
+			zoneData.Add ("lonIndex", 999);
+			requestData.Add ("code", Constants.RequestCodeSoloBattle);
+			requestData.Add ("zone", zoneData);
+			requestData.Add ("key", "debug");
 		}
 		progressIndicator = GameObject.Find ("ProgressCircle");
 		taskIndicator = new TaskIndicator (progressIndicator);
 		startBattle = new Request(this, taskIndicator, dialogPanel, StartServerFight, requestData);
+		startBattle.Start ();
 	}
 
 	bool StartServerFight(DataSnapshot snapshot){
+		Debug.Log ("Response to request recived");
 		int returnKey = (int)snapshot.Child ("code").GetValue(false);
-		if (returnKey == 200) {
+
+		switch (returnKey) {
+		case Constants.HttpOk:
 			battleKey = (string)snapshot.Child ("data").GetValue(false);
 			Debug.Log ("Started battle with key: " + battleKey);
 			pickMinions.SetActive (true);
 			return true;
+		default:
+			Debug.Log ("Error in reponse");
+			return false;
 		}
-		return false;
 	}
 
 	public void StartFight(){
