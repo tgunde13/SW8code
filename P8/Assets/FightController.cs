@@ -82,13 +82,18 @@ public class FightController : MonoBehaviour {
 
 	bool StartServerFight(DataSnapshot snapshot){
 		Debug.Log ("Response to request recived");
-		int returnKey = (int)snapshot.Child ("code").GetValue(false);
+		long returnKey = (long)snapshot.Child ("code").GetValue(false);
 
 		switch (returnKey) {
 		case Constants.HttpOk:
 			battleKey = (string)snapshot.Child ("data").GetValue(false);
 			Debug.Log ("Started battle with key: " + battleKey);
 			pickMinions.SetActive (true);
+			taskIndicator.OnEnd ();
+			return true;
+		case Constants.HttpNotFound:
+			Debug.Log ("Minion not found");
+			taskIndicator.OnEnd ();
 			return true;
 		default:
 			Debug.Log ("Error in reponse");
