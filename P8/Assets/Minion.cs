@@ -29,6 +29,10 @@ public class Minion{
 		return health;
 	}
 
+	public void setHealth(int health){
+		this.health = health;
+	}
+
 	public int getLevel(){
 		return level;
 	}
@@ -41,8 +45,16 @@ public class Minion{
 		return power;
 	}
 
+	public void setPower(int power){
+		this.power = power;
+	}
+
 	public int getSpeed(){
 		return speed;
+	}
+
+	public void setSpeed(int speed){
+		this.speed = speed;
 	}
 
 	public string getType(){

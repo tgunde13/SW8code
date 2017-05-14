@@ -190,7 +190,7 @@ public class MinionPanelController : MonoBehaviour {
 		foreach (Minion m in pickedMinions) {
 			fight.playerMinions.Add (m);
 		}
-		fight.StartFight ();
+		fight.SetPlayerMinions ();
 		Destroy (gameObject.transform.parent.gameObject);
 	}
 

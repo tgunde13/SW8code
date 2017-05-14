@@ -108,6 +108,11 @@ public class FightController : MonoBehaviour {
 		startBattle.Start ();
 	}
 
+	/// <summary>
+	/// Starts the server fight.
+	/// </summary>
+	/// <returns><c>true</c>, if server fight was started, <c>false</c> otherwise.</returns>
+	/// <param name="snapshot">Snapshot.</param>
 	bool StartServerFight(DataSnapshot snapshot){
 		Debug.Log ("Response to request recived");
 		long returnKey = (long)snapshot.Child ("code").GetValue(false);
@@ -130,6 +135,9 @@ public class FightController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Sets the database references, that can be set before minions are chosen.
+	/// </summary>
 	void SetDatabaseRef (){
 		userRef = FirebaseDatabase.DefaultInstance.GetReference ("battles")
 			.Child (battleKey)
@@ -139,9 +147,45 @@ public class FightController : MonoBehaviour {
 		stateRef = FirebaseDatabase.DefaultInstance.GetReference ("battles")
 			.Child (battleKey)
 			.Child ("state");
+		stateRef.ChildChanged += handleChildChanged;
 	}
 
-	public void StartFight(){
+	/// <summary>
+	/// Event handler for state changed.
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="args">Arguments.</param>
+	void handleChildChanged(object sender, ChildChangedEventArgs args){
+		
+	}
+
+	/// <summary>
+	/// Sets the minion database references.
+	/// </summary>
+	void SetMinionDatabaseRefs(){
+		switch(playerMinions.Count){
+		case 1: 
+			minion1Ref = userRef.Child(playerMinions[0].getName());
+			break;
+		case 2: 
+			minion1Ref = userRef.Child(playerMinions[0].getName());
+			minion2Ref = userRef.Child(playerMinions[1].getName());
+			break;
+		case 3:
+			minion1Ref = userRef.Child(playerMinions[0].getName());
+			minion2Ref = userRef.Child(playerMinions[1].getName());
+			minion3Ref = userRef.Child(playerMinions[2].getName());
+			break;
+		default:
+			Debug.Log ("Found no or more than 3 minions");
+			break;
+		}
+	}
+		
+	/// <summary>
+	/// Sets the player minions, and processes the first turn.
+	/// </summary>
+	public void SetPlayerMinions(){
 		playerMinionNum = playerMinions.Count;
 		string minionName = "";
 
@@ -149,29 +193,64 @@ public class FightController : MonoBehaviour {
 			playerMinionOne.SetActive (true);
 			playerMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
 				playerMinions [0].getHealth () + " / " + playerMinions [0].getHealth ();
-			minion1Moves.Add ("minionKey", playerMinions [0].getName ());
-			minionKeys.Add("minion-0", minion1Moves);
-			minion1Moves.Clear ();
+			minion1Moves.Add ("minionKey", playerMinions [0].getKey ());
+			minion1Moves.Add ("avatarKey", FirebaseAuthHandler.getUserId ());
 			InsertSprite (playerMinions [0], 1, true);
+			userRef.Child("minion-0").SetValueAsync (minion1Moves).ContinueWith(task => {
+				Debug.Log("Started to set data");
+				if (task.IsFaulted) {
+					Debug.Log("Failed to set minion 1 in battle");
+				}
+				else if (task.IsCompleted) {
+					Debug.Log("Minion 1 set correctly");
+				}
+			});
 			if (playerMinionNum > 1) {
 				playerMinionTwo.SetActive (true);
 				playerMinionTwo.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
 					playerMinions [1].getHealth () + " / " + playerMinions [1].getHealth ();
-				minionKeys.Add("minion-1", playerMinions[1].getName());
+				minion2Moves.Add ("minionKey", playerMinions [1].getKey ());
+				minion2Moves.Add ("avatarKey", FirebaseAuthHandler.getUserId ());
 				InsertSprite (playerMinions [1], 2, true);
+				userRef.Child("minion-1").SetValueAsync (minion2Moves).ContinueWith(task => {
+					Debug.Log("Started to set data");
+					if (task.IsFaulted) {
+						Debug.Log("Failed to set minion 2 in battle");
+					}
+					else if (task.IsCompleted) {
+						Debug.Log("Minion 2 set correctly");
+					}
+				});
 				if (playerMinionNum > 2) {
 					playerMinionThree.SetActive (true);
 					playerMinionThree.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
 						playerMinions [2].getHealth () + " / " + playerMinions [2].getHealth ();
-					minionKeys.Add("minion-2", playerMinions[2].getName());
+					minion3Moves.Add ("minionKey", playerMinions [2].getKey ());
+					minion3Moves.Add ("avatarKey", FirebaseAuthHandler.getUserId ());
 					InsertSprite (playerMinions [2], 3, true);
+					userRef.Child("minion-2").SetValueAsync (minion3Moves).ContinueWith(task => {
+						Debug.Log("Started to set data");
+						if (task.IsFaulted) {
+							Debug.Log("Failed to set minion 3 in battle");
+						}
+						else if (task.IsCompleted) {
+							Debug.Log("Minion 3 set correctly");
+						}
+					});
 				}
 			}
 		} else {
 			Debug.Log ("Did not find any user minions");
 		}
+		SetMinionDatabaseRefs ();
 	}
 
+	/// <summary>
+	/// Inserts a sprite based on the parameters it was called with.
+	/// </summary>
+	/// <param name="minion">The minion to insert.</param>
+	/// <param name="minionPos">Minion position 1-3 is allowed, where 1 is the top.</param>
+	/// <param name="isPlayerMinion">If set to <c>true</c> is player minion, else it is an opponent minion.</param>
 	void InsertSprite(Minion minion, int minionPos, bool isPlayerMinion){
 		string minionSpriteName = "";
 		GameObject sprite;
