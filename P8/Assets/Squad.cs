@@ -51,4 +51,8 @@ public class Squad {
 		return level;
 	}
 
+	public int getSize(){
+		return size;
+	}
+
 }
