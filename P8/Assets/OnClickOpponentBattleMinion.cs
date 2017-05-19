@@ -1,73 +1,32 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class OnClickOpponentBattleMinion : MonoBehaviour, IPointerClickHandler {
-	public Minion minion;
-	private GameObject attackButton;
-	private GameObject skipButton;
-	private GameObject minionOneText;
-	private GameObject minionTwoText;
-	private GameObject minionThreeText;
-	private GameObject playerSpriteOne;
-	private GameObject playerSpriteTwo;
-	private GameObject playerSpriteThree;
-	private GameObject opponentSpriteOne;
-	private GameObject opponentSpriteTwo;
-	private GameObject opponentSpriteThree;
+	public Minion playerMinion;
+	public GameObject minionSpriteCalling;
+	public string battleKey;
+
+	private Minion minion;
+	private int minionIndexNumber;
+	private GameObject fightController;
 
 	void Start () {
-		//Health idicators
-		minionOneText = gameObject.transform.parent.gameObject
-			.transform.parent.gameObject
-			.transform.Find("Battle Panel").gameObject
-			.transform.Find("Minion 1").gameObject;
-		
-		minionTwoText = gameObject.transform.parent.gameObject
-			.transform.parent.gameObject
-			.transform.Find("Battle Panel").gameObject
-			.transform.Find("Minion 2").gameObject;
-		
-		minionThreeText = gameObject.transform.parent.gameObject
-			.transform.parent.gameObject
-			.transform.Find("Battle Panel").gameObject
-			.transform.Find("Minion 3").gameObject;
+		//Index at which minion is
+		minionIndexNumber = Int32.Parse (gameObject.name.Substring (23)) - 1;
 
+		//Fight Controller
+		fightController = gameObject.transform.parent.gameObject
+		.transform.parent.gameObject;
 
-		//Buttons
-		attackButton = gameObject.transform.parent.gameObject
-			.transform.parent.gameObject
-			.transform.Find("Battle Panel").gameObject
-			.transform.Find("Attack").gameObject;
-		
-		skipButton = gameObject.transform.parent.gameObject
-			.transform.parent.gameObject
-			.transform.Find("Battle Panel").gameObject
-			.transform.Find("Skip").gameObject;
-
-
-		//Sprites
-		playerSpriteOne = gameObject.transform.parent.gameObject
-			.transform.Find ("Player Minion Sprite 1").gameObject;
-		
-		playerSpriteTwo = gameObject.transform.parent.gameObject
-			.transform.Find ("Player Minion Sprite 2").gameObject;
-
-		playerSpriteThree = gameObject.transform.parent.gameObject
-			.transform.Find ("Player Minion Sprite 3").gameObject;
-
-		opponentSpriteOne = gameObject.transform.parent.gameObject
-			.transform.Find ("Opponent Minion Sprite 1").gameObject;
-
-		opponentSpriteTwo = gameObject.transform.parent.gameObject
-			.transform.Find ("Opponent Minion Sprite 2").gameObject;
-
-		opponentSpriteThree = gameObject.transform.parent.gameObject
-			.transform.Find ("Opponent Minion Sprite 3").gameObject;
+		//set minion
+		minion = fightController.GetComponent<FightController>()
+			.opponentMinions[minionIndexNumber];
 	}
 
 	public void OnPointerClick(PointerEventData eventData){
-		
+		new FirebaseMove (battleKey, playerMinion, minion, minionIndexNumber).Start();
 	}
 }

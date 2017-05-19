@@ -6,6 +6,9 @@ using UnityEngine.EventSystems;
 
 public class OnClickPlayerBattleMinion : MonoBehaviour, IPointerClickHandler {
 	public Minion minion;
+	public GameObject opponentSpriteOne;
+	public GameObject opponentSpriteTwo;
+	public GameObject opponentSpriteThree;
 
 	private GameObject attackButton;
 	private GameObject skipButton;
@@ -18,9 +21,6 @@ public class OnClickPlayerBattleMinion : MonoBehaviour, IPointerClickHandler {
 	private GameObject playerSpriteOne;
 	private GameObject playerSpriteTwo;
 	private GameObject playerSpriteThree;
-	private GameObject opponentSpriteOne;
-	private GameObject opponentSpriteTwo;
-	private GameObject opponentSpriteThree;
 	private GameObject fightController;
 	private string battleKey;
 	private int minionIndexNumber;
