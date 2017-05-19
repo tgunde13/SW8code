@@ -13,6 +13,7 @@ public class FightController : MonoBehaviour {
 	public Sprite cleric;
 	public Sprite placeholder;
 	public DialogPanel dialogPanel;
+	public string battleKey;
 
 	private List<GameObject> playerSprites;
 	private List<GameObject> opponentSprites;
@@ -42,11 +43,7 @@ public class FightController : MonoBehaviour {
 	private Squad computerSquad;
 	private int latIndex;
 	private int lonIndex;
-	private string battleKey;
 	private DatabaseReference userRef; //Used first turn to add minions to player
-	private DatabaseReference minion1Ref; //Used after first turn to ref minion 1
-	private DatabaseReference minion2Ref; //Used after first turn to ref minion 2
-	private DatabaseReference minion3Ref; //Used after first turn to ref minion 3
 	private DatabaseReference stateRef; //Listen to state
 
 	// Use this for initialization
@@ -71,6 +68,9 @@ public class FightController : MonoBehaviour {
 		playerMinionTwo = battlePanel.transform.Find ("Minion 2").gameObject;
 		playerMinionThree = battlePanel.transform.Find ("Minion 3").gameObject;
 		spriteCanvas = gameObject.transform.Find ("Minion Sprites").gameObject;
+		opponentMinionOne = battlePanel.transform.Find ("Opponent 1").gameObject;
+		opponentMinionTwo = battlePanel.transform.Find ("Opponent 2").gameObject;
+		opponentMinionThree = battlePanel.transform.Find ("Opponent 3").gameObject;
 
 
 		//--------------related to request--------------//
@@ -172,7 +172,7 @@ public class FightController : MonoBehaviour {
 		stateRef = FirebaseDatabase.DefaultInstance.GetReference ("battles")
 			.Child (battleKey)
 			.Child ("state");
-		stateRef.ChildChanged += handleChildChanged;
+		stateRef.ValueChanged += handleValueChanged;
 	}
 
 	/// <summary>
@@ -180,23 +180,25 @@ public class FightController : MonoBehaviour {
 	/// </summary>
 	/// <param name="sender">Sender.</param>
 	/// <param name="args">Arguments.</param>
-	void handleChildChanged(object sender, ChildChangedEventArgs args){
+	void handleValueChanged(object sender, ValueChangedEventArgs args){
+		DataSnapshot snapshot = args.Snapshot;
 		
 		for (int i = 0; i < playerSprites.Count; i++) {
-			UpdateMinionHealth (args, i, true);
+			UpdateMinionHealth (snapshot, i, true);
 		}
-
-		//Opponent health can't be seen yet
+			
 		for (int i = 0; i < opponentSprites.Count; i++) {
-			//UpdateMinionHealth (args, i, false);
+			UpdateMinionHealth (snapshot, i, false);
 		}
 
 	}
 
-	void UpdateMinionHealth(ChildChangedEventArgs args, int minionPos, bool isPlayerMinion){
+	void UpdateMinionHealth(DataSnapshot snapshot, int minionPos, bool isPlayerMinion){
 		string minionKey = "";
 		string playerKey = "";
 		string teamString = "";
+		long maxHealth = 0;
+		long currentHealth = 0;
 
 		if (isPlayerMinion) {
 			playerKey = FirebaseAuthHandler.getUserId ();
@@ -207,20 +209,22 @@ public class FightController : MonoBehaviour {
 			minionKey = "minion-" + minionPos;
 			teamString = "teamTwo";
 		}
-
-		long maxHealth = (long)args.Snapshot.Child (teamString)
+		Debug.Log (snapshot.Child(teamString).GetValue(false).GetType());
+		maxHealth = (long)snapshot.Child (teamString)
 			.Child (playerKey)
 			.Child ("battleMinions")
 			.Child (minionKey)
 			.Child ("health")
 			.GetValue (false);
-		long currentHealth = (long)args.Snapshot.Child (teamString)
+		Debug.Log (maxHealth);
+		currentHealth = (long)snapshot.Child (teamString)
 			.Child (playerKey)
 			.Child ("battleMinions")
 			.Child (minionKey)
 			.Child ("battleStats")
 			.Child ("currentHP")
 			.GetValue (false);
+		Debug.Log (currentHealth);
 		
 		if (isPlayerMinion) {
 			playerSprites [minionPos].transform.Find ("Health").gameObject.GetComponent<Text> ().text =
@@ -234,29 +238,6 @@ public class FightController : MonoBehaviour {
 			if (currentHealth <= 0) {
 				opponentSprites [minionPos].SetActive (false);
 			}
-		}
-	}
-
-	/// <summary>
-	/// Sets the minion database references.
-	/// </summary>
-	void SetMinionDatabaseRefs(){
-		switch(playerMinions.Count){
-		case 1: 
-			minion1Ref = userRef.Child(playerMinions[0].getName());
-			break;
-		case 2: 
-			minion1Ref = userRef.Child(playerMinions[0].getName());
-			minion2Ref = userRef.Child(playerMinions[1].getName());
-			break;
-		case 3:
-			minion1Ref = userRef.Child(playerMinions[0].getName());
-			minion2Ref = userRef.Child(playerMinions[1].getName());
-			minion3Ref = userRef.Child(playerMinions[2].getName());
-			break;
-		default:
-			Debug.Log ("Found no or more than 3 minions");
-			break;
 		}
 	}
 		
@@ -324,44 +305,43 @@ public class FightController : MonoBehaviour {
 			Debug.Log ("Did not find any user minions");
 		}
 		AddOpponentSprite ();
-		SetMinionDatabaseRefs ();
 	}
 
 	void AddOpponentSprite (){
 		switch (opponentMinions.Count) {
 		case 1:
-			//opponentMinionOne.SetActive (true);
-			//opponentMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-			//	opponentMinions [0].getHealth () + " / " + opponentMinions [0].getHealth ();
+			opponentMinionOne.SetActive (true);
+			opponentMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
+				opponentMinions [0].getHealth () + " / " + opponentMinions [0].getHealth ();
 			InsertSprite (opponentMinions [0], 1, false);
 
 			break;
 		case 2:
-			//opponentMinionOne.SetActive (true);
-			//opponentMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-			//	opponentMinions [0].getHealth () + " / " + opponentMinions [0].getHealth ();
+			opponentMinionOne.SetActive (true);
+			opponentMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
+				opponentMinions [0].getHealth () + " / " + opponentMinions [0].getHealth ();
 			InsertSprite (opponentMinions [0], 1, false);
 
-			//opponentMinionTwo.SetActive (true);
-			//opponentMinionTwo.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-			//	opponentMinions [1].getHealth () + " / " + opponentMinions [1].getHealth ();
+			opponentMinionTwo.SetActive (true);
+			opponentMinionTwo.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
+				opponentMinions [1].getHealth () + " / " + opponentMinions [1].getHealth ();
 			InsertSprite (opponentMinions [1], 2, false);
 
 			break;
 		case 3:
-			//opponentMinionOne.SetActive (true);
-			//opponentMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-			//	opponentMinions [0].getHealth () + " / " + opponentMinions [0].getHealth ();
+			opponentMinionOne.SetActive (true);
+			opponentMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
+				opponentMinions [0].getHealth () + " / " + opponentMinions [0].getHealth ();
 			InsertSprite (opponentMinions [0], 1, false);
 
-			//opponentMinionTwo.SetActive (true);
-			//opponentMinionTwo.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-			//	opponentMinions [1].getHealth () + " / " + opponentMinions [1].getHealth ();
+			opponentMinionTwo.SetActive (true);
+			opponentMinionTwo.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
+				opponentMinions [1].getHealth () + " / " + opponentMinions [1].getHealth ();
 			InsertSprite (opponentMinions [1], 2, false);
 
-			//opponentMinionThree.SetActive (true);
-			//opponentMinionThree.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-			//	opponentMinions [2].getHealth () + " / " + opponentMinions [2].getHealth ();
+			opponentMinionThree.SetActive (true);
+			opponentMinionThree.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
+				opponentMinions [2].getHealth () + " / " + opponentMinions [2].getHealth ();
 			InsertSprite (opponentMinions [2], 3, false);
 
 			break;
@@ -412,6 +392,6 @@ public class FightController : MonoBehaviour {
 	}
 
 	void OnDestroy(){
-		stateRef.ChildChanged -= handleChildChanged;
+		stateRef.ValueChanged -= handleValueChanged;
 	}
 }
