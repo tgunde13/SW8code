@@ -18,6 +18,5 @@ public class OnClickSkip : MonoBehaviour {
 		new FirebaseMove (battleKey, minion).Start();
 		minionSpriteCalling
 			.GetComponent<OnClickPlayerBattleMinion> ().SetPassive(false);
-		gameObject.SetActive (false);
 	}
 }

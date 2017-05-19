@@ -24,9 +24,10 @@ public class OnClickPlayerBattleMinion : MonoBehaviour, IPointerClickHandler {
 	private GameObject fightController;
 	private string battleKey;
 	private int minionIndexNumber;
+	private bool firstActive = true;
 
 
-	void Start () {
+	public void Start () {
 		//Index at which minion is
 		minionIndexNumber = Int32.Parse(gameObject.name.Substring(21)) - 1;
 
@@ -110,8 +111,10 @@ public class OnClickPlayerBattleMinion : MonoBehaviour, IPointerClickHandler {
 
 	public void OnPointerClick(PointerEventData eventData){
 		Debug.Log ("Found minion: " + minion.ToString ());
-		if (minionOneText.activeSelf) {
+		Debug.Log (minionOneText.activeSelf);
+		if (minionOneText.activeSelf || firstActive) {
 			SetAttacking ();
+			firstActive = false;
 		} else {
 			SetPassive (true);
 		}
@@ -156,9 +159,7 @@ public class OnClickPlayerBattleMinion : MonoBehaviour, IPointerClickHandler {
 		
 		attackButton.SetActive (false);
 
-		if (minionWasClicked) {
-			skipButton.SetActive (false);
-		}
+		skipButton.SetActive (false);
 
 		if (playerSpriteOne.activeSelf) {
 			minionOneText.SetActive (true);
@@ -174,14 +175,29 @@ public class OnClickPlayerBattleMinion : MonoBehaviour, IPointerClickHandler {
 
 		if (opponentSpriteOne.activeSelf) {
 			opponentOneText.SetActive (true);
+			OnClickOpponentBattleMinion one = opponentSpriteOne
+				.GetComponent<OnClickOpponentBattleMinion>();
+			if(one != null){
+				Destroy(one);
+			}
 		}
 
 		if (opponentSpriteTwo.activeSelf) {
 			opponentTwoText.SetActive (true);
+			OnClickOpponentBattleMinion two = opponentSpriteOne
+				.GetComponent<OnClickOpponentBattleMinion>();
+			if(two != null){
+				Destroy(two);
+			}
 		}
 
 		if (opponentSpriteThree.activeSelf) {
 			opponentThreeText.SetActive (true);
+			OnClickOpponentBattleMinion three = opponentSpriteOne
+				.GetComponent<OnClickOpponentBattleMinion>();
+			if(three != null){
+				Destroy(three);
+			}
 		}
 
 		if (!minionWasClicked) {

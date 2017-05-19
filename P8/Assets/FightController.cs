@@ -182,7 +182,7 @@ public class FightController : MonoBehaviour {
 	/// <param name="args">Arguments.</param>
 	void handleValueChanged(object sender, ValueChangedEventArgs args){
 		DataSnapshot snapshot = args.Snapshot;
-		
+
 		for (int i = 0; i < playerSprites.Count; i++) {
 			UpdateMinionHealth (snapshot, i, true);
 		}
@@ -190,7 +190,19 @@ public class FightController : MonoBehaviour {
 		for (int i = 0; i < opponentSprites.Count; i++) {
 			UpdateMinionHealth (snapshot, i, false);
 		}
+		AdvanceTurn ();
 
+	}
+
+	void AdvanceTurn(){
+		Debug.Log ("AdvanceTurn reached");
+
+		OnClickPlayerBattleMinion oc = spriteCanvas.transform.Find ("Player Minion Sprite 1").gameObject.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
+		OnClickPlayerBattleMinion oc2 = spriteCanvas.transform.Find ("Player Minion Sprite 2").gameObject.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
+		OnClickPlayerBattleMinion oc3 = spriteCanvas.transform.Find ("Player Minion Sprite 3").gameObject.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
+		oc.Start ();
+		oc2.Start ();
+		oc3.Start ();
 	}
 
 	void UpdateMinionHealth(DataSnapshot snapshot, int minionPos, bool isPlayerMinion){
