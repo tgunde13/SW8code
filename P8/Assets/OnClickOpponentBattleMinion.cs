@@ -28,5 +28,7 @@ public class OnClickOpponentBattleMinion : MonoBehaviour, IPointerClickHandler {
 
 	public void OnPointerClick(PointerEventData eventData){
 		new FirebaseMove (battleKey, playerMinion, minion, minionIndexNumber).Start();
+		minionSpriteCalling.GetComponent<OnClickPlayerBattleMinion> ()
+			.SetPassive (false);
 	}
 }
