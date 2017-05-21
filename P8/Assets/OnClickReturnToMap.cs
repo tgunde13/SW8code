@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class NewBehaviourScript : MonoBehaviour {
+public class OnClickReturnToMap : MonoBehaviour {
 	public Button TheButton;
 
 	void Start(){
-		Button btn = TheButton.GetComponent<Button> ();
-		btn.onClick.AddListener (loadMap);
+		TheButton = gameObject.GetComponent<Button> ();
+		TheButton.onClick.AddListener (loadMap);
 	}
 
 	void loadMap(){
