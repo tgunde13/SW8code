@@ -35,10 +35,6 @@ public class FightController : MonoBehaviour {
 	private TaskIndicator taskIndicator;
 	private Dictionary<string, object> requestData;
 	private Dictionary<string, object> zoneData;
-	private Dictionary<string, object> minionKeys;
-	private Dictionary<string, object> minion1Moves;
-	private Dictionary<string, object> minion2Moves;
-	private Dictionary<string, object> minion3Moves;
 	private string computerMinionKey = "";
 	private Squad computerSquad;
 	private int latIndex;
@@ -48,13 +44,6 @@ public class FightController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//--------------initialization of Dictionaries for setting values--------------//
-		minionKeys = new Dictionary<string, object>();
-		minion1Moves = new Dictionary<string, object> ();
-		minion2Moves = new Dictionary<string, object> ();
-		minion3Moves = new Dictionary<string, object> ();
-
-
 		//--------------initialization of lists--------------//
 		playerMinions = new List<Minion> ();
 		opponentMinions = new List<Minion> ();
@@ -197,12 +186,15 @@ public class FightController : MonoBehaviour {
 	void AdvanceTurn(){
 		Debug.Log ("AdvanceTurn reached");
 
-		OnClickPlayerBattleMinion oc = spriteCanvas.transform.Find ("Player Minion Sprite 1").gameObject.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
-		OnClickPlayerBattleMinion oc2 = spriteCanvas.transform.Find ("Player Minion Sprite 2").gameObject.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
-		OnClickPlayerBattleMinion oc3 = spriteCanvas.transform.Find ("Player Minion Sprite 3").gameObject.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
-		oc.Start ();
-		oc2.Start ();
-		oc3.Start ();
+		OnClickPlayerBattleMinion oc = spriteCanvas
+			.transform.Find ("Player Minion Sprite 1").gameObject
+			.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
+		OnClickPlayerBattleMinion oc2 = spriteCanvas
+			.transform.Find ("Player Minion Sprite 2").gameObject
+			.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
+		OnClickPlayerBattleMinion oc3 = spriteCanvas
+			.transform.Find ("Player Minion Sprite 3").gameObject
+			.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
 	}
 
 	void UpdateMinionHealth(DataSnapshot snapshot, int minionPos, bool isPlayerMinion){
@@ -258,64 +250,49 @@ public class FightController : MonoBehaviour {
 	/// </summary>
 	public void SetPlayerMinions(){
 		playerMinionNum = playerMinions.Count;
-		string minionName = "";
+		bool minionPicked = false;
 
-		if (playerMinionNum > 0) {
-			playerMinionOne.SetActive (true);
-			playerMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-				playerMinions [0].getHealth () + " / " + playerMinions [0].getHealth ();
-			minion1Moves.Add ("minionKey", playerMinions [0].getKey ());
-			minion1Moves.Add ("avatarKey", FirebaseAuthHandler.getUserId ());
-			InsertSprite (playerMinions [0], 1, true);
-			playerSprites.Add (playerMinionOne);
-			userRef.Child("minion-0").SetValueAsync (minion1Moves).ContinueWith(task => {
-				Debug.Log("Started to set data");
-				if (task.IsFaulted) {
-					Debug.Log("Failed to set minion 1 in battle");
-				}
-				else if (task.IsCompleted) {
-					Debug.Log("Minion 1 set correctly");
-				}
-			});
-			if (playerMinionNum > 1) {
-				playerMinionTwo.SetActive (true);
-				playerMinionTwo.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-					playerMinions [1].getHealth () + " / " + playerMinions [1].getHealth ();
-				minion2Moves.Add ("minionKey", playerMinions [1].getKey ());
-				minion2Moves.Add ("avatarKey", FirebaseAuthHandler.getUserId ());
-				InsertSprite (playerMinions [1], 2, true);
-				playerSprites.Add (playerMinionTwo);
-				userRef.Child("minion-1").SetValueAsync (minion2Moves).ContinueWith(task => {
-					Debug.Log("Started to set data");
-					if (task.IsFaulted) {
-						Debug.Log("Failed to set minion 2 in battle");
-					}
-					else if (task.IsCompleted) {
-						Debug.Log("Minion 2 set correctly");
-					}
-				});
-				if (playerMinionNum > 2) {
+		for (int i = 0; i < 3; i++) {
+			//Adds a sprite if a minion was picked
+			if (i <= (playerMinionNum - 1)) {
+				minionPicked = true;
+				switch (i) {
+				case 0:
+					playerMinionOne.SetActive (true);
+					playerMinionOne.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
+						playerMinions [0].getHealth () + " / " + playerMinions [0].getHealth ();
+					InsertSprite (playerMinions [0], 1, true);
+					playerSprites.Add (playerMinionOne);
+					break;
+				case 1:
+					playerMinionTwo.SetActive (true);
+					playerMinionTwo.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
+						playerMinions [1].getHealth () + " / " + playerMinions [1].getHealth ();
+					InsertSprite (playerMinions [1], 2, true);
+					playerSprites.Add (playerMinionTwo);
+					break;
+				case 2:
 					playerMinionThree.SetActive (true);
 					playerMinionThree.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
 						playerMinions [2].getHealth () + " / " + playerMinions [2].getHealth ();
-					minion3Moves.Add ("minionKey", playerMinions [2].getKey ());
-					minion3Moves.Add ("avatarKey", FirebaseAuthHandler.getUserId ());
 					InsertSprite (playerMinions [2], 3, true);
 					playerSprites.Add (playerMinionThree);
-					userRef.Child("minion-2").SetValueAsync (minion3Moves).ContinueWith(task => {
-						Debug.Log("Started to set data");
-						if (task.IsFaulted) {
-							Debug.Log("Failed to set minion 3 in battle");
-						}
-						else if (task.IsCompleted) {
-							Debug.Log("Minion 3 set correctly");
-						}
-					});
+					break;
+				default:
+					Debug.Log ("Picked too many minions");
+					break;
 				}
 			}
-		} else {
-			Debug.Log ("Did not find any user minions");
+
+			if (minionPicked) {
+				new FirebaseMove (battleKey, playerMinions [i], i).Start ();
+			} else {
+				new FirebaseMove (battleKey, i).Start ();
+			}
+
+			minionPicked = false;
 		}
+
 		AddOpponentSprite ();
 	}
 
