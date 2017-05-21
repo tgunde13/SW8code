@@ -169,16 +169,24 @@ public class FightController : MonoBehaviour {
 	/// <param name="args">Arguments.</param>
 	void handleValueChanged(object sender, ValueChangedEventArgs args){
 		DataSnapshot snapshot = args.Snapshot;
-
+		bool battleOver;
+		battleOver = (bool)snapshot.Child ("over")
+			.GetValue (false);
+		
 		for (int i = 0; i < playerSprites.Count; i++) {
 			UpdateMinionHealth (snapshot, i, true);
 		}
-			
+
 		for (int i = 0; i < opponentSprites.Count; i++) {
 			UpdateMinionHealth (snapshot, i, false);
 		}
-		AdvanceTurn ();
 
+		if (battleOver) {
+			stateRef.ValueChanged -= handleValueChanged;
+			GetReward ();
+		} else {
+			AdvanceTurn ();
+		}
 	}
 
 	void AdvanceTurn(){
@@ -195,6 +203,12 @@ public class FightController : MonoBehaviour {
 		OnClickPlayerBattleMinion oc3 = spriteCanvas
 			.transform.Find ("Player Minion Sprite 3").gameObject
 			.AddComponent<OnClickPlayerBattleMinion> () as OnClickPlayerBattleMinion;
+	}
+
+	void GetReward(){
+		Debug.Log ("Battle over getting rewarded");
+		gameObject.transform.parent.gameObject.GetComponent<RewardScreenController> ().AwardReward (battleKey, playerMinions, opponentMinions[0]);
+		Destroy (gameObject);
 	}
 
 	void UpdateMinionHealth(DataSnapshot snapshot, int minionPos, bool isPlayerMinion){
