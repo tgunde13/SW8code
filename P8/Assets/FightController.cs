@@ -21,6 +21,7 @@ public class FightController : MonoBehaviour {
 	private bool IsEnviormentBattle = false;
 	private GameObject computerGameobject;
 	private int playerMinionNum;
+	private int turnCounter = -1;
 	private GameObject battlePanel;
 	private GameObject playerMinionOne;
 	private GameObject playerMinionTwo;
@@ -31,6 +32,7 @@ public class FightController : MonoBehaviour {
 	private GameObject spriteCanvas;
 	private GameObject progressIndicator;
 	private GameObject pickMinions;
+	private GameObject turnIndicator;
 	private Request startBattle;
 	private TaskIndicator taskIndicator;
 	private Dictionary<string, object> requestData;
@@ -39,7 +41,6 @@ public class FightController : MonoBehaviour {
 	private Squad computerSquad;
 	private int latIndex;
 	private int lonIndex;
-	private DatabaseReference userRef; //Used first turn to add minions to player
 	private DatabaseReference stateRef; //Listen to state
 
 	// Use this for initialization
@@ -60,6 +61,8 @@ public class FightController : MonoBehaviour {
 		opponentMinionOne = battlePanel.transform.Find ("Opponent 1").gameObject;
 		opponentMinionTwo = battlePanel.transform.Find ("Opponent 2").gameObject;
 		opponentMinionThree = battlePanel.transform.Find ("Opponent 3").gameObject;
+		turnIndicator = gameObject.transform.Find("Turn Counter").gameObject
+			.transform.Find("Turn").gameObject;
 
 
 		//--------------related to request--------------//
@@ -153,11 +156,6 @@ public class FightController : MonoBehaviour {
 	/// Sets the database references, that can be set before minions are chosen.
 	/// </summary>
 	void SetDatabaseRef (){
-		userRef = FirebaseDatabase.DefaultInstance.GetReference ("battles")
-			.Child (battleKey)
-			.Child("chosenMoves")
-			.Child("moves")
-			.Child(FirebaseAuthHandler.getUserId());
 		stateRef = FirebaseDatabase.DefaultInstance.GetReference ("battles")
 			.Child (battleKey)
 			.Child ("state");
@@ -185,6 +183,8 @@ public class FightController : MonoBehaviour {
 
 	void AdvanceTurn(){
 		Debug.Log ("AdvanceTurn reached");
+		turnCounter++;
+		turnIndicator.GetComponent<Text> ().text = turnCounter.ToString();
 
 		OnClickPlayerBattleMinion oc = spriteCanvas
 			.transform.Find ("Player Minion Sprite 1").gameObject

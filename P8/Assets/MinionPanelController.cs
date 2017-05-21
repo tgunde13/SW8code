@@ -25,6 +25,7 @@ public class MinionPanelController : MonoBehaviour {
 	private GameObject pageNum;
 	private GameObject battleCanvas;
 	private GameObject battlePanel;
+	private GameObject turnCounter;
 	private FightController fight;
 	private bool updateMinionPanel = false;
 
@@ -55,6 +56,7 @@ public class MinionPanelController : MonoBehaviour {
 			.transform.Find ("Battle Minions").gameObject;
 		battlePanel = battleCanvas.transform.Find ("Battle Panel").gameObject;
 		fight = battleCanvas.GetComponent<FightController> ();
+		turnCounter = battleCanvas.transform.Find ("Turn Counter").gameObject;
 		GetMinions ();
 	}
 
@@ -187,6 +189,7 @@ public class MinionPanelController : MonoBehaviour {
 
 	public void DonePressed(){
 		battlePanel.SetActive (true);
+		turnCounter.SetActive (true);
 		foreach (Minion m in pickedMinions) {
 			fight.playerMinions.Add (m);
 		}
