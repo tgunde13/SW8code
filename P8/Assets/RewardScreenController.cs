@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Firebase.Database;
 
 public class RewardScreenController : MonoBehaviour {
@@ -8,6 +9,8 @@ public class RewardScreenController : MonoBehaviour {
 	private List<Minion> playerMinionsUsed;
 	private Minion awardedMinion;
 	private GameObject rewardScreen;
+	private GameObject titleText;
+	private GameObject battleOverText;
 	private List<object> gainedXP;
 	private List<object> deadMinions;
 	private long goldRecived;
@@ -20,11 +23,13 @@ public class RewardScreenController : MonoBehaviour {
 		playerMinionsUsed = new List<Minion> ();
 		gainedXP = new List<object> ();
 		deadMinions = new List<object> ();
+
 		rewardScreen = gameObject.transform.Find ("Reward Screen").gameObject;
+		titleText = rewardScreen.transform.Find ("Over Text").gameObject;
+		battleOverText = rewardScreen.transform.Find ("Text").gameObject;
 	}
 
 	public void AwardReward(string battleKey, List<Minion> playerMinions, Minion opponentMinion){
-		rewardScreen.SetActive (true);
 		this.battleKey = battleKey;
 		this.playerMinionsUsed = playerMinions;
 		this.awardedMinion = opponentMinion;
@@ -51,7 +56,6 @@ public class RewardScreenController : MonoBehaviour {
 		Debug.Log ("Looking at reward data");
 		goldRecived = (long)reward.Child ("gold")
 			.GetValue (false);
-		Debug.Log (goldRecived);
 		
 		if (reward.Child ("deadMinions").Exists) {
 			deadMinions = (List<object>)reward.Child ("deadMinions").GetValue (false);
@@ -72,15 +76,39 @@ public class RewardScreenController : MonoBehaviour {
 	}
 
 	void SetTextInRewardScreen (){
-		Debug.Log ("Seting text");
-		Debug.Log ("Got awarded minion: " + gotAwardedMinion);
-		Debug.Log ("Gold gained: " + goldRecived);
-		if (gotAwardedMinion) {
-			Debug.Log ("Minion in battle: " + gainedXP [0]);
+		Debug.Log ("Setting text");
+		string battleText = "";
+
+		if (gainedXP.Count > 0) {
+			titleText.GetComponent<Text> ().text = "Victory!";
+		} else {
+			titleText.GetComponent<Text> ().text = "Defeat!";
 		}
-		Debug.Log ("Gained xp: " + xpRecived);
+
+		battleText += "Recived " + goldRecived + " gold\n\n";
+
 		if (deadMinions.Count > 0) {
-			Debug.Log ("Dead minion: " + deadMinions [0]);
+			battleText += "Following minions are dead:\n";
+			foreach (object m in deadMinions) {
+				battleText += ((string)m) + "\n";
+			}
+			battleText += "\n";
 		}
+			
+		if (gainedXP.Count > 0) {
+			battleText += "Following minions gained " + xpRecived + " xp:\n";
+			foreach (object m in gainedXP) {
+				battleText += ((string)m) + "\n";
+			}
+			battleText += "\n";
+		}
+			
+		if (gotAwardedMinion) {
+			battleText += "Gained minion:\n";
+			battleText += awardedMinion.ToString ();
+		}
+
+		battleOverText.GetComponent<Text> ().text = battleText;
+		rewardScreen.SetActive (true);
 	}
 }
