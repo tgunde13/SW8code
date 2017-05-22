@@ -80,10 +80,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _geocodeInput: {fileID: 0}
   _zoom: 10
-  _elevationMultiplier: 3
+  _elevationMultiplier: 2
   _voxelDepthPadding: 1
   _tileWidthInVoxels: 100
   _voxelFetcher: {fileID: 114000012445315992}
-  _player: {fileID: 0}
+  _camera: {fileID: 0}
   _voxelBatchCount: 500
   _styleUrl: mapbox://styles/davidrhodes/cix2bbfub00242qt7hcjkhs1b

@@ -1,9 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Mapbox.VectorTile;
 using UnityEngine;
 using UnityEngine.UI;
-using Mapbox.MeshGeneration.Interfaces;
+using Mapbox.Unity.MeshGeneration.Interfaces;
 
 public class TerrainMakiHelper : MonoBehaviour, ILabelVisualizationHelper
 {

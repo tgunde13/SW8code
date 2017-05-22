@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Mapbox.MeshGeneration;
-using Mapbox.Scripts.Utilities;
+using Mapbox.Unity.MeshGeneration;
+using Mapbox.Unity.Utilities;
 using Mapbox;
 using Mapbox.Map;
+using Mapbox.Utils;
 
 public class UpdatePosition : MonoBehaviour {
 	
@@ -53,9 +54,10 @@ public class UpdatePosition : MonoBehaviour {
 	/// </summary>
 	void getNewMap(){
 		Vector2 pos = new Vector2 (current_latitude, current_longitude);
-		getNewCameraPos (pos);
+		Vector2d pos2 = new Vector2d(0, 0);
+		getNewCameraPos (pos, pos2);
 		//The rest of the method is based on Mapbox Slippy helper function
-		current_tile = Conversions.MetersToTile (sprites.player_sprite.transform.position.ToVector2xz () + MapController.ReferenceTileRect.center, mapController.Zoom);
+		current_tile = Conversions.MetersToTile (sprites.player_sprite.transform.position.ToVector2d () + MapController.ReferenceTileRect.Center, mapController.Zoom);
 		if (current_tile != cached_tile) {
 			for (int i = -range; i <= range; i++) {
 				for (int j = -range; j <= range; j++) {
@@ -67,9 +69,9 @@ public class UpdatePosition : MonoBehaviour {
 		updating_location = false;
 	}
 
-	void getNewCameraPos(Vector2 pos){
+	void getNewCameraPos(Vector2 pos, Vector2d pos2){
 		//update camera pos
-		Vector3 new_camera_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (pos);
+		Vector3 new_camera_pos = Mapbox.Unity.Utilities.VectorExtensions.AsUnityPosition (pos, pos2, (float)2.5);
 		new_camera_pos.y = sprites.y_pos_of_sprites;
 		sprites.player_sprite.transform.position = new_camera_pos;
 		unity_camera.transform.position = new Vector3(sprites.player_sprite.transform.position.x, 500f, sprites.player_sprite.transform.position.z);

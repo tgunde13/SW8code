@@ -1,18 +1,20 @@
-using UnityEngine;
-using System.Collections;
-using UnityEditor;
-
-[CustomEditor(typeof(DirectionsHelper))]
-public class DirectionsHelperEditor : Editor
+namespace Mapbox.Examples.Drive
 {
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
+    using UnityEngine;
+    using UnityEditor;
 
-        DirectionsHelper myScript = (DirectionsHelper)target;
-        if (GUILayout.Button("Create"))
+    [CustomEditor(typeof(DirectionsHelper))]
+    public class DirectionsHelperEditor : Editor
+    {
+        public override void OnInspectorGUI()
         {
-            myScript.Query();
+            DrawDefaultInspector();
+
+            DirectionsHelper myScript = (DirectionsHelper)target;
+            if (GUILayout.Button("Create"))
+            {
+                myScript.Query();
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.37356392, g: 0.38112, b: 0.3588766, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -809,49 +809,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!1001 &844423944
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4000010852918880, guid: d8e0d904781544134b06adf5fc1e61d6, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010852918880, guid: d8e0d904781544134b06adf5fc1e61d6, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010852918880, guid: d8e0d904781544134b06adf5fc1e61d6, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010852918880, guid: d8e0d904781544134b06adf5fc1e61d6, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010852918880, guid: d8e0d904781544134b06adf5fc1e61d6, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010852918880, guid: d8e0d904781544134b06adf5fc1e61d6, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010852918880, guid: d8e0d904781544134b06adf5fc1e61d6, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000010852918880, guid: d8e0d904781544134b06adf5fc1e61d6, type: 2}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: d8e0d904781544134b06adf5fc1e61d6, type: 2}
-  m_RootGameObject: {fileID: 939477487}
-  m_IsPrefabParent: 0
 --- !u!1 &908265034
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,51 +907,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &939477487
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1000010734118620, guid: d8e0d904781544134b06adf5fc1e61d6,
-    type: 2}
-  m_PrefabInternal: {fileID: 844423944}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 939477489}
-  - 114: {fileID: 939477488}
-  m_Layer: 0
-  m_Name: MapboxConvenience
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &939477488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114000011803853994, guid: d8e0d904781544134b06adf5fc1e61d6,
-    type: 2}
-  m_PrefabInternal: {fileID: 844423944}
-  m_GameObject: {fileID: 939477487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 566d9491d18b041269a6fe707cd0aae3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TileScale: 0
-  _token: 
---- !u!4 &939477489
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4000010852918880, guid: d8e0d904781544134b06adf5fc1e61d6,
-    type: 2}
-  m_PrefabInternal: {fileID: 844423944}
-  m_GameObject: {fileID: 939477487}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
 --- !u!1 &1021652607
 GameObject:
   m_ObjectHideFlags: 0

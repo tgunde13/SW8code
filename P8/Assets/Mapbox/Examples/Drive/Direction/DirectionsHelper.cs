@@ -1,31 +1,33 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Mapbox;
-using Mapbox.MeshGeneration.Factories;
-using Mapbox.Scripts.Utilities;
-
-public class DirectionsHelper : MonoBehaviour
+namespace Mapbox.Examples.Drive
 {
-    public DirectionsFactory Directions;
-    public List<Transform> Waypoints;
+    using UnityEngine;
+    using System.Collections.Generic;
+    using Mapbox;
+    using Mapbox.Unity.MeshGeneration.Factories;
+    using Mapbox.Unity.MeshGeneration;
+    using Mapbox.Utils;
+    using Mapbox.Unity.Utilities;
 
-	void Start ()
-	{
-		// draw directions path at start
-		Query ();
-	}
-
-    public void Query()
+    public class DirectionsHelper : MonoBehaviour
     {
-        var waypoints = new List<GeoCoordinate>();
-        foreach (var wp in Waypoints)
+        public DirectionsFactory Directions;
+        public List<Transform> Waypoints;
+
+        void Start()
         {
-            waypoints.Add(wp.transform.GetGeoPosition());
+            // draw directions path at start
+            Query();
         }
 
-        Directions.Query(waypoints);
+        public void Query()
+        {
+            var waypoints = new List<Vector2d>();
+            foreach (var wp in Waypoints)
+            {
+                waypoints.Add(wp.transform.GetGeoPosition(MapController.ReferenceTileRect.Center, MapController.WorldScaleFactor));
+            }
+
+            Directions.Query(waypoints);
+        }
     }
-
-
 }
