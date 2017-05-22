@@ -67,7 +67,7 @@ public class Minion{
 
 	public override string ToString ()
 	{
-		return string.Format ("Key: {0} \n Health: {1} \n Level: {2} \n Name: {3} \n Power: {4} \n Speed: {5} \n Type: {6} \n XP: {7}",
-			key, health, level, name, power, speed, type, xp);
+		return string.Format ("Health: {0} \nLevel: {1} \nName: {2} \nPower: {3} \nSpeed: {4} \nType: {5} \nXP: {6}",
+			health, level, name, power, speed, type, xp);
 	}
 }
