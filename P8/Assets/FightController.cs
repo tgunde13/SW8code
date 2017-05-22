@@ -231,9 +231,6 @@ public class FightController : MonoBehaviour {
 			playerKey = computerMinionKey;
 			minionKey = "minion-" + minionPos.ToString();
 			teamString = "teamTwo";
-			Debug.Log ("playerKey " + playerKey);
-			Debug.Log ("minionKey " + minionKey);
-			Debug.Log ("teamString " + teamString);
 		}
 
 		maxHealth = (long)snapshot.Child (teamString)
@@ -242,7 +239,6 @@ public class FightController : MonoBehaviour {
 			.Child (minionKey)
 			.Child ("health")
 			.GetValue (false);
-		Debug.Log ("max health is: " + maxHealth);
 		currentHealth = (long)snapshot.Child (teamString)
 			.Child (playerKey)
 			.Child ("battleMinions")
@@ -250,7 +246,6 @@ public class FightController : MonoBehaviour {
 			.Child ("battleStats")
 			.Child ("currentHP")
 			.GetValue (false);
-		Debug.Log ("current health is: " + currentHealth);
 		
 		if (isPlayerMinion) {
 			playerSpritesText [minionPos].transform.Find ("Health").gameObject.GetComponent<Text> ().text =
