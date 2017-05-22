@@ -111,6 +111,7 @@ public class FightController : MonoBehaviour {
 			requestData.Add ("code", Constants.RequestCodeSoloBattle);
 			requestData.Add ("zone", zoneData);
 			requestData.Add ("key", "debug");
+			computerMinionKey = "debug";
 			computerSquad = new Squad (1, 1, "Spearman", 10, 1, 10, 57.003, 9.991, "debug");
 			for (int i = 0; i < computerSquad.getSize (); i++) {
 				opponentMinions.Add(new Minion(computerSquad.getKey(), 
@@ -183,7 +184,7 @@ public class FightController : MonoBehaviour {
 			
 		for (int i = 0; i < opponentSpritesText.Count; i++) {
 			Debug.Log(opponentSpritesText [i].name);
-			//UpdateMinionHealth (snapshot, i, false);
+			UpdateMinionHealth (snapshot, i, false);
 		}
 
 		if (battleOver) {
@@ -230,6 +231,9 @@ public class FightController : MonoBehaviour {
 			playerKey = computerMinionKey;
 			minionKey = "minion-" + minionPos.ToString();
 			teamString = "teamTwo";
+			Debug.Log ("playerKey " + playerKey);
+			Debug.Log ("minionKey " + minionKey);
+			Debug.Log ("teamString " + teamString);
 		}
 
 		maxHealth = (long)snapshot.Child (teamString)
