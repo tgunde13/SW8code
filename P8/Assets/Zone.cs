@@ -49,8 +49,9 @@ public class Zone {
 		long level = (long)args.Snapshot.Child ("level").GetValue (false);
 		long power = (long)args.Snapshot.Child ("power").GetValue (false);
 		long speed = (long)args.Snapshot.Child ("speed").GetValue (false);
+		long size = (long)args.Snapshot.Child ("size").GetValue (false);
 
-		Squad s = new Squad ((int) level, 1, name, (int) maxHealth, (int) power, (int) speed, latitude, longitude, key);
+		Squad s = new Squad ((int) level, (int) size, name, (int) maxHealth, (int) power, (int) speed, latitude, longitude, key);
 		squads.Add(s);
 		sprite_controller.addSprite(s);
 	}
