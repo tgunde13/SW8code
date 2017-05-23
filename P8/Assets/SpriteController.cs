@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Firebase.Database;
+using Mapbox.Scripts.Utilities;
 
 public class SpriteController : MonoBehaviour {
-	public GameObject placeholder_sprite;
-	public GameObject player_sprite;
+	public GameObject placeholderSprite;
+	public GameObject playerSprite;
 	public GameObject cleric;
 	public GameObject spearmaiden;
 	public GameObject swordman;
-	public float y_pos_of_sprites = 5f;
+	public float yPosOfSprites = 5f;
 
 	private List<Zone> zones;
-	private int latitude_index;
-	private int longitude_index;
-	private Zone center_zone;
+	private int latitudeIndex;
+	private int longitudeIndex;
+	private Zone centerZone;
 
 	// Use this for initialization
 	void Start () {
@@ -32,11 +33,11 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	/// <param name="latitude">Current latitude.</param>
 	/// <param name="longitude">Current longitude.</param>
-	public void iniPosition(float latitude, float longitude){
-		latitude_index = (int)Math.Floor(latitude * 100f);
-		longitude_index = (int)Math.Floor(longitude * 100f);
-		center_zone = new Zone (latitude_index, longitude_index, this);
-		newZone ();
+	public void IniPosition(float latitude, float longitude){
+		latitudeIndex = (int)Math.Floor(latitude * 100f);
+		longitudeIndex = (int)Math.Floor(longitude * 100f);
+		centerZone = new Zone (latitudeIndex, longitudeIndex, this);
+		NewZone ();
 	}
 
 	/// <summary>
@@ -44,16 +45,16 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	/// <param name="latitude">Current latitude.</param>
 	/// <param name="longitude">Current longitude.</param>
-	public void updatePosition(float latitude, float longitude){
-		latitude_index = (int)Math.Floor(latitude * 100f);
-		longitude_index = (int)Math.Floor(longitude * 100f);
+	public void UpdatePosition(float latitude, float longitude){
+		latitudeIndex = (int)Math.Floor(latitude * 100f);
+		longitudeIndex = (int)Math.Floor(longitude * 100f);
 
-		int latitude_change = center_zone.getLatitudeIndex () - latitude_index;
-		int longitude_change = center_zone.getLongitudeIndex () - longitude_index;
+		int latitudeChange = centerZone.GetLatitudeIndex () - latitudeIndex;
+		int longitudeChange = centerZone.GetLongitudeIndex () - longitudeIndex;
 
-		if (latitude_change != 0 || longitude_change != 0) {
-			center_zone = new Zone (latitude_index, longitude_index, this);
-			updateZone (latitude_change, longitude_change);
+		if (latitudeChange != 0 || longitudeChange != 0) {
+			centerZone = new Zone (latitudeIndex, longitudeIndex, this);
+			UpdateZone (latitudeChange, longitudeChange);
 		}
 	}
 
@@ -62,14 +63,14 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	/// <param name="latitude_change">Latitude change.</param>
 	/// <param name="longitude_change">Longitude change.</param>
-	void updateZone(int latitude_change, int longitude_change){
-		if (Math.Abs (latitude_change) > 2 || Math.Abs (longitude_change) > 2) {
-			newZone ();
+	void UpdateZone(int latitudeChange, int longitudeChange){
+		if (Math.Abs (latitudeChange) > 2 || Math.Abs (longitudeChange) > 2) {
+			NewZone ();
 		} else {
 			List<Zone> newZones = new List<Zone> ();
-			addZonesToList (newZones);
-			copyOldRef (newZones);
-			addMissingRef ();
+			AddZonesToList (newZones);
+			CopyOldRef (newZones);
+			AddMissingRef ();
 		}
 	}
 
@@ -77,12 +78,12 @@ public class SpriteController : MonoBehaviour {
 	/// Copies the old references from zones to the given list, if the coordinates are the same.
 	/// </summary>
 	/// <param name="newZones">List of the new zones.</param>
-	void copyOldRef(List<Zone> newZones){
+	void CopyOldRef(List<Zone> newZones){
 		foreach (Zone zone in zones) {
 			foreach (Zone newZone in newZones) {
 				if (zone.Equals(newZone)) {
-					newZone.setMinionRef (zone.getMinionRef());
-					zone.setMinionRef (null);
+					newZone.SetMinionRef (zone.GetMinionRef());
+					zone.SetMinionRef (null);
 				}
 			}
 		}
@@ -92,10 +93,10 @@ public class SpriteController : MonoBehaviour {
 	/// <summary>
 	/// Adds the missing references to the zones list.
 	/// </summary>
-	void addMissingRef(){
+	void AddMissingRef(){
 		foreach (Zone zone in zones) {
-			if (zone.getMinionRef () == null) {
-				zone.setMinionRef (FirebaseDatabase.DefaultInstance.GetReference ("eSquads").Child (zone.getLatitudeIndex ().ToString ()).Child (zone.getLongitudeIndex ().ToString ()));
+			if (zone.GetMinionRef () == null) {
+				zone.SetMinionRef (FirebaseDatabase.DefaultInstance.GetReference ("eSquads").Child (zone.GetLatitudeIndex ().ToString ()).Child (zone.GetLongitudeIndex ().ToString ()));
 			}
 		}
 	}
@@ -103,8 +104,8 @@ public class SpriteController : MonoBehaviour {
 	/// <summary>
 	/// Rebuilds zones and squad listeners.
 	/// </summary>
-	void addZonesToList(){
-		addZonesToList (zones, true);
+	void AddZonesToList(){
+		AddZonesToList (zones, true);
 	}
 
 	/// <summary>
@@ -112,9 +113,9 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	/// <param name="list">List to add zones to.</param>
 	/// <param name="newZone">Should only be set to <c>true</c> if called from newZone.</param>
-	void addZonesToList(List<Zone> list, bool newZone = false){
-		for (int lat = latitude_index - 1; lat <= latitude_index + 1; lat++) {
-			for (int lon = longitude_index - 1; lon <= longitude_index + 1; lon++) {
+	void AddZonesToList(List<Zone> list, bool newZone = false){
+		for (int lat = latitudeIndex - 1; lat <= latitudeIndex + 1; lat++) {
+			for (int lon = longitudeIndex - 1; lon <= longitudeIndex + 1; lon++) {
 				if (newZone) {
 					Zone z = new Zone (lat, lon, this, FirebaseDatabase.DefaultInstance.GetReference ("eSquads").Child (lat.ToString ()).Child (lon.ToString ()));
 					list.Add (z);
@@ -130,9 +131,9 @@ public class SpriteController : MonoBehaviour {
 	/// <summary>
 	/// Clears zones List and rebuilds it from the new latitude and longitude index.
 	/// </summary>
-	void newZone(){
+	void NewZone(){
 		zones.Clear();
-		addZonesToList();
+		AddZonesToList();
 	}
 
 	/// <summary>
@@ -140,7 +141,7 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	/// <param name="latitude">Latitude of sprite.</param>
 	/// <param name="longitude">Longitude of sprite.</param>
-	public void removeSprite(string key){
+	public void RemoveSprite(string key){
 		GameObject g = GameObject.Find (key);
 		GameObject.Destroy (g);
 	}
@@ -150,15 +151,13 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	/// <param name="pos">Position of the minion as a Vector2.</param>
 	/// <param name="name">Name of minion.</param>
-	public void addSprite(Squad squad){
-		Vector3 unity_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (squad.getPos());
-		unity_pos.y = y_pos_of_sprites;
-		GameObject sprite = minionTypeInstantiate(squad.getName());
-		sprite.transform.name = (squad.getKey());
+	public void AddSprite(Squad squad){
+		Vector3 unity_pos = VectorExtensions.AsUnityPosition (squad.GetPos());
+		unity_pos.y = yPosOfSprites;
+		GameObject sprite = MinionTypeInstantiate(squad.GetName());
+		sprite.transform.name = (squad.GetKey());
 		sprite.transform.position = unity_pos;
 		sprite.GetComponent<SpriteOnClick> ().squad = squad;
-		//Debug.Log ("Sprite Coordinates: " + squad.getPos().x + " | " + squad.getPos().y);
-		//Debug.Log ("Sprite: " + unity_pos.x + " | " + unity_pos.z);
 	}
 
 	/// <summary>
@@ -166,7 +165,7 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	/// <returns>The type instantiate.</returns>
 	/// <param name="minion">Name of minion wanted.</param>
-	GameObject minionTypeInstantiate(string minion){
+	GameObject MinionTypeInstantiate(string minion){
 		switch (minion) {
 		case "Cleric":
 			return Instantiate (cleric);
@@ -176,7 +175,7 @@ public class SpriteController : MonoBehaviour {
 			return Instantiate (spearmaiden);
 		default:
 			Debug.Log ("SpriteController: " + minion + " sprite not found");
-			return Instantiate (placeholder_sprite);
+			return Instantiate (placeholderSprite);
 		}
 	}
 }

@@ -7,6 +7,7 @@ using Mapbox.MeshGeneration;
 using Mapbox.Scripts.Utilities;
 using Mapbox;
 using Mapbox.Map;
+using Mapbox.Scripts.Utilities;
 
 public class UpdatePosition : MonoBehaviour {
 	
@@ -14,72 +15,72 @@ public class UpdatePosition : MonoBehaviour {
 	public MapController mapController;
 	public int zoom = 18;
 	public int range = 3;
-	public Camera unity_camera;
+	public Camera unityCamera;
 	public SpriteController sprites;
-	public GameObject progress_indicatior;
 
-	float current_latitude;
-	float current_longitude;
-	Vector3 current_unity_pos;
-	private bool updating_location = false;
-	private Vector2 current_tile;
-	private Vector2 cached_tile;
+	float currentLatitude;
+	float currentLongitude;
+	private bool updatingLocation = false;
+	private Vector2 currentTile;
+	private Vector2 cachedTile;
+	private float cameraHeight = 500f;
 
 	// Use this for initialization
 	IEnumerator Start () {
 		Input.location.Start();
-		StartCoroutine (getLocation ());
+		StartCoroutine (GetLocation ());
 		yield return new WaitForSeconds(5);
-		StartCoroutine (getLocation ());
+		StartCoroutine (GetLocation ());
 		yield return new WaitForSeconds(1);
-		mapController.Execute(((double) current_latitude), ((double) current_longitude), zoom, range);
+		mapController.Execute(((double) currentLatitude), ((double) currentLongitude), zoom, range);
 		yield return new WaitForSeconds (1);
-		sprites.iniPosition (current_latitude, current_longitude);
-		updating_location = false;
-		progress_indicatior.SetActive(false);
+		sprites.IniPosition (currentLatitude, currentLongitude);
+		updatingLocation = false;
 	}
 
 	void Update () {
-		if (!updating_location) {
+		if (!updatingLocation) {
 			//Calls the functions for updating location and camera pos
-			StartCoroutine (getLocation ());
-			getNewMap ();
-			sprites.updatePosition (current_latitude, current_longitude);
+			StartCoroutine (GetLocation ());
+			GetNewMap ();
+			sprites.UpdatePosition (currentLatitude, currentLongitude);
 		}
 	}
 
 	/// <summary>
 	/// Requests a new tile from the MapController, and moves camera to new location
 	/// </summary>
-	void getNewMap(){
-		Vector2 pos = new Vector2 (current_latitude, current_longitude);
-		getNewCameraPos (pos);
+	void GetNewMap(){
+		Vector2 pos = new Vector2 (currentLatitude, currentLongitude);
+		GetNewCameraPos (pos);
 		//The rest of the method is based on Mapbox Slippy helper function
-		current_tile = Conversions.MetersToTile (sprites.player_sprite.transform.position.ToVector2xz () + MapController.ReferenceTileRect.center, mapController.Zoom);
-		if (current_tile != cached_tile) {
+		currentTile = Conversions.MetersToTile (sprites.playerSprite.transform.position.ToVector2xz () + MapController.ReferenceTileRect.center, mapController.Zoom);
+		if (currentTile != cachedTile) {
 			for (int i = -range; i <= range; i++) {
 				for (int j = -range; j <= range; j++) {
-					mapController.Request (new Vector2 (current_tile.x + i, current_tile.y + j), mapController.Zoom);
+					mapController.Request (new Vector2 (currentTile.x + i, currentTile.y + j), mapController.Zoom);
 				}
 			}
-			cached_tile = current_tile;
+			cachedTile = currentTile;
 		}
-		updating_location = false;
+		updatingLocation = false;
 	}
 
-	void getNewCameraPos(Vector2 pos){
+	void GetNewCameraPos(Vector2 pos){
 		//update camera pos
-		Vector3 new_camera_pos = Mapbox.Scripts.Utilities.VectorExtensions.AsUnityPosition (pos);
-		new_camera_pos.y = sprites.y_pos_of_sprites;
-		sprites.player_sprite.transform.position = new_camera_pos;
-		unity_camera.transform.position = new Vector3(sprites.player_sprite.transform.position.x, 500f, sprites.player_sprite.transform.position.z);
+		Vector3 new_camera_pos = VectorExtensions.AsUnityPosition (pos);
+		new_camera_pos.y = sprites.yPosOfSprites;
+		sprites.playerSprite.transform.position = new_camera_pos;
+		float spriteXPos = sprites.playerSprite.transform.position.x;
+		float spriteZPos = sprites.playerSprite.transform.position.z;
+		unityCamera.transform.position = new Vector3(spriteXPos, cameraHeight, spriteZPos);
 	}
 
 	/// <summary>
 	/// Updates the location from GPS (Works only on devices)
 	/// </summary>
-	IEnumerator getLocation(){
-		updating_location = true;
+	IEnumerator GetLocation(){
+		updatingLocation = true;
 		//Making sure location is enabled
 		if (!Input.location.isEnabledByUser) {
 			Debug.Log ("GetLocation 1: Location not enabled");
@@ -114,8 +115,8 @@ public class UpdatePosition : MonoBehaviour {
 			yield break;
 		} else {
 			// Access granted and location value could be retrieved
-			current_latitude = Input.location.lastData.latitude;
-			current_longitude = Input.location.lastData.longitude;
+			currentLatitude = Input.location.lastData.latitude;
+			currentLongitude = Input.location.lastData.longitude;
 		}
 	}
 }

@@ -40,15 +40,15 @@ public class RewardScreenController : MonoBehaviour {
 		rewardRef = FirebaseDatabase.DefaultInstance.GetReference ("battles")
 			.Child (battleKey)
 			.Child (FirebaseAuthHandler.getUserId ());
-		rewardRef.ValueChanged += handleValueChanged;
+		rewardRef.ValueChanged += HandleValueChanged;
 	}
 
-	void handleValueChanged(object sender, ValueChangedEventArgs args){
+	void HandleValueChanged(object sender, ValueChangedEventArgs args){
 		DataSnapshot snapshot = args.Snapshot;
 
 		if (snapshot.HasChildren) {
 			AssignFirebaseReward (snapshot);
-			rewardRef.ValueChanged -= handleValueChanged;
+			rewardRef.ValueChanged -= HandleValueChanged;
 		}
 	}
 

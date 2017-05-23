@@ -11,10 +11,10 @@ public class OnClickSkip : MonoBehaviour {
 
 	void Start(){
 		TheButton = gameObject.GetComponent<Button> ();
-		TheButton.onClick.AddListener (setFirebaseSkip);
+		TheButton.onClick.AddListener (SetFirebaseSkip);
 	}
 
-	void setFirebaseSkip(){
+	void SetFirebaseSkip(){
 		new FirebaseMove (battleKey, minion).Start();
 		minionSpriteCalling
 			.GetComponent<OnClickPlayerBattleMinion> ().SetPassive(false);

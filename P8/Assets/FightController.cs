@@ -86,20 +86,20 @@ public class FightController : MonoBehaviour {
 			computerMinionKey = computerGameobject.name;
 			computerSquad = computerGameobject.GetComponent<SpriteOnClick> ().squad;
 			computerGameobject.SetActive (false);
-			latIndex = (int)Math.Floor ((computerSquad.getPos ().x) * 100f);
-			lonIndex = (int)Math.Floor ((computerSquad.getPos ().y) * 100f);
+			latIndex = (int)Math.Floor ((computerSquad.GetPos ().x) * 100f);
+			lonIndex = (int)Math.Floor ((computerSquad.GetPos ().y) * 100f);
 			zoneData.Add ("latIndex", latIndex);
 			zoneData.Add ("lonIndex", lonIndex);
 			requestData.Add ("code", Constants.RequestCodeSoloBattle);
 			requestData.Add ("zone", zoneData);
 			requestData.Add ("key", computerMinionKey);
-			for (int i = 0; i < computerSquad.getSize (); i++) {
-				opponentMinions.Add(new Minion(computerSquad.getKey(), 
-					computerSquad.getMaxHealth(), 
-					computerSquad.getLevel(), 
-					computerSquad.getName(), 
-					computerSquad.getPower(), 
-					computerSquad.getSpeed(), 
+			for (int i = 0; i < computerSquad.GetSize (); i++) {
+				opponentMinions.Add(new Minion(computerSquad.GetKey(), 
+					computerSquad.GetMaxHealth(), 
+					computerSquad.GetLevel(), 
+					computerSquad.GetName(), 
+					computerSquad.GetPower(), 
+					computerSquad.GetSpeed(), 
 					"Melee", 
 					0));
 			}
@@ -113,13 +113,13 @@ public class FightController : MonoBehaviour {
 			requestData.Add ("key", "debug");
 			computerMinionKey = "debug";
 			computerSquad = new Squad (1, 1, "Spearman", 10, 1, 10, 57.003, 9.991, "debug");
-			for (int i = 0; i < computerSquad.getSize (); i++) {
-				opponentMinions.Add(new Minion(computerSquad.getKey(), 
-					computerSquad.getMaxHealth(), 
-					computerSquad.getLevel(), 
-					computerSquad.getName(), 
-					computerSquad.getPower(), 
-					computerSquad.getSpeed(), 
+			for (int i = 0; i < computerSquad.GetSize (); i++) {
+				opponentMinions.Add(new Minion(computerSquad.GetKey(), 
+					computerSquad.GetMaxHealth(), 
+					computerSquad.GetLevel(), 
+					computerSquad.GetName(), 
+					computerSquad.GetPower(), 
+					computerSquad.GetSpeed(), 
 					"Melee", 
 					0));
 			}
@@ -164,7 +164,7 @@ public class FightController : MonoBehaviour {
 		stateRef = FirebaseDatabase.DefaultInstance.GetReference ("battles")
 			.Child (battleKey)
 			.Child ("state");
-		stateRef.ValueChanged += handleValueChanged;
+		stateRef.ValueChanged += HandleValueChanged;
 	}
 
 	/// <summary>
@@ -172,7 +172,7 @@ public class FightController : MonoBehaviour {
 	/// </summary>
 	/// <param name="sender">Sender.</param>
 	/// <param name="args">Arguments.</param>
-	void handleValueChanged(object sender, ValueChangedEventArgs args){
+	void HandleValueChanged(object sender, ValueChangedEventArgs args){
 		DataSnapshot snapshot = args.Snapshot;
 		bool battleOver;
 		battleOver = (bool)snapshot.Child ("over")
@@ -188,7 +188,7 @@ public class FightController : MonoBehaviour {
 		}
 
 		if (battleOver) {
-			stateRef.ValueChanged -= handleValueChanged;
+			stateRef.ValueChanged -= HandleValueChanged;
 			GetReward ();
 		} else {
 			AdvanceTurn ();
@@ -225,7 +225,7 @@ public class FightController : MonoBehaviour {
 
 		if (isPlayerMinion) {
 			playerKey = FirebaseAuthHandler.getUserId ();
-			minionKey = playerMinions [minionPos].getKey ();
+			minionKey = playerMinions [minionPos].GetKey ();
 			teamString = "teamOne";
 		} else {
 			playerKey = computerMinionKey;
@@ -279,21 +279,21 @@ public class FightController : MonoBehaviour {
 				case 0:
 					playerMinionOneText.SetActive (true);
 					playerMinionOneText.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-						playerMinions [0].getHealth () + " / " + playerMinions [0].getHealth ();
+						playerMinions [0].GetHealth () + " / " + playerMinions [0].GetHealth ();
 					InsertSprite (playerMinions [0], 1, true);
 					playerSpritesText.Add (playerMinionOneText);
 					break;
 				case 1:
 					playerMinionTwoText.SetActive (true);
 					playerMinionTwoText.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-						playerMinions [1].getHealth () + " / " + playerMinions [1].getHealth ();
+						playerMinions [1].GetHealth () + " / " + playerMinions [1].GetHealth ();
 					InsertSprite (playerMinions [1], 2, true);
 					playerSpritesText.Add (playerMinionTwoText);
 					break;
 				case 2:
 					playerMinionThreeText.SetActive (true);
 					playerMinionThreeText.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-						playerMinions [2].getHealth () + " / " + playerMinions [2].getHealth ();
+						playerMinions [2].GetHealth () + " / " + playerMinions [2].GetHealth ();
 					InsertSprite (playerMinions [2], 3, true);
 					playerSpritesText.Add (playerMinionThreeText);
 					break;
@@ -320,7 +320,7 @@ public class FightController : MonoBehaviour {
 		case 1:
 			opponentMinionOneText.SetActive (true);
 			opponentMinionOneText.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-				opponentMinions [0].getHealth () + " / " + opponentMinions [0].getHealth ();
+				opponentMinions [0].GetHealth () + " / " + opponentMinions [0].GetHealth ();
 			InsertSprite (opponentMinions [0], 1, false);
 			opponentSpritesText.Add (opponentMinionOneText);
 
@@ -328,13 +328,13 @@ public class FightController : MonoBehaviour {
 		case 2:
 			opponentMinionOneText.SetActive (true);
 			opponentMinionOneText.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-				opponentMinions [0].getHealth () + " / " + opponentMinions [0].getHealth ();
+				opponentMinions [0].GetHealth () + " / " + opponentMinions [0].GetHealth ();
 			InsertSprite (opponentMinions [0], 1, false);
 			opponentSpritesText.Add (opponentMinionOneText);
 
 			opponentMinionTwoText.SetActive (true);
 			opponentMinionTwoText.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-				opponentMinions [1].getHealth () + " / " + opponentMinions [1].getHealth ();
+				opponentMinions [1].GetHealth () + " / " + opponentMinions [1].GetHealth ();
 			InsertSprite (opponentMinions [1], 2, false);
 			opponentSpritesText.Add (opponentMinionTwoText);
 
@@ -342,19 +342,19 @@ public class FightController : MonoBehaviour {
 		case 3:
 			opponentMinionOneText.SetActive (true);
 			opponentMinionOneText.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-				opponentMinions [0].getHealth () + " / " + opponentMinions [0].getHealth ();
+				opponentMinions [0].GetHealth () + " / " + opponentMinions [0].GetHealth ();
 			InsertSprite (opponentMinions [0], 1, false);
 			opponentSpritesText.Add (opponentMinionOneText);
 
 			opponentMinionTwoText.SetActive (true);
 			opponentMinionTwoText.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-				opponentMinions [1].getHealth () + " / " + opponentMinions [1].getHealth ();
+				opponentMinions [1].GetHealth () + " / " + opponentMinions [1].GetHealth ();
 			InsertSprite (opponentMinions [1], 2, false);
 			opponentSpritesText.Add (opponentMinionTwoText);
 
 			opponentMinionThreeText.SetActive (true);
 			opponentMinionThreeText.transform.Find ("Health").gameObject.GetComponent<Text> ().text = 
-				opponentMinions [2].getHealth () + " / " + opponentMinions [2].getHealth ();
+				opponentMinions [2].GetHealth () + " / " + opponentMinions [2].GetHealth ();
 			InsertSprite (opponentMinions [2], 3, false);
 			opponentSpritesText.Add (opponentMinionThreeText);
 
@@ -384,7 +384,7 @@ public class FightController : MonoBehaviour {
 		minionSpriteName += " Minion Sprite " + minionPos;
 		sprite = spriteCanvas.transform.Find (minionSpriteName).gameObject;
 		sprite.SetActive (true);
-		sprite.GetComponent<Image> ().sprite = SelectSprite (minion.getName ());
+		sprite.GetComponent<Image> ().sprite = SelectSprite (minion.GetName ());
 		if (isPlayerMinion) {
 			playerSprites.Add (sprite);
 		} else {
@@ -411,6 +411,6 @@ public class FightController : MonoBehaviour {
 	}
 
 	void OnDestroy(){
-		stateRef.ValueChanged -= handleValueChanged;
+		stateRef.ValueChanged -= HandleValueChanged;
 	}
 }

@@ -154,7 +154,7 @@ public class MinionPanelController : MonoBehaviour {
 			minion = gameObject.transform.Find (minionGameObjectName).gameObject;
 			minion.SetActive (true);
 			minion.GetComponent<OnClickMinionPicker> ().minion = userMinions [i];
-			minion.GetComponent<Image> ().sprite = SelectSprite(userMinions[i].getName());
+			minion.GetComponent<Image> ().sprite = SelectSprite(userMinions[i].GetName());
 		}
 	}
 
@@ -229,7 +229,7 @@ public class MinionPanelController : MonoBehaviour {
 			border = minion.transform.Find ("Border").gameObject;
 			minion.SetActive (true);
 			minion.GetComponent<OnClickMinionPicker> ().minion = userMinions [i];
-			minion.GetComponent<Image> ().sprite = SelectSprite(userMinions[i].getName());
+			minion.GetComponent<Image> ().sprite = SelectSprite(userMinions[i].GetName());
 			if (pickedMinions.Count != 0) {
 				if (pickedMinions.Contains (userMinions [i])) {
 					border.SetActive (true);

@@ -79,10 +79,10 @@ public class FirebaseMove{
 		if (isPickingMinion) {
 			if (playerMinion != null) {
 				requestData.Add ("avatarKey", FirebaseAuthHandler.getUserId ());
-				requestData.Add ("minionKey", playerMinion.getKey ());
+				requestData.Add ("minionKey", playerMinion.GetKey ());
 			}
 		} else if (targetIndex != -1) {
-			requestData.Add ("avatarKey", targetMinion.getKey ());
+			requestData.Add ("avatarKey", targetMinion.GetKey ());
 			requestData.Add ("minionKey", ("minion-" + targetIndex));
 		}
 
@@ -109,7 +109,7 @@ public class FirebaseMove{
 			.Child ("chosenMoves")
 			.Child ("moves")
 			.Child (FirebaseAuthHandler.getUserId ())
-			.Child (playerMinion.getKey ())
+			.Child (playerMinion.GetKey ())
 			.SetValueAsync (requestData).ContinueWith (task => {
 				Debug.Log ("Started to set data");
 				if (task.IsFaulted) {
