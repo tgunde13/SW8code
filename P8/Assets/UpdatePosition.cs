@@ -73,7 +73,8 @@ public class UpdatePosition : MonoBehaviour {
 		sprites.playerSprite.transform.position = new_camera_pos;
 		float spriteXPos = sprites.playerSprite.transform.position.x;
 		float spriteZPos = sprites.playerSprite.transform.position.z;
-		unityCamera.transform.position = new Vector3(spriteXPos, cameraHeight, spriteZPos);
+		unityCamera.transform.position = 
+			new Vector3(spriteXPos, cameraHeight, spriteZPos);
 	}
 
 	/// <summary>
