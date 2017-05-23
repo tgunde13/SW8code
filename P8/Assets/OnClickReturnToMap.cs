@@ -9,10 +9,10 @@ public class OnClickReturnToMap : MonoBehaviour {
 
 	void Start(){
 		TheButton = gameObject.GetComponent<Button> ();
-		TheButton.onClick.AddListener (loadMap);
+		TheButton.onClick.AddListener (LoadMap);
 	}
 
-	void loadMap(){
+	void LoadMap(){
 		SceneManager.LoadScene (Constants.MapSceneName);
 	}
 }

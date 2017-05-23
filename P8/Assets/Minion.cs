@@ -21,47 +21,47 @@ public class Minion{
 		this.xp = xp;
 	}
 
-	public string getKey(){
+	public string GetKey(){
 		return key;
 	}
 
-	public int getHealth(){
+	public int GetHealth(){
 		return health;
 	}
 
-	public void setHealth(int health){
+	public void SetHealth(int health){
 		this.health = health;
 	}
 
-	public int getLevel(){
+	public int GetLevel(){
 		return level;
 	}
 
-	public string getName(){
+	public string GetName(){
 		return name;
 	}
 
-	public int getPower(){
+	public int GetPower(){
 		return power;
 	}
 
-	public void setPower(int power){
+	public void SetPower(int power){
 		this.power = power;
 	}
 
-	public int getSpeed(){
+	public int GetSpeed(){
 		return speed;
 	}
 
-	public void setSpeed(int speed){
+	public void SetSpeed(int speed){
 		this.speed = speed;
 	}
 
-	public string getType(){
+	public string GetType(){
 		return type;
 	}
 
-	public int getXp(){
+	public int GetXp(){
 		return xp;
 	}
 

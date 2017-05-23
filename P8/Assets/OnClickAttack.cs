@@ -15,10 +15,10 @@ public class OnClickAttack : MonoBehaviour {
 
 	void Start(){
 		TheButton = gameObject.GetComponent<Button> ();
-		TheButton.onClick.AddListener (attackClicked);
+		TheButton.onClick.AddListener (AttackClicked);
 	}
 
-	void attackClicked(){
+	void AttackClicked(){
 		opponentOne = minionSpriteCalling
 			.GetComponent<OnClickPlayerBattleMinion> ().opponentSpriteOne;
 		OnClickOpponentBattleMinion one = opponentOne
