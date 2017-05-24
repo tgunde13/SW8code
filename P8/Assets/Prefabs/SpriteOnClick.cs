@@ -8,6 +8,7 @@ public class SpriteOnClick : MonoBehaviour {
 
 
 	void OnMouseUpAsButton(){
+		Input.location.Stop();
 		DontDestroyOnLoad (transform.gameObject);
 		SceneManager.LoadScene(Constants.BattleSceneName);
 	}
