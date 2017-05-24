@@ -22,11 +22,6 @@ public class SpriteController : MonoBehaviour {
 	void Start () {
 		zones = new List<Zone> ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	/// <summary>
 	/// Sets the initial latitude and longitude index and builds the zones.
