@@ -39,10 +39,14 @@ public static class Constants {
 
 	// Firebase request codes
 	public const int RequestCodeConfigure = 1;
+	public const int RequestCodePlayerZone = 2;
+	public const int RequestCodePlayerZoneHidden = 3;
+	public const int RequestCodeSoloBattle = 4;
 
 	// HTTP status codes
 	public const int HttpOk = 200;
 	public const int HttpConflict = 409;
+	public const int HttpNotFound = 404;
 
 	// Internet connection check website
 	public const string InternetConnectionCheckWebsite = "http://google.com";

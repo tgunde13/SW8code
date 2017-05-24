@@ -22,6 +22,7 @@ public class Request {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Request"/> class.
 	/// </summary>
+	/// <param name="behaviour">Behaviour to start a coroutine with.</param>
 	/// <param name="taskIndicator">Task indicator.</param>
 	/// <param name="dialog">Dialog to show errors with.</param>
 	/// <param name="responseHandler">Response handler.</param>
@@ -35,17 +36,39 @@ public class Request {
 	}
 
 	/// <summary>
+	/// Initializes a new instance of the <see cref="Request"/> class.
+	/// </summary>
+	/// <param name="behaviour">Behaviour to start a coroutine with.</param>
+	/// <param name="dialog">Dialog to show errors with.</param>
+	/// <param name="responseHandler">Response handler.</param>
+	/// <param name="requestData">Request data.</param>
+	public Request(MonoBehaviour behaviour, DialogPanel dialog, ResponseHandler responseHandler, Dictionary<string, object> requestData){
+		this.behaviour = behaviour;
+		this.taskIndicator = null;
+		this.dialog = dialog;
+		this.responseHandler = responseHandler;
+		this.requestData = requestData;
+	}
+
+	/// <summary>
 	/// Start this request.
 	/// </summary>
 	public void Start() {
-		taskIndicator.OnStart ();
+		if (taskIndicator != null) {
+			taskIndicator.OnStart ();
+		}
 
 		behaviour.StartCoroutine(InternetConnectionHelper.CheckInternetConnection ((isConnected) => {
 			Debug.Log ("TOB: Request, Start, isConnected: " + isConnected);
 			if (!isConnected) {
-				// Show error message, hide process indicator while message is shown
-				dialog.show (I18n.Instance.__ ("ErrorInternet"), taskIndicator);
-				return;
+				if(taskIndicator != null){
+					// Show error message, hide process indicator while message is shown
+					dialog.show (I18n.Instance.__ ("ErrorInternet"), taskIndicator);
+					return;
+				} else {
+					dialog.show (I18n.Instance.__ ("ErrorInternet"));
+					return;
+				}
 			}
 
 			MakeRequest ();
@@ -67,7 +90,11 @@ public class Request {
 			.ContinueWith (task1 => {
 				if (task1.IsFaulted) {
 					Debug.Log ("TOB: Request, Remove old reponse IsFaulted");
-					dialog.show (I18n.Instance.__ ("ErrorFirebase"), taskIndicator);
+					if(taskIndicator != null){
+						dialog.show (I18n.Instance.__ ("ErrorFirebase"), taskIndicator);
+					} else {
+						dialog.show (I18n.Instance.__ ("ErrorFirebase"));
+					}
 				} else if (task1.IsCompleted) {
 					Debug.Log ("TOB: Request, Remove old reponse IsCompleted");
 					// Listen to response
@@ -80,8 +107,11 @@ public class Request {
 						.ContinueWith (task2 => {
 							if (task2.IsFaulted) {
 								Debug.Log ("TOB: Request, Request IsFaulted");
-								dialog.show (I18n.Instance.__ ("ErrorFirebase"), taskIndicator);
-
+								if(taskIndicator != null){
+									dialog.show (I18n.Instance.__ ("ErrorFirebase"), taskIndicator);
+								} else {
+									dialog.show (I18n.Instance.__ ("ErrorFirebase"));
+								}
 								// Stop listening
 								responseRef.ValueChanged -= OnResponseChanged;
 							}
@@ -106,7 +136,11 @@ public class Request {
 		// if the handler did not handle the response, show an error message
 		if (!responseHandler (args.Snapshot)) {
 			Debug.Log ("TOB: Request, OnResponseChanged, default");
-			dialog.show (I18n.Instance.__ ("ErrorFirebase"), taskIndicator);
+			if (taskIndicator != null) {
+				dialog.show (I18n.Instance.__ ("ErrorFirebase"), taskIndicator);
+			} else {
+				dialog.show (I18n.Instance.__ ("ErrorFirebase"));
+			}
 		}
 
 		// Stop listening

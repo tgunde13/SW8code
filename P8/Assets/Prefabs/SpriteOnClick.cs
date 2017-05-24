@@ -6,9 +6,10 @@ using UnityEngine.SceneManagement;
 public class SpriteOnClick : MonoBehaviour {
 	public Squad squad;
 
-	void OnMouseDown(){
-		this.gameObject.SetActive (false);
-		DontDestroyOnLoad (this.gameObject);
+
+	void OnMouseUpAsButton(){
+		Input.location.Stop();
+		DontDestroyOnLoad (transform.gameObject);
 		SceneManager.LoadScene(Constants.BattleSceneName);
 	}
 }

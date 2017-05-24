@@ -23,32 +23,36 @@ public class Squad {
 		this.speed = speed;
 	}
 
-	public string getKey(){
+	public string GetKey(){
 		return key;
 	}
 
-	public string getName(){
+	public string GetName(){
 		return name;
 	}
 
-	public Vector2 getPos(){
+	public Vector2 GetPos(){
 		return pos;
 	}
 
-	public int getMaxHealth(){
+	public int GetMaxHealth(){
 		return max_health;
 	}
 
-	public int getPower(){
+	public int GetPower(){
 		return power;
 	}
 
-	public int getSpeed(){
+	public int GetSpeed(){
 		return speed;
 	}
 
-	public int getLevel(){
+	public int GetLevel(){
 		return level;
+	}
+
+	public int GetSize(){
+		return size;
 	}
 
 }

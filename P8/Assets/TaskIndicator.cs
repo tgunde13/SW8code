@@ -17,6 +17,11 @@ public class TaskIndicator {
 		this.selectables = selectables;
 	}
 
+	public TaskIndicator(GameObject processIndicator){
+		this.processIndicator = processIndicator;
+		this.selectables = new Selectable[] { };
+	}
+
 	/// <summary>
 	/// Makes selectables uninteractable and shows the process indicator.
 	/// </summary>
