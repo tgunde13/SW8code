@@ -42,7 +42,7 @@ public class SpriteController : MonoBehaviour {
 		zoneData.Add ("latIndex", latitudeIndex);
 		zoneData.Add ("lonIndex", longitudeIndex);
 
-		requestData.Add ("zone", zoneData);
+		requestData.Add ("data", zoneData);
 		new Request (this, dialogPanel, ZoneUploadedResponse, requestData).Start();
 	}
 
