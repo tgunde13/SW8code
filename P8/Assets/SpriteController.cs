@@ -12,15 +12,57 @@ public class SpriteController : MonoBehaviour {
 	public GameObject spearmaiden;
 	public GameObject swordman;
 	public float yPosOfSprites = 5f;
+	public DialogPanel dialogPanel;
 
 	private List<Zone> zones;
 	private int latitudeIndex;
 	private int longitudeIndex;
 	private Zone centerZone;
+	private bool playerHidden = false;
+	private Dictionary<string, object> requestData;
+	private Dictionary<string, object> zoneData;
 
 	// Use this for initialization
 	void Start () {
 		zones = new List<Zone> ();
+		requestData = new Dictionary<string, object> ();
+		zoneData = new Dictionary<string, object> ();
+	}
+
+	/// <summary>
+	/// Uploads the player zone.
+	/// </summary>
+	private void UploadPlayerZone(){
+		if (playerHidden) {
+			requestData.Add ("code", Constants.RequestCodePlayerZoneHidden);
+		} else {
+			requestData.Add ("code", Constants.RequestCodePlayerZone);
+		}
+
+		zoneData.Add ("latIndex", latitudeIndex);
+		zoneData.Add ("lonIndex", longitudeIndex);
+
+		requestData.Add ("zone", zoneData);
+		new Request (this, dialogPanel, ZoneUploadedResponse, requestData).Start();
+	}
+
+	/// <summary>
+	/// Handles response of the request.
+	/// </summary>
+	/// <returns><c>true</c>, if zone was set correctly, <c>false</c> otherwise.</returns>
+	/// <param name="snapshot">Snapshot.</param>
+	bool ZoneUploadedResponse(DataSnapshot snapshot){
+		Debug.Log ("Response to request recived");
+		long returnKey = (long)snapshot.Child ("code").GetValue(false);
+
+		switch (returnKey) {
+		case Constants.HttpOk:
+			Debug.Log ("Zone uploaded correctly");
+			return true;
+		default:
+			Debug.Log ("Error while uploading Zone");
+			return false;
+		}
 	}
 
 	/// <summary>
@@ -129,6 +171,7 @@ public class SpriteController : MonoBehaviour {
 	void NewZone(){
 		zones.Clear();
 		AddZonesToList();
+		UploadPlayerZone ();
 	}
 
 	/// <summary>
