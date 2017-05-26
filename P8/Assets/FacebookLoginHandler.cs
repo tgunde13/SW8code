@@ -101,6 +101,7 @@ public class FacebookLoginHandler : MonoBehaviour {
 
 		} else {
 			Debug.Log("TOB: User cancelled login");
+			Debug.Log("TOB: result.Error: " + result.Error);
 			indicator.OnEnd();
 		}
 	}
