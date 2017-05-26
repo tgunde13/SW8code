@@ -264,7 +264,7 @@ public class MinionPanelController : MonoBehaviour {
 			if (!done.activeSelf) {
 				done.SetActive (true);
 			}
-			numPickedMinions.GetComponent<Text> ().text = "Picked " + pickedMinions.Count + "/" + 3 + " Minions";
+			numPickedMinions.GetComponent<Text> ().text = "Chosen " + pickedMinions.Count + "/" + 3 + " Minions";
 			return true;
 		}
 		return false;
@@ -277,7 +277,7 @@ public class MinionPanelController : MonoBehaviour {
 			if (pickedMinions.Count == 0) {
 				done.SetActive (false);
 			}
-			numPickedMinions.GetComponent<Text> ().text = "Picked " + pickedMinions.Count + "/" + 3 + " Minions";
+			numPickedMinions.GetComponent<Text> ().text = "Chosen " + pickedMinions.Count + "/" + 3 + " Minions";
 			return true;
 		} else {
 			return AddMinionSelection (m);
