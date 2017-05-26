@@ -52,10 +52,10 @@ public class UpdatePosition : MonoBehaviour {
 	/// </summary>
 	void GetNewMap(){
 		Vector2 pos = new Vector2 (currentLatitude, currentLongitude);
-		GetNewCameraPos (pos);
 		Vector2d pos2 = new Vector2d(0, 0);
+		GetNewCameraPos (pos, pos2);
 		//The rest of the method is based on Mapbox Slippy helper function
-		currentTile = Conversions.MetersToTile (sprites.playerSprite.transform.position.ToVector2xz () + MapController.ReferenceTileRect.center, mapController.Zoom);
+		currentTile = Conversions.MetersToTile (sprites.playerSprite.transform.position.ToVector2d () + MapController.ReferenceTileRect.Center, mapController.Zoom);
 		if (currentTile != cachedTile) {
 			for (int i = -range; i <= range; i++) {
 				for (int j = -range; j <= range; j++) {
