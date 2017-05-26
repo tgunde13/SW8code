@@ -1,42 +1,40 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="ForwardGeocoderExample.cs" company="Mapbox">
 //     Copyright (c) 2016 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Examples.Playground {
+namespace Mapbox.Examples.Playground
+{
+    using UnityEngine;
+    using UnityEngine.UI;
+    using Mapbox.Json;
+    using Mapbox.Utils.JsonConverters;
 
-	using UnityEngine;
-	using UnityEngine.UI;
+    public class ForwardGeocoderExample : MonoBehaviour
+    {
+        [SerializeField]
+        ForwardGeocodeUserInput _searchLocation;
 
-	using Mapbox;
-	using Mapbox.Json;
-	using Mapbox.Scripts.UI;
+        [SerializeField]
+        Text _resultsText;
 
-	public class ForwardGeocoderExample : MonoBehaviour
-	{
-		[SerializeField]
-		ForwardGeocodeUserInput _searchLocation;
+        void Awake()
+        {
+            _searchLocation.OnGeocoderResponse += SearchLocation_OnGeocoderResponse;
+        }
 
-		[SerializeField]
-		Text _resultsText;
+        void OnDestroy()
+        {
+            if (_searchLocation != null)
+            {
+                _searchLocation.OnGeocoderResponse -= SearchLocation_OnGeocoderResponse;
+            }
+        }
 
-		void Awake()
-		{
-			_searchLocation.OnGeocoderResponse += SearchLocation_OnGeocoderResponse;
-		}
-
-		void OnDestroy()
-		{
-			if (_searchLocation != null)
-			{
-				_searchLocation.OnGeocoderResponse -= SearchLocation_OnGeocoderResponse;
-			}
-		}
-
-		void SearchLocation_OnGeocoderResponse(object sender, System.EventArgs e)
-		{
-			_resultsText.text = JsonConvert.SerializeObject(_searchLocation.Response, Formatting.Indented, JsonConverters.Converters);
-		}
-	}
+        void SearchLocation_OnGeocoderResponse(object sender, System.EventArgs e)
+        {
+            _resultsText.text = JsonConvert.SerializeObject(_searchLocation.Response, Formatting.Indented, JsonConverters.Converters);
+        }
+    }
 }

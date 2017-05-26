@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Firebase.Database;
-using Mapbox.Scripts.Utilities;
+using Mapbox.Utils;
 
 public class SpriteController : MonoBehaviour {
 	public GameObject placeholderSprite;
@@ -189,11 +189,12 @@ public class SpriteController : MonoBehaviour {
 	/// </summary>
 	/// <param name="pos">Position of the minion as a Vector2.</param>
 	/// <param name="name">Name of minion.</param>
-	public void AddSprite(Squad squad){
-		Vector3 unity_pos = VectorExtensions.AsUnityPosition (squad.GetPos());
-		unity_pos.y = yPosOfSprites;
-		GameObject sprite = MinionTypeInstantiate(squad.GetName());
-		sprite.transform.name = (squad.GetKey());
+	public void addSprite(Squad squad){
+		Vector2d pos2 = new Vector2d(0, 0);
+		Vector3 unity_pos = Mapbox.Unity.Utilities.VectorExtensions.AsUnityPosition (squad.getPos(), pos2, (float)2.5);
+		unity_pos.y = y_pos_of_sprites;
+		GameObject sprite = minionTypeInstantiate(squad.getName());
+		sprite.transform.name = (squad.getKey());
 		sprite.transform.position = unity_pos;
 		sprite.GetComponent<SpriteOnClick> ().squad = squad;
 	}
